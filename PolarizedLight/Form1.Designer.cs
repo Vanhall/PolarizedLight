@@ -715,7 +715,7 @@
             // pictureBox2
             // 
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources._2017_07_07_14_26_13;
+            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Palette;
             this.pictureBox2.Location = new System.Drawing.Point(27, 44);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(22, 134);

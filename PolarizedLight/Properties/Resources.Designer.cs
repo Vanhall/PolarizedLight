@@ -63,9 +63,9 @@ namespace PolarizedLight.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _2017_07_07_14_26_13 {
+        internal static System.Drawing.Bitmap NSTU_Logo_blue {
             get {
-                object obj = ResourceManager.GetObject("2017-07-07_14-26-13", resourceCulture);
+                object obj = ResourceManager.GetObject("NSTU_Logo_blue", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace PolarizedLight.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap NSTU_Logo_blue {
+        internal static System.Drawing.Bitmap Palette {
             get {
-                object obj = ResourceManager.GetObject("NSTU_Logo_blue", resourceCulture);
+                object obj = ResourceManager.GetObject("Palette", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
