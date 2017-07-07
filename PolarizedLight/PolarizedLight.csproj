@@ -89,6 +89,7 @@
     <None Include="Resources\NSTU_Logo_blue.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\2017-07-07_14-26-13.jpg" />
     <Content Include="Resources\Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
