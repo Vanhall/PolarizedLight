@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainPanel = new System.Windows.Forms.Panel();
             this.Credits_panel = new System.Windows.Forms.Panel();
@@ -43,6 +44,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ButtonStart = new System.Windows.Forms.Button();
             this.ButtonStop = new System.Windows.Forms.Button();
@@ -57,6 +59,7 @@
             this.nx_slider = new System.Windows.Forms.TrackBar();
             this.CrystalChoice_dropdown = new System.Windows.Forms.ComboBox();
             this.LightTab = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.DeltaPhase_slider = new System.Windows.Forms.TrackBar();
             this.WaveLen_slider = new System.Windows.Forms.TrackBar();
             this.label9 = new System.Windows.Forms.Label();
@@ -78,18 +81,18 @@
             this.DrawOutline_radio = new System.Windows.Forms.RadioButton();
             this.DrawBoth_radio = new System.Windows.Forms.RadioButton();
             this.label21 = new System.Windows.Forms.Label();
-            this.Menu = new System.Windows.Forms.MenuStrip();
-            this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExpHelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ManualMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
+            this.FileMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingsMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExitMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExpHelpMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ManualMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GLViewPort = new Tao.Platform.Windows.SimpleOpenGlControl();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.AnimTimer = new System.Windows.Forms.Timer(this.components);
             this.MainPanel.SuspendLayout();
             this.Credits_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.ExpSetupTabs.SuspendLayout();
             this.CrystalTab.SuspendLayout();
@@ -97,6 +100,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nx_slider)).BeginInit();
             this.LightTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WaveLen_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ey_slider)).BeginInit();
@@ -105,9 +109,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.Menu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -253,6 +255,16 @@
             this.label10.TabIndex = 1;
             this.label10.Text = "Разработчики:";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PolarizedLight.Properties.Resources.NSTU_Logo_blue;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 124);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 149);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.ButtonStart);
@@ -274,6 +286,7 @@
             this.ButtonStart.TabIndex = 1;
             this.ButtonStart.Text = "ПУСК";
             this.ButtonStart.UseVisualStyleBackColor = true;
+            this.ButtonStart.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
             // ButtonStop
             // 
@@ -283,6 +296,7 @@
             this.ButtonStop.TabIndex = 1;
             this.ButtonStop.Text = "СТОП";
             this.ButtonStop.UseVisualStyleBackColor = true;
+            this.ButtonStop.Click += new System.EventHandler(this.ButtonStop_Click);
             // 
             // ExpSetupTabs
             // 
@@ -411,6 +425,17 @@
             this.LightTab.TabIndex = 1;
             this.LightTab.Text = "Источник света";
             this.LightTab.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Palette;
+            this.pictureBox2.Location = new System.Drawing.Point(27, 44);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(22, 134);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 13;
+            this.pictureBox2.TabStop = false;
             // 
             // DeltaPhase_slider
             // 
@@ -632,58 +657,58 @@
             this.label21.Text = "Новосибирск\r\n2017";
             this.label21.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // Menu
+            // MenuStrip
             // 
-            this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenuItem,
-            this.HelpMenuItem});
-            this.Menu.Location = new System.Drawing.Point(0, 0);
-            this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(984, 24);
-            this.Menu.TabIndex = 1;
-            this.Menu.Text = "menuStrip1";
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileMenuStripItem,
+            this.HelpMenuStripItem});
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(984, 24);
+            this.MenuStrip.TabIndex = 1;
+            this.MenuStrip.Text = "menuStrip1";
             // 
-            // FileMenuItem
+            // FileMenuStripItem
             // 
-            this.FileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SettingsMenuItem,
-            this.ExitMenuItem});
-            this.FileMenuItem.Name = "FileMenuItem";
-            this.FileMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.FileMenuItem.Text = "Файл";
+            this.FileMenuStripItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SettingsMenuStripItem,
+            this.ExitMenuStripItem});
+            this.FileMenuStripItem.Name = "FileMenuStripItem";
+            this.FileMenuStripItem.Size = new System.Drawing.Size(48, 20);
+            this.FileMenuStripItem.Text = "Файл";
             // 
-            // SettingsMenuItem
+            // SettingsMenuStripItem
             // 
-            this.SettingsMenuItem.Name = "SettingsMenuItem";
-            this.SettingsMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.SettingsMenuItem.Text = "Настройки";
+            this.SettingsMenuStripItem.Name = "SettingsMenuStripItem";
+            this.SettingsMenuStripItem.Size = new System.Drawing.Size(134, 22);
+            this.SettingsMenuStripItem.Text = "Настройки";
             // 
-            // ExitMenuItem
+            // ExitMenuStripItem
             // 
-            this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.ExitMenuItem.Text = "Выход";
+            this.ExitMenuStripItem.Name = "ExitMenuStripItem";
+            this.ExitMenuStripItem.Size = new System.Drawing.Size(134, 22);
+            this.ExitMenuStripItem.Text = "Выход";
             // 
-            // HelpMenuItem
+            // HelpMenuStripItem
             // 
-            this.HelpMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ExpHelpMenuItem,
-            this.ManualMenuItem});
-            this.HelpMenuItem.Name = "HelpMenuItem";
-            this.HelpMenuItem.Size = new System.Drawing.Size(65, 20);
-            this.HelpMenuItem.Text = "Справка";
+            this.HelpMenuStripItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ExpHelpMenuStripItem,
+            this.ManualMenuStripItem});
+            this.HelpMenuStripItem.Name = "HelpMenuStripItem";
+            this.HelpMenuStripItem.Size = new System.Drawing.Size(65, 20);
+            this.HelpMenuStripItem.Text = "Справка";
             // 
-            // ExpHelpMenuItem
+            // ExpHelpMenuStripItem
             // 
-            this.ExpHelpMenuItem.Name = "ExpHelpMenuItem";
-            this.ExpHelpMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.ExpHelpMenuItem.Text = "Справка по эксперименту";
+            this.ExpHelpMenuStripItem.Name = "ExpHelpMenuStripItem";
+            this.ExpHelpMenuStripItem.Size = new System.Drawing.Size(221, 22);
+            this.ExpHelpMenuStripItem.Text = "Справка по эксперименту";
             // 
-            // ManualMenuItem
+            // ManualMenuStripItem
             // 
-            this.ManualMenuItem.Name = "ManualMenuItem";
-            this.ManualMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.ManualMenuItem.Text = "Руководство пользователя";
+            this.ManualMenuStripItem.Name = "ManualMenuStripItem";
+            this.ManualMenuStripItem.Size = new System.Drawing.Size(221, 22);
+            this.ManualMenuStripItem.Text = "Руководство пользователя";
             // 
             // GLViewPort
             // 
@@ -701,27 +726,14 @@
             this.GLViewPort.Size = new System.Drawing.Size(728, 637);
             this.GLViewPort.StencilBits = ((byte)(0));
             this.GLViewPort.TabIndex = 2;
+            this.GLViewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseDown);
+            this.GLViewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseMove);
+            this.GLViewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseUp);
             // 
-            // pictureBox1
+            // AnimTimer
             // 
-            this.pictureBox1.Image = global::PolarizedLight.Properties.Resources.NSTU_Logo_blue;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 124);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 149);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Palette;
-            this.pictureBox2.Location = new System.Drawing.Point(27, 44);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(22, 134);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 13;
-            this.pictureBox2.TabStop = false;
+            this.AnimTimer.Interval = 16;
+            this.AnimTimer.Tick += new System.EventHandler(this.AnimTimer_Tick);
             // 
             // MainForm
             // 
@@ -730,18 +742,20 @@
             this.ClientSize = new System.Drawing.Size(984, 661);
             this.Controls.Add(this.GLViewPort);
             this.Controls.Add(this.MainPanel);
-            this.Controls.Add(this.Menu);
+            this.Controls.Add(this.MenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.Menu;
+            this.MainMenuStrip = this.MenuStrip;
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Поляризованный свет в анизотромном кристалле";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
             this.Credits_panel.ResumeLayout(false);
             this.Credits_panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.ExpSetupTabs.ResumeLayout(false);
             this.CrystalTab.ResumeLayout(false);
@@ -751,6 +765,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nx_slider)).EndInit();
             this.LightTab.ResumeLayout(false);
             this.LightTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WaveLen_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ey_slider)).EndInit();
@@ -762,10 +777,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.Menu.ResumeLayout(false);
-            this.Menu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -774,7 +787,7 @@
         #endregion
 
         private System.Windows.Forms.Panel MainPanel;
-        private System.Windows.Forms.MenuStrip Menu;
+        private System.Windows.Forms.MenuStrip MenuStrip;
         private Tao.Platform.Windows.SimpleOpenGlControl GLViewPort;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button ButtonStart;
@@ -810,12 +823,12 @@
         private System.Windows.Forms.RadioButton DrawBoth_radio;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox DrawAxies_chbox;
-        private System.Windows.Forms.ToolStripMenuItem FileMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem HelpMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ExpHelpMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ManualMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FileMenuStripItem;
+        private System.Windows.Forms.ToolStripMenuItem SettingsMenuStripItem;
+        private System.Windows.Forms.ToolStripMenuItem ExitMenuStripItem;
+        private System.Windows.Forms.ToolStripMenuItem HelpMenuStripItem;
+        private System.Windows.Forms.ToolStripMenuItem ExpHelpMenuStripItem;
+        private System.Windows.Forms.ToolStripMenuItem ManualMenuStripItem;
         private System.Windows.Forms.Panel Credits_panel;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label20;
@@ -832,6 +845,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Timer AnimTimer;
     }
 }
 
