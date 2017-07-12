@@ -15,6 +15,7 @@ namespace PolarizedLight
         private int[] TexPtr = new int[1];
         private Bitmap testtex;
         private int VertexCount = 0;    // счетчик вершин
+        Texture texture = new Texture();
         
         // Конструктор
         public Model(string name)
@@ -102,6 +103,21 @@ namespace PolarizedLight
             //testtex.Save(stream, ImageFormat.Jpeg);
             //byte[] tex = stream.ToArray();
             //BitmapData tex = testtex.LockBits(new Rectangle(0, 0, testtex.Width, testtex.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            Bitmap bmp = new Bitmap(@"H:\Work\4Semester\PolyrizedLight\PolarizedLight\PolarizedLight\Models\testtex.bmp");
+            byte[] b = Texture.ToByte(bmp); //функция приведена ниже
+
+            Gl.glPixelStorei(Gl.GL_UNPACK_ALIGNMENT, 1);
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 4, 2, 2, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, b);
+
+
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_REPEAT);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
+
+            Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_DECAL);
+            //
+
             byte[] tex = new byte[64 * 64 * 3];
             Random r = new Random();
             for (int i = 0; i < 64 * 64; i++)
@@ -122,10 +138,14 @@ namespace PolarizedLight
         // Функция отрисовки модели
         public void render()
         {
+            Gl.glPushMatrix();
+            Gl.glEnable(Gl.GL_TEXTURE_2D);
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
             // Подключаем ранее созданный буфер вершин
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
-
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture.mGlTextureObject);
+            Gl.glEnable(Gl.GL_NORMALIZE);
+           
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 8 * sizeof(float), IntPtr.Zero);
             Gl.glNormalPointer(Gl.GL_FLOAT, 8 * sizeof(float), (IntPtr)(3 * sizeof(float)));
             Gl.glTexCoordPointer(2, Gl.GL_FLOAT, 8 * sizeof(float), (IntPtr)(6 * sizeof(float)));

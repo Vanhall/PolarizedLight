@@ -88,5 +88,10 @@ namespace PolarizedLight
         {
             scene.resize();
         }
+
+        private void GLViewPort_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

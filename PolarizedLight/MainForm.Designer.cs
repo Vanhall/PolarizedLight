@@ -726,6 +726,7 @@
             this.GLViewPort.Size = new System.Drawing.Size(728, 637);
             this.GLViewPort.StencilBits = ((byte)(0));
             this.GLViewPort.TabIndex = 2;
+            this.GLViewPort.Load += new System.EventHandler(this.GLViewPort_Load);
             this.GLViewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseDown);
             this.GLViewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseMove);
             this.GLViewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseUp);
