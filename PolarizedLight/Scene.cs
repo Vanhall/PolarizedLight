@@ -31,11 +31,9 @@ namespace PolarizedLight
             Gl.glEnable(Gl.GL_LIGHT0);
             Gl.glEnable(Gl.GL_CULL_FACE);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
-            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
-            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
 
-            testModel = new Model("Models/testcube", Gl.GL_TEXTURE0);
-            testModel2 = new Model("Models/testcyl", Gl.GL_TEXTURE1);
+            testModel = new Model("Models/testcube");
+            testModel2 = new Model("Models/testcyl");
 
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };

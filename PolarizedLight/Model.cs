@@ -14,12 +14,11 @@ namespace PolarizedLight
         private int[] TexPtr = new int[1];
         private Bitmap bmp;
         private byte[] b;
-        private int VertexCount = 0, texID;    // счетчик вершин
+        private int VertexCount = 0;    // счетчик вершин
         
         // Конструктор
-        public Model(string name, int ActTex)
+        public Model(string name)
         {
-            texID = ActTex;
             bmp = new Bitmap(name + ".bmp");
             b = ToByte(bmp);
             bmp.Dispose();
@@ -103,18 +102,19 @@ namespace PolarizedLight
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(VBO.Length * sizeof(float)), VBO, Gl.GL_STATIC_DRAW);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
 
-            //Gl.glGenTextures(1, TexPtr);
-            //Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
-            //Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 3, 512, 512, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, b);
-            //Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
+            Gl.glGenTextures(1, TexPtr);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 3, 512, 512, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, b);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
         }
 
         // Функция отрисовки модели
         public void render()
         {
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
-            //Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 3, 512, 512, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, b);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
 
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 8 * sizeof(float), IntPtr.Zero);
             Gl.glNormalPointer(Gl.GL_FLOAT, 8 * sizeof(float), (IntPtr)(3 * sizeof(float)));
