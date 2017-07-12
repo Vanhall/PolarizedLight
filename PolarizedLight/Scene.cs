@@ -9,8 +9,9 @@ namespace PolarizedLight
         private SimpleOpenGlControl GLVP;
         public Camera cam;
         private const double FOV = 45, zNear = 0.1, zFar = 200;
-        private Model testModel;
+        private Model testModel, testModel2;
         private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
+        public float r = 0.0f;
 
         public Scene(SimpleOpenGlControl _GLVP)
         {
@@ -30,8 +31,11 @@ namespace PolarizedLight
             Gl.glEnable(Gl.GL_LIGHT0);
             Gl.glEnable(Gl.GL_CULL_FACE);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
 
-            testModel = new Model("Models/testcube.obj");
+            testModel = new Model("Models/testcube", Gl.GL_TEXTURE0);
+            testModel2 = new Model("Models/testcyl", Gl.GL_TEXTURE1);
 
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
@@ -52,8 +56,12 @@ namespace PolarizedLight
             // ставим свет (нужно вызывать каждый раз, иначе будет двигаться вместе с камерой)
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
 
+            Gl.glPushMatrix();
+            Gl.glRotatef(r, 0.0f, 0.0f, 1.0f);
             testModel.render();
-
+            testModel2.render();
+            Gl.glPopMatrix();
+            
             // сообщаем OpenGL что закончили все дела и можно рисовать кадр
             Gl.glFlush();
             GLVP.Invalidate();
