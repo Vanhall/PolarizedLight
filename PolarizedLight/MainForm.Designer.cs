@@ -421,7 +421,7 @@
             // 
             this.nz_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.nz_slider.Location = new System.Drawing.Point(23, 168);
-            this.nz_slider.Maximum = 2471;
+            this.nz_slider.Maximum = 2417;
             this.nz_slider.Minimum = 1000;
             this.nz_slider.Name = "nz_slider";
             this.nz_slider.Size = new System.Drawing.Size(171, 45);
@@ -444,7 +444,7 @@
             // 
             this.ny_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ny_slider.Location = new System.Drawing.Point(23, 119);
-            this.ny_slider.Maximum = 2471;
+            this.ny_slider.Maximum = 2417;
             this.ny_slider.Minimum = 1000;
             this.ny_slider.Name = "ny_slider";
             this.ny_slider.Size = new System.Drawing.Size(171, 45);
@@ -461,9 +461,10 @@
             this.CrystalChoice_dropdown.FormattingEnabled = true;
             this.CrystalChoice_dropdown.Items.AddRange(new object[] {
             "Свой кристалл",
-            "Кристалл 1",
-            "Кристалл 2",
-            "Кристалл 3"});
+            "Алмаз",
+            "Рубин",
+            "Топаз",
+            "Янтарь"});
             this.CrystalChoice_dropdown.Location = new System.Drawing.Point(3, 3);
             this.CrystalChoice_dropdown.Name = "CrystalChoice_dropdown";
             this.CrystalChoice_dropdown.Size = new System.Drawing.Size(236, 21);
@@ -801,13 +802,13 @@
             // SettingsMenuStripItem
             // 
             this.SettingsMenuStripItem.Name = "SettingsMenuStripItem";
-            this.SettingsMenuStripItem.Size = new System.Drawing.Size(152, 22);
+            this.SettingsMenuStripItem.Size = new System.Drawing.Size(134, 22);
             this.SettingsMenuStripItem.Text = "Настройки";
             // 
             // ExitMenuStripItem
             // 
             this.ExitMenuStripItem.Name = "ExitMenuStripItem";
-            this.ExitMenuStripItem.Size = new System.Drawing.Size(152, 22);
+            this.ExitMenuStripItem.Size = new System.Drawing.Size(134, 22);
             this.ExitMenuStripItem.Text = "Выход";
             this.ExitMenuStripItem.Click += new System.EventHandler(this.ExitMenuStripItem_Click);
             // 

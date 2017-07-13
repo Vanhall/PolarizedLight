@@ -20,7 +20,9 @@ namespace PolarizedLight
             InitializeComponent();
             GLViewPort.InitializeContexts();
             GLViewPort.MouseWheel += new MouseEventHandler(GLViewPort_MouseWheel);
+            scene = new Scene(GLViewPort);
 
+            #region Инициализация интерфейса
             Lambda_label.Text = Lambda.ToString("D") + " нм";
             nz_label.Text = nz.ToString("F3");
             ny_label.Text = ny.ToString("F3");
@@ -28,9 +30,8 @@ namespace PolarizedLight
             Ey_label.Text = Ey.ToString("D") + " В/м";
             Ez_label.Text = Ez.ToString("D") + " В/м";
             DeltaPhase_label.Text = DeltaPhase.ToString("F2") + "π";
-
             CrystalChoice_dropdown.SelectedIndex = 0;
-            scene = new Scene(GLViewPort);
+            #endregion
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -42,6 +43,11 @@ namespace PolarizedLight
         {
             scene.render();
             scene.r += 1.0f;
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            scene.resize();
         }
 
         #region Кнопки
@@ -105,12 +111,8 @@ namespace PolarizedLight
             scene.render();
         }
         #endregion
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            scene.resize();
-        }
-
+        
+        #region Вкладка "Кристалл"
         private void CrystalChoice_dropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (CrystalChoice_dropdown.SelectedIndex)
@@ -124,7 +126,7 @@ namespace PolarizedLight
                     {
                         ny = 2.417f;
                         nz = 2.417f;
-                        nz_slider.Value = 2417;
+                        ny_slider.Value = 2417;
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 2417;
                         nz_label.Text = nz.ToString("F3");
@@ -134,7 +136,7 @@ namespace PolarizedLight
                     {
                         ny = 1.76f;
                         nz = 1.76f;
-                        nz_slider.Value = 1760;
+                        ny_slider.Value = 1760;
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1760;
                         nz_label.Text = nz.ToString("F3");
@@ -144,7 +146,7 @@ namespace PolarizedLight
                     {
                         ny = 1.63f;
                         nz = 1.63f;
-                        nz_slider.Value = 1630;
+                        ny_slider.Value = 1630;
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1630;
                         nz_label.Text = nz.ToString("F3");
@@ -154,7 +156,7 @@ namespace PolarizedLight
                     {
                         ny = 1.532f;
                         nz = 1.532f;
-                        nz_slider.Value = 1532;
+                        ny_slider.Value = 1532;
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1532;
                         nz_label.Text = nz.ToString("F3");
@@ -182,7 +184,9 @@ namespace PolarizedLight
             d = Width_slider.Value;
             Width_label.Text = d.ToString("D") + " мм";
         }
+        #endregion
 
+        #region Вкладка"Источник света"
         private void Ey_slider_Scroll(object sender, EventArgs e)
         {
             Ey = Ey_slider.Value;
@@ -193,11 +197,6 @@ namespace PolarizedLight
         {
             Ez = Ez_slider.Value;
             Ez_label.Text = Ez.ToString("D") + " В/м";
-        }
-
-        private void ExitMenuStripItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
 
         private void Lambda_slider_Scroll(object sender, EventArgs e)
@@ -212,5 +211,13 @@ namespace PolarizedLight
             DeltaPhase_label.Text = DeltaPhase.ToString("F2") + "π";
             DeltaPhase *= Pi;
         }
+        #endregion
+
+        #region Меню
+        private void ExitMenuStripItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        #endregion
     }
 }
