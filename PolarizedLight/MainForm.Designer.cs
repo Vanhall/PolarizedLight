@@ -51,7 +51,11 @@
             this.ExpSetupTabs = new System.Windows.Forms.TabControl();
             this.CrystalTab = new System.Windows.Forms.TabPage();
             this.Width_slider = new System.Windows.Forms.TrackBar();
+            this.nz_label = new System.Windows.Forms.Label();
+            this.Width_label = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.ny_label = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.ny_slider = new System.Windows.Forms.TrackBar();
@@ -67,6 +71,10 @@
             this.Ex_slider = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.DeltaPhaze_label = new System.Windows.Forms.Label();
+            this.Ez_label = new System.Windows.Forms.Label();
+            this.Ey_label = new System.Windows.Forms.Label();
+            this.Lambda_label = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.DisplayTab = new System.Windows.Forms.TabPage();
@@ -90,14 +98,6 @@
             this.ManualMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GLViewPort = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.AnimTimer = new System.Windows.Forms.Timer(this.components);
-            this.label22 = new System.Windows.Forms.Label();
-            this.nx_label = new System.Windows.Forms.Label();
-            this.Width_label = new System.Windows.Forms.Label();
-            this.ny_label = new System.Windows.Forms.Label();
-            this.Lambda_label = new System.Windows.Forms.Label();
-            this.Ex_label = new System.Windows.Forms.Label();
-            this.Ey_label = new System.Windows.Forms.Label();
-            this.DeltaPhaze_label = new System.Windows.Forms.Label();
             this.MainPanel.SuspendLayout();
             this.Credits_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -321,10 +321,10 @@
             // CrystalTab
             // 
             this.CrystalTab.Controls.Add(this.Width_slider);
-            this.CrystalTab.Controls.Add(this.ny_label);
+            this.CrystalTab.Controls.Add(this.nz_label);
             this.CrystalTab.Controls.Add(this.Width_label);
             this.CrystalTab.Controls.Add(this.label3);
-            this.CrystalTab.Controls.Add(this.nx_label);
+            this.CrystalTab.Controls.Add(this.ny_label);
             this.CrystalTab.Controls.Add(this.label22);
             this.CrystalTab.Controls.Add(this.label2);
             this.CrystalTab.Controls.Add(this.label4);
@@ -349,6 +349,24 @@
             this.Width_slider.TabIndex = 1;
             this.Width_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             // 
+            // nz_label
+            // 
+            this.nz_label.AutoSize = true;
+            this.nz_label.Location = new System.Drawing.Point(198, 184);
+            this.nz_label.Name = "nz_label";
+            this.nz_label.Size = new System.Drawing.Size(18, 13);
+            this.nz_label.TabIndex = 3;
+            this.nz_label.Text = "nz";
+            // 
+            // Width_label
+            // 
+            this.Width_label.AutoSize = true;
+            this.Width_label.Location = new System.Drawing.Point(198, 59);
+            this.Width_label.Name = "Width_label";
+            this.Width_label.Size = new System.Drawing.Size(13, 13);
+            this.Width_label.TabIndex = 3;
+            this.Width_label.Text = "d";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -356,7 +374,25 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(14, 13);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Y";
+            this.label3.Text = "Z";
+            // 
+            // ny_label
+            // 
+            this.ny_label.AutoSize = true;
+            this.ny_label.Location = new System.Drawing.Point(198, 135);
+            this.ny_label.Name = "ny_label";
+            this.ny_label.Size = new System.Drawing.Size(18, 13);
+            this.ny_label.TabIndex = 3;
+            this.ny_label.Text = "ny";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(3, 59);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(13, 13);
+            this.label22.TabIndex = 3;
+            this.label22.Text = "d";
             // 
             // label2
             // 
@@ -365,7 +401,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "X";
+            this.label2.Text = "Y";
             // 
             // label4
             // 
@@ -429,8 +465,8 @@
             this.LightTab.Controls.Add(this.label5);
             this.LightTab.Controls.Add(this.label6);
             this.LightTab.Controls.Add(this.DeltaPhaze_label);
+            this.LightTab.Controls.Add(this.Ez_label);
             this.LightTab.Controls.Add(this.Ey_label);
-            this.LightTab.Controls.Add(this.Ex_label);
             this.LightTab.Controls.Add(this.Lambda_label);
             this.LightTab.Controls.Add(this.label7);
             this.LightTab.Controls.Add(this.label8);
@@ -510,7 +546,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Y";
+            this.label5.Text = "Z";
             // 
             // label6
             // 
@@ -519,7 +555,47 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(14, 13);
             this.label6.TabIndex = 10;
-            this.label6.Text = "X";
+            this.label6.Text = "Y";
+            // 
+            // DeltaPhaze_label
+            // 
+            this.DeltaPhaze_label.AutoSize = true;
+            this.DeltaPhaze_label.Location = new System.Drawing.Point(197, 194);
+            this.DeltaPhaze_label.Name = "DeltaPhaze_label";
+            this.DeltaPhaze_label.Size = new System.Drawing.Size(28, 13);
+            this.DeltaPhaze_label.TabIndex = 7;
+            this.DeltaPhaze_label.Text = "dPhi";
+            this.DeltaPhaze_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // Ez_label
+            // 
+            this.Ez_label.AutoSize = true;
+            this.Ez_label.Location = new System.Drawing.Point(141, 194);
+            this.Ez_label.Name = "Ez_label";
+            this.Ez_label.Size = new System.Drawing.Size(19, 13);
+            this.Ez_label.TabIndex = 7;
+            this.Ez_label.Text = "Ez";
+            this.Ez_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // Ey_label
+            // 
+            this.Ey_label.AutoSize = true;
+            this.Ey_label.Location = new System.Drawing.Point(80, 194);
+            this.Ey_label.Name = "Ey_label";
+            this.Ey_label.Size = new System.Drawing.Size(19, 13);
+            this.Ey_label.TabIndex = 7;
+            this.Ey_label.Text = "Ey";
+            this.Ey_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // Lambda_label
+            // 
+            this.Lambda_label.AutoSize = true;
+            this.Lambda_label.Location = new System.Drawing.Point(10, 194);
+            this.Lambda_label.Name = "Lambda_label";
+            this.Lambda_label.Size = new System.Drawing.Size(45, 13);
+            this.Lambda_label.TabIndex = 7;
+            this.Lambda_label.Text = "Lambda";
+            this.Lambda_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label7
             // 
@@ -751,82 +827,6 @@
             this.AnimTimer.Interval = 16;
             this.AnimTimer.Tick += new System.EventHandler(this.AnimTimer_Tick);
             // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(3, 59);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(13, 13);
-            this.label22.TabIndex = 3;
-            this.label22.Text = "d";
-            // 
-            // nx_label
-            // 
-            this.nx_label.AutoSize = true;
-            this.nx_label.Location = new System.Drawing.Point(198, 135);
-            this.nx_label.Name = "nx_label";
-            this.nx_label.Size = new System.Drawing.Size(14, 13);
-            this.nx_label.TabIndex = 3;
-            this.nx_label.Text = "X";
-            // 
-            // Width_label
-            // 
-            this.Width_label.AutoSize = true;
-            this.Width_label.Location = new System.Drawing.Point(198, 59);
-            this.Width_label.Name = "Width_label";
-            this.Width_label.Size = new System.Drawing.Size(13, 13);
-            this.Width_label.TabIndex = 3;
-            this.Width_label.Text = "d";
-            // 
-            // ny_label
-            // 
-            this.ny_label.AutoSize = true;
-            this.ny_label.Location = new System.Drawing.Point(198, 184);
-            this.ny_label.Name = "ny_label";
-            this.ny_label.Size = new System.Drawing.Size(14, 13);
-            this.ny_label.TabIndex = 3;
-            this.ny_label.Text = "Y";
-            // 
-            // Lambda_label
-            // 
-            this.Lambda_label.AutoSize = true;
-            this.Lambda_label.Location = new System.Drawing.Point(11, 194);
-            this.Lambda_label.Name = "Lambda_label";
-            this.Lambda_label.Size = new System.Drawing.Size(45, 13);
-            this.Lambda_label.TabIndex = 7;
-            this.Lambda_label.Text = "Lambda";
-            this.Lambda_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // Ex_label
-            // 
-            this.Ex_label.AutoSize = true;
-            this.Ex_label.Location = new System.Drawing.Point(67, 194);
-            this.Ex_label.Name = "Ex_label";
-            this.Ex_label.Size = new System.Drawing.Size(45, 13);
-            this.Ex_label.TabIndex = 7;
-            this.Ex_label.Text = "Lambda";
-            this.Ex_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // Ey_label
-            // 
-            this.Ey_label.AutoSize = true;
-            this.Ey_label.Location = new System.Drawing.Point(128, 194);
-            this.Ey_label.Name = "Ey_label";
-            this.Ey_label.Size = new System.Drawing.Size(45, 13);
-            this.Ey_label.TabIndex = 7;
-            this.Ey_label.Text = "Lambda";
-            this.Ey_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DeltaPhaze_label
-            // 
-            this.DeltaPhaze_label.AutoSize = true;
-            this.DeltaPhaze_label.Location = new System.Drawing.Point(189, 194);
-            this.DeltaPhaze_label.Name = "DeltaPhaze_label";
-            this.DeltaPhaze_label.Size = new System.Drawing.Size(28, 13);
-            this.DeltaPhaze_label.TabIndex = 7;
-            this.DeltaPhaze_label.Text = "dPhi";
-            this.DeltaPhaze_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -938,13 +938,13 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Timer AnimTimer;
-        private System.Windows.Forms.Label ny_label;
+        private System.Windows.Forms.Label nz_label;
         private System.Windows.Forms.Label Width_label;
-        private System.Windows.Forms.Label nx_label;
+        private System.Windows.Forms.Label ny_label;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label DeltaPhaze_label;
+        private System.Windows.Forms.Label Ez_label;
         private System.Windows.Forms.Label Ey_label;
-        private System.Windows.Forms.Label Ex_label;
         private System.Windows.Forms.Label Lambda_label;
     }
 }
