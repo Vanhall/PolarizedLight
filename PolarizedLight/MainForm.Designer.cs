@@ -430,9 +430,9 @@
             // 
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Palette;
-            this.pictureBox2.Location = new System.Drawing.Point(27, 44);
+            this.pictureBox2.Location = new System.Drawing.Point(31, 44);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(22, 134);
+            this.pictureBox2.Size = new System.Drawing.Size(11, 134);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 13;
             this.pictureBox2.TabStop = false;
@@ -440,7 +440,7 @@
             // DeltaPhase_slider
             // 
             this.DeltaPhase_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.DeltaPhase_slider.Location = new System.Drawing.Point(6, 32);
+            this.DeltaPhase_slider.Location = new System.Drawing.Point(10, 32);
             this.DeltaPhase_slider.Maximum = 100;
             this.DeltaPhase_slider.Name = "DeltaPhase_slider";
             this.DeltaPhase_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
