@@ -58,9 +58,7 @@ namespace PolarizedLight
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
 
 
-            Gl.glDisable(Gl.GL_LIGHTING);
             testWave.render();
-            Gl.glEnable(Gl.GL_LIGHTING);
 
             Gl.glPushMatrix();
             Gl.glRotatef(r, 0.0f, 0.0f, 1.0f);
