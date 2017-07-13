@@ -58,20 +58,20 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.ny_slider = new System.Windows.Forms.TrackBar();
+            this.nz_slider = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
-            this.nx_slider = new System.Windows.Forms.TrackBar();
+            this.ny_slider = new System.Windows.Forms.TrackBar();
             this.CrystalChoice_dropdown = new System.Windows.Forms.ComboBox();
             this.LightTab = new System.Windows.Forms.TabPage();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.Lambda_slider = new System.Windows.Forms.TrackBar();
             this.DeltaPhase_slider = new System.Windows.Forms.TrackBar();
-            this.WaveLen_slider = new System.Windows.Forms.TrackBar();
             this.label9 = new System.Windows.Forms.Label();
+            this.Ez_slider = new System.Windows.Forms.TrackBar();
             this.Ey_slider = new System.Windows.Forms.TrackBar();
-            this.Ex_slider = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.DeltaPhaze_label = new System.Windows.Forms.Label();
+            this.DeltaPhase_label = new System.Windows.Forms.Label();
             this.Ez_label = new System.Windows.Forms.Label();
             this.Ey_label = new System.Windows.Forms.Label();
             this.Lambda_label = new System.Windows.Forms.Label();
@@ -105,14 +105,14 @@
             this.ExpSetupTabs.SuspendLayout();
             this.CrystalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Width_slider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nz_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nx_slider)).BeginInit();
             this.LightTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Lambda_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WaveLen_slider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ez_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ey_slider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Ex_slider)).BeginInit();
             this.DisplayTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -328,9 +328,9 @@
             this.CrystalTab.Controls.Add(this.label22);
             this.CrystalTab.Controls.Add(this.label2);
             this.CrystalTab.Controls.Add(this.label4);
-            this.CrystalTab.Controls.Add(this.ny_slider);
+            this.CrystalTab.Controls.Add(this.nz_slider);
             this.CrystalTab.Controls.Add(this.label1);
-            this.CrystalTab.Controls.Add(this.nx_slider);
+            this.CrystalTab.Controls.Add(this.ny_slider);
             this.CrystalTab.Controls.Add(this.CrystalChoice_dropdown);
             this.CrystalTab.Location = new System.Drawing.Point(4, 22);
             this.CrystalTab.Name = "CrystalTab";
@@ -344,10 +344,15 @@
             // 
             this.Width_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Width_slider.Location = new System.Drawing.Point(22, 43);
+            this.Width_slider.Maximum = 100;
+            this.Width_slider.Minimum = 1;
             this.Width_slider.Name = "Width_slider";
             this.Width_slider.Size = new System.Drawing.Size(172, 45);
             this.Width_slider.TabIndex = 1;
+            this.Width_slider.TickFrequency = 0;
             this.Width_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.Width_slider.Value = 1;
+            this.Width_slider.Scroll += new System.EventHandler(this.Width_slider_Scroll);
             // 
             // nz_label
             // 
@@ -412,14 +417,19 @@
             this.label4.TabIndex = 2;
             this.label4.Text = "Толщина:";
             // 
-            // ny_slider
+            // nz_slider
             // 
-            this.ny_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ny_slider.Location = new System.Drawing.Point(23, 168);
-            this.ny_slider.Name = "ny_slider";
-            this.ny_slider.Size = new System.Drawing.Size(171, 45);
-            this.ny_slider.TabIndex = 1;
-            this.ny_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.nz_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.nz_slider.Location = new System.Drawing.Point(23, 168);
+            this.nz_slider.Maximum = 2471;
+            this.nz_slider.Minimum = 1000;
+            this.nz_slider.Name = "nz_slider";
+            this.nz_slider.Size = new System.Drawing.Size(171, 45);
+            this.nz_slider.TabIndex = 1;
+            this.nz_slider.TickFrequency = 0;
+            this.nz_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.nz_slider.Value = 1000;
+            this.nz_slider.Scroll += new System.EventHandler(this.nz_slider_Scroll);
             // 
             // label1
             // 
@@ -430,14 +440,19 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Коэффициенты преломления по осям:";
             // 
-            // nx_slider
+            // ny_slider
             // 
-            this.nx_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.nx_slider.Location = new System.Drawing.Point(23, 119);
-            this.nx_slider.Name = "nx_slider";
-            this.nx_slider.Size = new System.Drawing.Size(171, 45);
-            this.nx_slider.TabIndex = 1;
-            this.nx_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.ny_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ny_slider.Location = new System.Drawing.Point(23, 119);
+            this.ny_slider.Maximum = 2471;
+            this.ny_slider.Minimum = 1000;
+            this.ny_slider.Name = "ny_slider";
+            this.ny_slider.Size = new System.Drawing.Size(171, 45);
+            this.ny_slider.TabIndex = 1;
+            this.ny_slider.TickFrequency = 0;
+            this.ny_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.ny_slider.Value = 1000;
+            this.ny_slider.Scroll += new System.EventHandler(this.ny_slider_Scroll);
             // 
             // CrystalChoice_dropdown
             // 
@@ -453,18 +468,19 @@
             this.CrystalChoice_dropdown.Name = "CrystalChoice_dropdown";
             this.CrystalChoice_dropdown.Size = new System.Drawing.Size(236, 21);
             this.CrystalChoice_dropdown.TabIndex = 0;
+            this.CrystalChoice_dropdown.SelectedIndexChanged += new System.EventHandler(this.CrystalChoice_dropdown_SelectedIndexChanged);
             // 
             // LightTab
             // 
             this.LightTab.Controls.Add(this.pictureBox2);
+            this.LightTab.Controls.Add(this.Lambda_slider);
             this.LightTab.Controls.Add(this.DeltaPhase_slider);
-            this.LightTab.Controls.Add(this.WaveLen_slider);
             this.LightTab.Controls.Add(this.label9);
+            this.LightTab.Controls.Add(this.Ez_slider);
             this.LightTab.Controls.Add(this.Ey_slider);
-            this.LightTab.Controls.Add(this.Ex_slider);
             this.LightTab.Controls.Add(this.label5);
             this.LightTab.Controls.Add(this.label6);
-            this.LightTab.Controls.Add(this.DeltaPhaze_label);
+            this.LightTab.Controls.Add(this.DeltaPhase_label);
             this.LightTab.Controls.Add(this.Ez_label);
             this.LightTab.Controls.Add(this.Ey_label);
             this.LightTab.Controls.Add(this.Lambda_label);
@@ -489,25 +505,32 @@
             this.pictureBox2.TabIndex = 13;
             this.pictureBox2.TabStop = false;
             // 
+            // Lambda_slider
+            // 
+            this.Lambda_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Lambda_slider.Location = new System.Drawing.Point(10, 32);
+            this.Lambda_slider.Maximum = 780;
+            this.Lambda_slider.Minimum = 380;
+            this.Lambda_slider.Name = "Lambda_slider";
+            this.Lambda_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.Lambda_slider.Size = new System.Drawing.Size(45, 159);
+            this.Lambda_slider.TabIndex = 11;
+            this.Lambda_slider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.Lambda_slider.Value = 380;
+            this.Lambda_slider.Scroll += new System.EventHandler(this.Lambda_slider_Scroll);
+            // 
             // DeltaPhase_slider
             // 
             this.DeltaPhase_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.DeltaPhase_slider.Location = new System.Drawing.Point(10, 32);
-            this.DeltaPhase_slider.Maximum = 100;
+            this.DeltaPhase_slider.Location = new System.Drawing.Point(189, 32);
+            this.DeltaPhase_slider.Maximum = 200;
             this.DeltaPhase_slider.Name = "DeltaPhase_slider";
             this.DeltaPhase_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.DeltaPhase_slider.Size = new System.Drawing.Size(45, 159);
-            this.DeltaPhase_slider.TabIndex = 11;
-            // 
-            // WaveLen_slider
-            // 
-            this.WaveLen_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.WaveLen_slider.Location = new System.Drawing.Point(189, 32);
-            this.WaveLen_slider.Name = "WaveLen_slider";
-            this.WaveLen_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.WaveLen_slider.Size = new System.Drawing.Size(45, 159);
-            this.WaveLen_slider.TabIndex = 4;
-            this.WaveLen_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.DeltaPhase_slider.TabIndex = 4;
+            this.DeltaPhase_slider.TickFrequency = 100;
+            this.DeltaPhase_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.DeltaPhase_slider.Scroll += new System.EventHandler(this.DeltaPhase_slider_Scroll);
             // 
             // label9
             // 
@@ -519,25 +542,31 @@
             this.label9.Text = "Разность\r\nфаз:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // Ez_slider
+            // 
+            this.Ez_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Ez_slider.Location = new System.Drawing.Point(128, 32);
+            this.Ez_slider.Minimum = 1;
+            this.Ez_slider.Name = "Ez_slider";
+            this.Ez_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.Ez_slider.Size = new System.Drawing.Size(45, 159);
+            this.Ez_slider.TabIndex = 5;
+            this.Ez_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.Ez_slider.Value = 1;
+            this.Ez_slider.Scroll += new System.EventHandler(this.Ez_slider_Scroll);
+            // 
             // Ey_slider
             // 
             this.Ey_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Ey_slider.Location = new System.Drawing.Point(128, 32);
+            this.Ey_slider.Location = new System.Drawing.Point(67, 32);
+            this.Ey_slider.Minimum = 1;
             this.Ey_slider.Name = "Ey_slider";
             this.Ey_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Ey_slider.Size = new System.Drawing.Size(45, 159);
-            this.Ey_slider.TabIndex = 5;
+            this.Ey_slider.TabIndex = 6;
             this.Ey_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
-            // 
-            // Ex_slider
-            // 
-            this.Ex_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Ex_slider.Location = new System.Drawing.Point(67, 32);
-            this.Ex_slider.Name = "Ex_slider";
-            this.Ex_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.Ex_slider.Size = new System.Drawing.Size(45, 159);
-            this.Ex_slider.TabIndex = 6;
-            this.Ex_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.Ey_slider.Value = 1;
+            this.Ey_slider.Scroll += new System.EventHandler(this.Ey_slider_Scroll);
             // 
             // label5
             // 
@@ -557,15 +586,15 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "Y";
             // 
-            // DeltaPhaze_label
+            // DeltaPhase_label
             // 
-            this.DeltaPhaze_label.AutoSize = true;
-            this.DeltaPhaze_label.Location = new System.Drawing.Point(197, 194);
-            this.DeltaPhaze_label.Name = "DeltaPhaze_label";
-            this.DeltaPhaze_label.Size = new System.Drawing.Size(28, 13);
-            this.DeltaPhaze_label.TabIndex = 7;
-            this.DeltaPhaze_label.Text = "dPhi";
-            this.DeltaPhaze_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.DeltaPhase_label.AutoSize = true;
+            this.DeltaPhase_label.Location = new System.Drawing.Point(197, 194);
+            this.DeltaPhase_label.Name = "DeltaPhase_label";
+            this.DeltaPhase_label.Size = new System.Drawing.Size(28, 13);
+            this.DeltaPhase_label.TabIndex = 7;
+            this.DeltaPhase_label.Text = "dPhi";
+            this.DeltaPhase_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Ez_label
             // 
@@ -772,14 +801,15 @@
             // SettingsMenuStripItem
             // 
             this.SettingsMenuStripItem.Name = "SettingsMenuStripItem";
-            this.SettingsMenuStripItem.Size = new System.Drawing.Size(134, 22);
+            this.SettingsMenuStripItem.Size = new System.Drawing.Size(152, 22);
             this.SettingsMenuStripItem.Text = "Настройки";
             // 
             // ExitMenuStripItem
             // 
             this.ExitMenuStripItem.Name = "ExitMenuStripItem";
-            this.ExitMenuStripItem.Size = new System.Drawing.Size(134, 22);
+            this.ExitMenuStripItem.Size = new System.Drawing.Size(152, 22);
             this.ExitMenuStripItem.Text = "Выход";
+            this.ExitMenuStripItem.Click += new System.EventHandler(this.ExitMenuStripItem_Click);
             // 
             // HelpMenuStripItem
             // 
@@ -853,15 +883,15 @@
             this.CrystalTab.ResumeLayout(false);
             this.CrystalTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Width_slider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nz_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nx_slider)).EndInit();
             this.LightTab.ResumeLayout(false);
             this.LightTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Lambda_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WaveLen_slider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ez_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ey_slider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Ex_slider)).EndInit();
             this.DisplayTab.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -888,22 +918,22 @@
         private System.Windows.Forms.TabPage CrystalTab;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TrackBar ny_slider;
+        private System.Windows.Forms.TrackBar nz_slider;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TrackBar nx_slider;
+        private System.Windows.Forms.TrackBar ny_slider;
         private System.Windows.Forms.ComboBox CrystalChoice_dropdown;
         private System.Windows.Forms.TabPage LightTab;
         private System.Windows.Forms.TrackBar Width_slider;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TrackBar DeltaPhase_slider;
+        private System.Windows.Forms.TrackBar Lambda_slider;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TrackBar WaveLen_slider;
+        private System.Windows.Forms.TrackBar DeltaPhase_slider;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TrackBar Ey_slider;
+        private System.Windows.Forms.TrackBar Ez_slider;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TrackBar Ex_slider;
+        private System.Windows.Forms.TrackBar Ey_slider;
         private System.Windows.Forms.TabPage DisplayTab;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox DrawY_chbox;
@@ -942,7 +972,7 @@
         private System.Windows.Forms.Label Width_label;
         private System.Windows.Forms.Label ny_label;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label DeltaPhaze_label;
+        private System.Windows.Forms.Label DeltaPhase_label;
         private System.Windows.Forms.Label Ez_label;
         private System.Windows.Forms.Label Ey_label;
         private System.Windows.Forms.Label Lambda_label;
