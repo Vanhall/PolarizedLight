@@ -12,16 +12,15 @@ namespace PolarizedLight
         // Указатели на буферы вершин и нормалей
         private int[] VBOPtr = new int[1];
         private int[] TexPtr = new int[1];
-        private Bitmap bmp;
-        private byte[] b;
+        //private Bitmap bmp;
+        //private byte[] b;
         private int VertexCount = 0;    // счетчик вершин
         
         // Конструктор
         public Model(string name)
         {
-            bmp = new Bitmap(name + ".bmp");
-            b = ToByte(bmp);
-            bmp.Dispose();
+            Bitmap bmp = new Bitmap(name + ".bmp");
+            byte[] b = ToByte(bmp);
 
             #region парсер файлов .obj
             // Списки для записи информации из файла
@@ -106,8 +105,10 @@ namespace PolarizedLight
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 3, 512, 512, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, b);
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGB, bmp.Width, bmp.Height, 0, Gl.GL_RGB, Gl.GL_UNSIGNED_BYTE, b);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
+            
+            bmp.Dispose();
         }
 
         // Функция отрисовки модели
@@ -135,19 +136,19 @@ namespace PolarizedLight
 
         public byte[] ToByte(Bitmap bmp)
         {
-            int size = bmp.Height * bmp.Width * 4;
+            int size = bmp.Height * bmp.Width * 3;
             byte[] pArray = new byte[size];
 
             for (int i = 0; i < bmp.Width; i++)
             {
                 for (int j = 0; j < bmp.Height; j++)
                 {
-                    int k = (j * bmp.Width + i) * 4;
+                    int k = (j * bmp.Width + i) * 3;
 
                     pArray[k] = bmp.GetPixel(i, j).R;
                     pArray[k + 1] = bmp.GetPixel(i, j).G;
                     pArray[k + 2] = bmp.GetPixel(i, j).B;
-                    pArray[k + 3] = bmp.GetPixel(i, j).A;
+                    //pArray[k + 3] = bmp.GetPixel(i, j).A;
                 }
             }
 
