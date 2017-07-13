@@ -1,7 +1,6 @@
 ﻿using System;
 //using System.Reflection;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.IO;
 using Tao.OpenGl;
@@ -13,12 +12,17 @@ namespace PolarizedLight
         // Указатели на буферы вершин и нормалей
         private int[] VBOPtr = new int[1];
         private int[] TexPtr = new int[1];
-        private Bitmap testtex;
+        private Bitmap bmp;
+        private byte[] b;
         private int VertexCount = 0;    // счетчик вершин
         
         // Конструктор
         public Model(string name)
         {
+            bmp = new Bitmap(name + ".bmp");
+            b = ToByte(bmp);
+            bmp.Dispose();
+
             #region парсер файлов .obj
             // Списки для записи информации из файла
             List<float> VertexCoords = new List<float>();
@@ -31,7 +35,7 @@ namespace PolarizedLight
             // Читаем файл
             //var assembly = Assembly.GetExecutingAssembly();
             //Stream stream = assembly.GetManifestResourceStream(name);
-            StreamReader reader = new StreamReader(name);
+            StreamReader reader = new StreamReader(name + ".obj");
 
             string content;
             var fltFormat = System.Globalization.CultureInfo.InvariantCulture;
@@ -97,32 +101,18 @@ namespace PolarizedLight
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(VBO.Length * sizeof(float)), VBO, Gl.GL_STATIC_DRAW);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
-            //testtex = new Bitmap("Models/testtex.jpg");
-            //var stream = new MemoryStream();
-            //testtex.Save(stream, ImageFormat.Jpeg);
-            //byte[] tex = stream.ToArray();
-            //BitmapData tex = testtex.LockBits(new Rectangle(0, 0, testtex.Width, testtex.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            byte[] tex = new byte[64 * 64 * 3];
-            Random r = new Random();
-            for (int i = 0; i < 64 * 64; i++)
-            {
-                tex[i * 3 + 0] = (byte)r.Next(0, 255);
-                tex[i * 3 + 1] = (byte)r.Next(0, 255);
-                tex[i * 3 + 2] = (byte)r.Next(0, 255);
-            }
-            
+
             Gl.glGenTextures(1, TexPtr);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 3, 64, 64, 0, Gl.GL_RGB, Gl.GL_UNSIGNED_BYTE, tex);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, 3, 512, 512, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, b);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
-
-            //testtex.UnlockBits(tex);
         }
 
         // Функция отрисовки модели
         public void render()
         {
-            // Подключаем ранее созданный буфер вершин
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
 
@@ -141,6 +131,27 @@ namespace PolarizedLight
             Gl.glDisableClientState(Gl.GL_VERTEX_ARRAY);
             Gl.glDisableClientState(Gl.GL_NORMAL_ARRAY);
             Gl.glDisableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
+        }
+
+        public byte[] ToByte(Bitmap bmp)
+        {
+            int size = bmp.Height * bmp.Width * 4;
+            byte[] pArray = new byte[size];
+
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    int k = (j * bmp.Width + i) * 4;
+
+                    pArray[k] = bmp.GetPixel(i, j).R;
+                    pArray[k + 1] = bmp.GetPixel(i, j).G;
+                    pArray[k + 2] = bmp.GetPixel(i, j).B;
+                    pArray[k + 3] = bmp.GetPixel(i, j).A;
+                }
+            }
+
+            return pArray;
         }
     }
 }

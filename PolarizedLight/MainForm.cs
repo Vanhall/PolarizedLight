@@ -25,6 +25,7 @@ namespace PolarizedLight
         private void AnimTimer_Tick(object sender, EventArgs e)
         {
             scene.render();
+            scene.r += 1.0f;
         }
 
         private void ButtonStart_Click(object sender, EventArgs e)
@@ -35,6 +36,7 @@ namespace PolarizedLight
         private void ButtonStop_Click(object sender, EventArgs e)
         {
             AnimTimer.Stop();
+            scene.r = 0.0f;
             scene.render();
         }
 
