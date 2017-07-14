@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace PolarizedLight
@@ -14,6 +15,7 @@ namespace PolarizedLight
         private int Ey = 1;
         private int Ez = 1;
         private float DeltaPhase = 0.0f;
+        Stopwatch Timer = new Stopwatch();
 
         public MainForm()
         {
@@ -43,6 +45,7 @@ namespace PolarizedLight
         {
             scene.render();
             scene.r += 1.0f;
+            scene.testWave.t = Timer.ElapsedMilliseconds/250.0;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -54,6 +57,7 @@ namespace PolarizedLight
         private void ButtonStart_Click(object sender, EventArgs e)
         {
             AnimTimer.Start();
+            Timer.Start();
         }
 
         private void ButtonStop_Click(object sender, EventArgs e)
@@ -61,6 +65,8 @@ namespace PolarizedLight
             AnimTimer.Stop();
             scene.r = 0.0f;
             scene.render();
+            Timer.Stop();
+            Timer.Reset();
         }
         #endregion
 

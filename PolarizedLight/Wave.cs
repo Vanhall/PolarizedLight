@@ -7,43 +7,45 @@ namespace PolarizedLight
     {
         private int[] VBOPtr = new int[3];
         private int VertexCount;
-        private double X0 = -15.0, Xf = 15.0;
-        private double Lambda = 3.0, DeltaPhi = Math.PI/4.0, Step = 0.2;
+        private double X0 = -15.0, Length = 30.0;
+        private float Ey=2.0f, Ez=2.0f;
+        private double Lambda = 3.0, DeltaPhi = Math.PI/2.0, Step = 0.2;
+        private float[] SumVBO, YVBO, ZVBO;
+        int steps;
+        public double t = 0.0;
 
         public Wave()
         {
-            int steps = (int)((Xf - X0)/Step);
-            float[] SumVBO = new float[steps * 3];
-            float[] YVBO = new float[steps * 3];
-            float[] ZVBO = new float[steps * 3];
+            steps = (int)(Length/Step);
+            SumVBO = new float[steps * 3];
+            YVBO = new float[steps * 3];
+            ZVBO = new float[steps * 3];
             VertexCount = steps;
-            for(int i = 0; i<steps; i++)
-            {
-                SumVBO[i * 3] = (float)(X0 + i  *Step);
-                YVBO[i * 3] = (float)(X0 + i * Step);
-                ZVBO[i * 3] = (float)(X0 + i * Step);
-
-                SumVBO[i * 3 + 1] = 2.0f * (float)Math.Cos(X0 + i * Step);
-                YVBO[i * 3 + 1] = 2.0f * (float)Math.Cos(X0 + i * Step);
-                ZVBO[i * 3 + 1] = 0.0f;
-
-                SumVBO[i * 3 + 2] = 2.0f * (float)Math.Cos(X0 + i * Step + DeltaPhi);
-                YVBO[i * 3 + 2] = 0.0f;
-                ZVBO[i * 3 + 2] = 2.0f * (float)Math.Cos(X0 + i * Step + DeltaPhi);
-            }
             Gl.glGenBuffers(3, VBOPtr);
-            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
-            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(SumVBO.Length * sizeof(float)), SumVBO, Gl.GL_STATIC_DRAW);
-            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[1]);
-            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(YVBO.Length * sizeof(float)), YVBO, Gl.GL_STATIC_DRAW);
-            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[2]);
-            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(ZVBO.Length * sizeof(float)), ZVBO, Gl.GL_STATIC_DRAW);
-            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
             Gl.glLineWidth(2.0f);
         }
 
         public void render()
         {
+            for (int i = 0; i < steps; i++)
+            {
+                int i_offset = i * 3;
+                float X = (float)(X0 + i * Step);
+                SumVBO[i_offset] = X;
+                YVBO[i_offset] = X;
+                ZVBO[i_offset] = X;
+
+                float Y = (float)Math.Cos(X0 + i * Step + t);
+                SumVBO[i_offset + 1] = Ey * Y;
+                YVBO[i_offset + 1] = Ey * Y;
+                ZVBO[i_offset + 1] = 0.0f;
+
+                float Z = (float)Math.Cos(X0 + i * Step + DeltaPhi + t);
+                SumVBO[i_offset + 2] = Ez * Z;
+                YVBO[i_offset + 2] = 0.0f;
+                ZVBO[i_offset + 2] = Ez * Z;
+            }
+
             Gl.glDisable(Gl.GL_LIGHTING);
             Gl.glDisable(Gl.GL_TEXTURE_2D);
 
@@ -51,16 +53,19 @@ namespace PolarizedLight
 
             Gl.glColor3f(1.0f, 1.0f, 0.0f);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(SumVBO.Length * sizeof(float)), SumVBO, Gl.GL_DYNAMIC_DRAW);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
             Gl.glDrawArrays(Gl.GL_LINE_STRIP, 0, VertexCount);
 
             Gl.glColor3f(1.0f, 0.0f, 1.0f);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[1]);
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(YVBO.Length * sizeof(float)), YVBO, Gl.GL_DYNAMIC_DRAW);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
             Gl.glDrawArrays(Gl.GL_LINE_STRIP, 0, VertexCount);
 
             Gl.glColor3f(0.0f, 1.0f, 1.0f);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[2]);
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(ZVBO.Length * sizeof(float)), ZVBO, Gl.GL_DYNAMIC_DRAW);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
             Gl.glDrawArrays(Gl.GL_LINE_STRIP, 0, VertexCount);
 

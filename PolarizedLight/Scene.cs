@@ -11,7 +11,7 @@ namespace PolarizedLight
         private const double FOV = 45, zNear = 0.1, zFar = 200;
 
         private Model testModel, testModel2;
-        private Wave testWave;
+        public Wave testWave;
         private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
         public float r = 0.0f;
 
