@@ -45,7 +45,10 @@ namespace PolarizedLight
         {
             scene.render();
             scene.r += 1.0f;
-            scene.testWave.t = Timer.ElapsedMilliseconds/250.0;
+            double time = Timer.ElapsedMilliseconds / 1000.0;
+            scene.wave1.t = time;
+            scene.wave2.t = time;
+            scene.wave3.t = time;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
