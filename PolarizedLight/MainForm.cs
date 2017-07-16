@@ -195,7 +195,7 @@ namespace PolarizedLight
         }
         #endregion
 
-        #region Вкладка"Источник света"
+        #region Вкладка "Источник света"
         private void Ey_slider_Scroll(object sender, EventArgs e)
         {
             Ey = Ey_slider.Value;
@@ -222,11 +222,77 @@ namespace PolarizedLight
         }
         #endregion
 
+        #region Вкладка "Отображение"
+        private void DrawSumm_chbox_CheckedChanged(object sender, EventArgs e)
+        {
+            scene.wave1.Draw.Sum = DrawSumm_chbox.Checked;
+            scene.wave2.Draw.Sum = DrawSumm_chbox.Checked;
+            scene.wave3.Draw.Sum = DrawSumm_chbox.Checked;
+        }
+
+        private void DrawZ_chbox_CheckedChanged(object sender, EventArgs e)
+        {
+            scene.wave1.Draw.Z = DrawZ_chbox.Checked;
+            scene.wave2.Draw.Z = DrawZ_chbox.Checked;
+            scene.wave3.Draw.Z = DrawZ_chbox.Checked;
+        }
+
+        private void DrawY_chbox_CheckedChanged(object sender, EventArgs e)
+        {
+            scene.wave1.Draw.Y = DrawY_chbox.Checked;
+            scene.wave2.Draw.Y = DrawY_chbox.Checked;
+            scene.wave3.Draw.Y = DrawY_chbox.Checked;
+        }
+
+        private void DrawBoth_radio_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DrawBoth_radio.Checked)
+            {
+                scene.wave1.Draw.OutLine = true;
+                scene.wave2.Draw.OutLine = true;
+                scene.wave3.Draw.OutLine = true;
+
+                scene.wave1.Draw.Vectors = true;
+                scene.wave2.Draw.Vectors = true;
+                scene.wave3.Draw.Vectors = true;
+            }
+        }
+
+        private void DrawOutline_radio_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DrawOutline_radio.Checked)
+            {
+                scene.wave1.Draw.OutLine = true;
+                scene.wave2.Draw.OutLine = true;
+                scene.wave3.Draw.OutLine = true;
+
+                scene.wave1.Draw.Vectors = false;
+                scene.wave2.Draw.Vectors = false;
+                scene.wave3.Draw.Vectors = false;
+            }
+        }
+
+        private void DrawVec_radio_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DrawVec_radio.Checked)
+            {
+                scene.wave1.Draw.OutLine = false;
+                scene.wave2.Draw.OutLine = false;
+                scene.wave3.Draw.OutLine = false;
+
+                scene.wave1.Draw.Vectors = true;
+                scene.wave2.Draw.Vectors = true;
+                scene.wave3.Draw.Vectors = true;
+            }
+        }
+        #endregion
+
         #region Меню
         private void ExitMenuStripItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
         #endregion
+
     }
 }
