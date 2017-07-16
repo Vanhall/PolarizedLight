@@ -13,7 +13,7 @@ namespace PolarizedLight
         // Начальная координата и ОБЩАЯ длина волны
         private double X0, Length;
         private float Ey, Ez;                       // Амплитуды
-        public double ny, nz, nyz;                 // Коэф-ты преломления
+        private double ny, nz, nyz;                 // Коэф-ты преломления
         // Длина волны, нач. фаза по Z, разность фаз
         private double Lambda, Phi0Y, Phi0Z;
         private const double c = 6.0;                 // Скорость света
@@ -21,24 +21,7 @@ namespace PolarizedLight
         public double t = 0.0;                      // Время
 
         #region конструкторы
-        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double _X0, double _Length)
-        {
-            Lambda = WaveLen;
-            Ey = E_y; Ez = E_z;
-            ny = 1.0; nz = 1.0;
-            X0 = _X0; Length = _Length;
-
-            steps = (int)(Length/GridStep);
-            SumVBO = new float[steps * 3 + 3];
-            YVBO = new float[steps * 3 + 3];
-            ZVBO = new float[steps * 3 + 3];
-            Gl.glGenBuffers(3, VBOPtr);
-
-            P = 2.0 * Math.PI / Lambda;
-            Phi0Y = - P * (- ny * X0);
-            Phi0Z = DPhi + Phi0Y;
-        }
-
+        // Конструктор начального сегмента волны
         public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
         {
             Lambda = WaveLen;
@@ -56,9 +39,29 @@ namespace PolarizedLight
             Phi0Y = -P * (-ny * X0);
             Phi0Z = DPhi + Phi0Y;
         }
+
+        // Конструктор последующего сегмента волны
+        // Передаем предыдущий сегмент и новые ny, nz
+        public Wave(Wave W, double n_y, double n_z, double _Length)
+        {
+            Lambda = W.Lambda;
+            Ey = W.Ey; Ez = W.Ez;
+            ny = n_y; nz = n_z;
+            X0 = W.X0 + W.Length; Length = _Length;
+
+            steps = (int)(Length / GridStep);
+            SumVBO = new float[steps * 3 + 3];
+            YVBO = new float[steps * 3 + 3];
+            ZVBO = new float[steps * 3 + 3];
+            Gl.glGenBuffers(3, VBOPtr);
+
+            P = 2.0 * Math.PI / Lambda;
+            Phi0Y = W.GetEndPhi0Y() + P * (ny * X0);
+            Phi0Z = W.GetEndPhi0Z() + P * (nz * X0);
+        }
         #endregion
-        
-        
+
+
         private double GetEndPhi0Y()
         {
             return P * ( - ny * (X0 + Length)) + Phi0Y;
@@ -69,12 +72,6 @@ namespace PolarizedLight
             return P * ( - nz * (X0 + Length)) + Phi0Z;
         }
         
-        public void link(Wave w)
-        {
-            Phi0Y = w.GetEndPhi0Y() + P * (ny * X0);
-            Phi0Z = w.GetEndPhi0Z() + P * (nz * X0);
-        }
-
         public void render()
         {
             double X; float Y; float Z; int i_offset;
@@ -90,8 +87,7 @@ namespace PolarizedLight
                 SumVBO[i_offset + 1] = Y;
                 YVBO[i_offset + 1] = Y;
                 ZVBO[i_offset + 1] = 0.0f;
-
-                //if (!no_nyz) DeltaPhi = P * X * nyz + Phi0Y;
+                
                 Z = Ez * (float)Math.Cos(P * (c * t - nz * X) + Phi0Z);
                 SumVBO[i_offset + 2] = Z;
                 YVBO[i_offset + 2] = 0.0f;
@@ -108,8 +104,7 @@ namespace PolarizedLight
             SumVBO[i_offset + 1] = Y;
             YVBO[i_offset + 1] = Y;
             ZVBO[i_offset + 1] = 0.0f;
-
-            //if (!no_nyz) DeltaPhi = P * X * nyz + Phi0Y;
+            
             Z = Ez * (float)Math.Cos(P * (c * t - nz * X) + Phi0Z);
             SumVBO[i_offset + 2] = Z;
             YVBO[i_offset + 2] = 0.0f;
