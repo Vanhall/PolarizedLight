@@ -38,10 +38,13 @@ namespace PolarizedLight
             axies = new Axies();
             testModel = new Model("Models/testcube");
             testModel2 = new Model("Models/testcyl");
-            wave1 = new Wave(7.8, 0.0, 2.0f, 2.0f, -15.0, 10.0);
-            wave2 = new Wave(7.8, wave1.GetEndDeltaPhi(), 2.0f, 2.0f, 1.5, 2.0, -5.0, 10.0);
-            wave3 = new Wave(7.8, wave2.GetEndDeltaPhi(), 2.0f, 2.0f, 5.0, 10.0);
+            wave1 = new Wave(3.8, Math.PI / 2.0, 2.0f, 2.0f, -15.0, 10.0);
+            wave2 = new Wave(3.8, 0.0, 2.0f, 2.0f, 2.5, 1.7, -5.0, 10.0);
+            wave3 = new Wave(3.8, 0.0, 2.0f, 2.0f, 5.0, 10.0);
             
+            wave2.link(wave1);
+            wave3.link(wave2);
+
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, light0Amb);

@@ -15,17 +15,15 @@ namespace PolarizedLight
         private float Ey, Ez;                       // Амплитуды
         public double ny, nz, nyz;                 // Коэф-ты преломления
         // Длина волны, нач. фаза по Z, разность фаз
-        private double Lambda, Phi0, DeltaPhi;
+        private double Lambda, Phi0Y, Phi0Z;
         private const double c = 6.0;                 // Скорость света
         private double P;                           // P = 2*Pi/Lambda
         public double t = 0.0;                      // Время
 
-        private bool no_nyz = true;                  // Нужно ли считать DeltaPhi
-
         #region конструкторы
-        public Wave(double WaveLen, double Phi0_Z, float E_y, float E_z, double _X0, double _Length)
+        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double _X0, double _Length)
         {
-            Lambda = WaveLen; Phi0 = Phi0_Z;
+            Lambda = WaveLen;
             Ey = E_y; Ez = E_z;
             ny = 1.0; nz = 1.0;
             X0 = _X0; Length = _Length;
@@ -37,13 +35,13 @@ namespace PolarizedLight
             Gl.glGenBuffers(3, VBOPtr);
 
             P = 2.0 * Math.PI / Lambda;
-            DeltaPhi = Phi0;
-            nyz = 0.0; no_nyz = true;
+            Phi0Y = - P * (- ny * X0);
+            Phi0Z = DPhi + Phi0Y;
         }
 
-        public Wave(double WaveLen, double Phi0_Z, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
+        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
         {
-            Lambda = WaveLen; Phi0 = Phi0_Z;
+            Lambda = WaveLen;
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
@@ -55,17 +53,28 @@ namespace PolarizedLight
             Gl.glGenBuffers(3, VBOPtr);
 
             P = 2.0 * Math.PI / Lambda;
-            DeltaPhi = Phi0;
-            nyz = ny - nz; no_nyz = false;
+            Phi0Y = -P * (-ny * X0);
+            Phi0Z = DPhi + Phi0Y;
         }
         #endregion
-
-        public double GetEndDeltaPhi()
+        
+        
+        private double GetEndPhi0Y()
         {
-            if (no_nyz) return Phi0;
-            else return P * (X0 + Length) * nyz + Phi0;
+            return P * ( - ny * (X0 + Length)) + Phi0Y;
+        }
+
+        private double GetEndPhi0Z()
+        {
+            return P * ( - nz * (X0 + Length)) + Phi0Z;
         }
         
+        public void link(Wave w)
+        {
+            Phi0Y = w.GetEndPhi0Y() + P * (ny * X0);
+            Phi0Z = w.GetEndPhi0Z() + P * (nz * X0);
+        }
+
         public void render()
         {
             double X; float Y; float Z; int i_offset;
@@ -77,13 +86,13 @@ namespace PolarizedLight
                 YVBO[i_offset] = (float)(X);
                 ZVBO[i_offset] = (float)(X);
 
-                Y = Ey * (float)Math.Cos(P * (c * t - ny * X));
+                Y = Ey * (float)Math.Cos(P * (c * t - ny * X) + Phi0Y);
                 SumVBO[i_offset + 1] = Y;
                 YVBO[i_offset + 1] = Y;
                 ZVBO[i_offset + 1] = 0.0f;
 
-                if (!no_nyz) DeltaPhi = P * X * nyz + Phi0;
-                Z = Ez * (float)Math.Cos(P * (c * t - nz * X) + DeltaPhi);
+                //if (!no_nyz) DeltaPhi = P * X * nyz + Phi0Y;
+                Z = Ez * (float)Math.Cos(P * (c * t - nz * X) + Phi0Z);
                 SumVBO[i_offset + 2] = Z;
                 YVBO[i_offset + 2] = 0.0f;
                 ZVBO[i_offset + 2] = Z;
@@ -95,13 +104,13 @@ namespace PolarizedLight
             YVBO[i_offset] = (float)(X);
             ZVBO[i_offset] = (float)(X);
 
-            Y = Ey * (float)Math.Cos(P * (c * t - ny * X));
+            Y = Ey * (float)Math.Cos(P * (c * t - ny * X) + Phi0Y);
             SumVBO[i_offset + 1] = Y;
             YVBO[i_offset + 1] = Y;
             ZVBO[i_offset + 1] = 0.0f;
 
-            if (!no_nyz) DeltaPhi = P * X * nyz + Phi0;
-            Z = Ez * (float)Math.Cos(P * (c * t - nz * X) + DeltaPhi);
+            //if (!no_nyz) DeltaPhi = P * X * nyz + Phi0Y;
+            Z = Ez * (float)Math.Cos(P * (c * t - nz * X) + Phi0Z);
             SumVBO[i_offset + 2] = Z;
             YVBO[i_offset + 2] = 0.0f;
             ZVBO[i_offset + 2] = Z;
