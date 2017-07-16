@@ -1,5 +1,5 @@
 ﻿using Tao.OpenGl;
-using System.IO;
+using System;
 using Tao.Platform.Windows;
 
 namespace PolarizedLight
@@ -9,7 +9,10 @@ namespace PolarizedLight
         private SimpleOpenGlControl GLVP;
         public Camera cam;
         private const double FOV = 45, zNear = 0.1, zFar = 200;
+
         private Model testModel, testModel2;
+        public Wave wave1, wave2, wave3;
+        private Axies axies;
         private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
         public float r = 0.0f;
 
@@ -32,8 +35,15 @@ namespace PolarizedLight
             Gl.glEnable(Gl.GL_CULL_FACE);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
 
+            axies = new Axies();
             testModel = new Model("Models/testcube");
             testModel2 = new Model("Models/testcyl");
+            wave1 = new Wave(3.8, Math.PI / 2.0, 2.0f, 2.0f, -15.0, 10.0);
+            wave2 = new Wave(3.8, 0.0, 2.0f, 2.0f, 2.5, 1.7, -5.0, 10.0);
+            wave3 = new Wave(3.8, 0.0, 2.0f, 2.0f, 5.0, 10.0);
+            
+            wave2.link(wave1);
+            wave3.link(wave2);
 
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
@@ -54,11 +64,18 @@ namespace PolarizedLight
             // ставим свет (нужно вызывать каждый раз, иначе будет двигаться вместе с камерой)
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
 
-            Gl.glPushMatrix();
-            Gl.glRotatef(r, 0.0f, 0.0f, 1.0f);
-            testModel.render();
-            testModel2.render();
-            Gl.glPopMatrix();
+
+            wave1.render();
+            wave2.render();
+            wave3.render();
+
+            axies.render();
+
+            //Gl.glPushMatrix();
+            //Gl.glRotatef(r, 0.0f, 0.0f, 1.0f);
+            //testModel.render();
+            //testModel2.render();
+            //Gl.glPopMatrix();
             
             // сообщаем OpenGL что закончили все дела и можно рисовать кадр
             Gl.glFlush();
