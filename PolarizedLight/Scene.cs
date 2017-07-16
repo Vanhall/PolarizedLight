@@ -38,7 +38,7 @@ namespace PolarizedLight
             axies = new Axies();
             testModel = new Model("Models/testcube");
             testModel2 = new Model("Models/testcyl");
-            wave1 = new Wave(3.8, 0.0, 2.0f, 2.0f, 1.0, 1.0, -15.0, 10.0);
+            wave1 = new Wave(7.8, 0.0, 2.0f, 2.0f, 1.0, 1.0, -15.0, 10.0);
             wave2 = new Wave(wave1, 1.658, 1.486, 10.0);
             wave3 = new Wave(wave2, 1.0, 1.0, 10.0);
             
