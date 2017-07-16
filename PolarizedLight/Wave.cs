@@ -12,21 +12,22 @@ namespace PolarizedLight
 
         // Начальная координата и ОБЩАЯ длина волны
         private double X0, Length;
-        private float Ey, Ez;                       // Амплитуды
+        public float Ey, Ez;                       // Амплитуды
         public double ny, nz, nyz;                 // Коэф-ты преломления
         // Длина волны, нач. фаза по Z, разность фаз
-        private double Lambda, Phi0Y, Phi0Z;
+        public double DPhi, Lambda, Phi0Y, Phi0Z;
         private const double c = 6.0;                 // Скорость света
         private double P;                           // P = 2*Pi/Lambda
         public double t = 0.0;                      // Время
 
         #region конструкторы
-        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double _X0, double _Length)
+        public Wave(double WaveLen, double D_Phi, float E_y, float E_z, double _X0, double _Length)
         {
             Lambda = WaveLen;
             Ey = E_y; Ez = E_z;
             ny = 1.0; nz = 1.0;
             X0 = _X0; Length = _Length;
+            DPhi = D_Phi;
 
             steps = (int)(Length/GridStep);
             SumVBO = new float[steps * 3 + 3];
@@ -39,12 +40,13 @@ namespace PolarizedLight
             Phi0Z = DPhi + Phi0Y;
         }
 
-        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
+        public Wave(double WaveLen, double D_Phi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
         {
             Lambda = WaveLen;
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
+            DPhi = D_Phi;
 
             steps = (int)(Length / GridStep);
             SumVBO = new float[steps * 3 + 3];
@@ -121,19 +123,19 @@ namespace PolarizedLight
             Gl.glLineWidth(2.0f);
             Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
 
-            Gl.glColor3f(1.0f, 1.0f, 0.0f);
+            Gl.glColor3f(1.0f, 0.0f, 1.0f);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(SumVBO.Length * sizeof(float)), SumVBO, Gl.GL_DYNAMIC_DRAW);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
             Gl.glDrawArrays(Gl.GL_LINE_STRIP, 0, steps + 1);
 
-            Gl.glColor3f(1.0f, 0.0f, 1.0f);
+            Gl.glColor3f(0.0f, 0.0f, 1.0f);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[1]);
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(YVBO.Length * sizeof(float)), YVBO, Gl.GL_DYNAMIC_DRAW);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
             Gl.glDrawArrays(Gl.GL_LINE_STRIP, 0, steps + 1);
 
-            Gl.glColor3f(0.0f, 1.0f, 1.0f);
+            Gl.glColor3f(1.0f, 0.0f, 0.0f);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[2]);
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(ZVBO.Length * sizeof(float)), ZVBO, Gl.GL_DYNAMIC_DRAW);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
