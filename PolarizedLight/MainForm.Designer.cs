@@ -265,7 +265,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::PolarizedLight.Properties.Resources.NSTU_Logo_blue;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 124);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(256, 149);
@@ -461,10 +461,10 @@
             this.CrystalChoice_dropdown.FormattingEnabled = true;
             this.CrystalChoice_dropdown.Items.AddRange(new object[] {
             "Свой кристалл",
-            "Алмаз",
+            "Борат бора",
             "Рубин",
-            "Топаз",
-            "Янтарь"});
+            "Сапфир",
+            "Турмалин"});
             this.CrystalChoice_dropdown.Location = new System.Drawing.Point(3, 3);
             this.CrystalChoice_dropdown.Name = "CrystalChoice_dropdown";
             this.CrystalChoice_dropdown.Size = new System.Drawing.Size(236, 21);
@@ -498,7 +498,7 @@
             // pictureBox2
             // 
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Palette;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(31, 44);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(11, 134);
@@ -547,26 +547,30 @@
             // 
             this.Ez_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Ez_slider.Location = new System.Drawing.Point(128, 32);
-            this.Ez_slider.Minimum = 1;
+            this.Ez_slider.Maximum = 500;
+            this.Ez_slider.Minimum = 50;
             this.Ez_slider.Name = "Ez_slider";
             this.Ez_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Ez_slider.Size = new System.Drawing.Size(45, 159);
             this.Ez_slider.TabIndex = 5;
+            this.Ez_slider.TickFrequency = 0;
             this.Ez_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.Ez_slider.Value = 1;
+            this.Ez_slider.Value = 50;
             this.Ez_slider.Scroll += new System.EventHandler(this.Ez_slider_Scroll);
             // 
             // Ey_slider
             // 
             this.Ey_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Ey_slider.Location = new System.Drawing.Point(67, 32);
-            this.Ey_slider.Minimum = 1;
+            this.Ey_slider.Maximum = 500;
+            this.Ey_slider.Minimum = 50;
             this.Ey_slider.Name = "Ey_slider";
             this.Ey_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Ey_slider.Size = new System.Drawing.Size(45, 159);
             this.Ey_slider.TabIndex = 6;
+            this.Ey_slider.TickFrequency = 0;
             this.Ey_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.Ey_slider.Value = 1;
+            this.Ey_slider.Value = 50;
             this.Ey_slider.Scroll += new System.EventHandler(this.Ey_slider_Scroll);
             // 
             // label5
@@ -856,6 +860,7 @@
             this.GLViewPort.Size = new System.Drawing.Size(728, 637);
             this.GLViewPort.StencilBits = ((byte)(0));
             this.GLViewPort.TabIndex = 2;
+            this.GLViewPort.Load += new System.EventHandler(this.GLViewPort_Load);
             this.GLViewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseDown);
             this.GLViewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseMove);
             this.GLViewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseUp);

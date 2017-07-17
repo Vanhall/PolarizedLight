@@ -20,17 +20,20 @@ namespace PolarizedLight
         private double ny, nz;                      // Коэф-ты преломления
         private double Lambda, Phi0Y, Phi0Z;        // Длина волны, нач. фазы
         private const double c = 6.0;               // Скорость света
+
         private double P;                           // P = 2*Pi/Lambda
         public double t = 0.0;                      // Время
 
         #region конструкторы
         // Конструктор начального сегмента волны
         public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
+
         {
             Lambda = WaveLen;
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
+            DPhi = D_Phi;
 
             Draw.OutLine = true; Draw.Vectors = true;
             Draw.Sum = true; Draw.Y = false; Draw.Z = false;
@@ -258,7 +261,7 @@ namespace PolarizedLight
                 }
             }
             #endregion
-            
+
             Gl.glDisableClientState(Gl.GL_VERTEX_ARRAY);
             Gl.glEnable(Gl.GL_LIGHTING);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
