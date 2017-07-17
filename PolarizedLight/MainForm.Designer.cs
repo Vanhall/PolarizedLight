@@ -46,6 +46,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Timer_text_box = new System.Windows.Forms.TextBox();
+            this.ButtonPause = new System.Windows.Forms.Button();
             this.ButtonStart = new System.Windows.Forms.Button();
             this.ButtonStop = new System.Windows.Forms.Button();
             this.ExpSetupTabs = new System.Windows.Forms.TabControl();
@@ -275,6 +277,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.Timer_text_box);
+            this.groupBox1.Controls.Add(this.ButtonPause);
             this.groupBox1.Controls.Add(this.ButtonStart);
             this.groupBox1.Controls.Add(this.ButtonStop);
             this.groupBox1.Controls.Add(this.ExpSetupTabs);
@@ -286,9 +290,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Управление экспериментом";
             // 
+            // Timer_text_box
+            // 
+            this.Timer_text_box.Location = new System.Drawing.Point(74, 254);
+            this.Timer_text_box.MaxLength = 18;
+            this.Timer_text_box.Name = "Timer_text_box";
+            this.Timer_text_box.Size = new System.Drawing.Size(106, 20);
+            this.Timer_text_box.TabIndex = 3;
+            this.Timer_text_box.Text = "time";
+            this.Timer_text_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Timer_text_box.Enter += new System.EventHandler(this.EnterText);
+            this.Timer_text_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Timer_text_box_KeyPress);
+            // 
+            // ButtonPause
+            // 
+            this.ButtonPause.Location = new System.Drawing.Point(91, 280);
+            this.ButtonPause.Name = "ButtonPause";
+            this.ButtonPause.Size = new System.Drawing.Size(75, 23);
+            this.ButtonPause.TabIndex = 2;
+            this.ButtonPause.Text = "ПАУЗА";
+            this.ButtonPause.UseVisualStyleBackColor = true;
+            this.ButtonPause.Click += new System.EventHandler(this.ButtonPause_Click);
+            // 
             // ButtonStart
             // 
-            this.ButtonStart.Location = new System.Drawing.Point(44, 272);
+            this.ButtonStart.Location = new System.Drawing.Point(7, 280);
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(75, 23);
             this.ButtonStart.TabIndex = 1;
@@ -298,7 +324,7 @@
             // 
             // ButtonStop
             // 
-            this.ButtonStop.Location = new System.Drawing.Point(144, 272);
+            this.ButtonStop.Location = new System.Drawing.Point(174, 280);
             this.ButtonStop.Name = "ButtonStop";
             this.ButtonStop.Size = new System.Drawing.Size(75, 23);
             this.ButtonStop.TabIndex = 1;
@@ -315,7 +341,7 @@
             this.ExpSetupTabs.Location = new System.Drawing.Point(3, 16);
             this.ExpSetupTabs.Name = "ExpSetupTabs";
             this.ExpSetupTabs.SelectedIndex = 0;
-            this.ExpSetupTabs.Size = new System.Drawing.Size(250, 250);
+            this.ExpSetupTabs.Size = new System.Drawing.Size(250, 232);
             this.ExpSetupTabs.TabIndex = 0;
             // 
             // CrystalTab
@@ -335,7 +361,7 @@
             this.CrystalTab.Location = new System.Drawing.Point(4, 22);
             this.CrystalTab.Name = "CrystalTab";
             this.CrystalTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CrystalTab.Size = new System.Drawing.Size(242, 224);
+            this.CrystalTab.Size = new System.Drawing.Size(242, 206);
             this.CrystalTab.TabIndex = 0;
             this.CrystalTab.Text = "Кристалл";
             this.CrystalTab.UseVisualStyleBackColor = true;
@@ -357,7 +383,7 @@
             // nz_label
             // 
             this.nz_label.AutoSize = true;
-            this.nz_label.Location = new System.Drawing.Point(198, 184);
+            this.nz_label.Location = new System.Drawing.Point(198, 165);
             this.nz_label.Name = "nz_label";
             this.nz_label.Size = new System.Drawing.Size(18, 13);
             this.nz_label.TabIndex = 3;
@@ -375,7 +401,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 184);
+            this.label3.Location = new System.Drawing.Point(6, 165);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(14, 13);
             this.label3.TabIndex = 3;
@@ -384,7 +410,7 @@
             // ny_label
             // 
             this.ny_label.AutoSize = true;
-            this.ny_label.Location = new System.Drawing.Point(198, 135);
+            this.ny_label.Location = new System.Drawing.Point(198, 115);
             this.ny_label.Name = "ny_label";
             this.ny_label.Size = new System.Drawing.Size(18, 13);
             this.ny_label.TabIndex = 3;
@@ -402,7 +428,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 135);
+            this.label2.Location = new System.Drawing.Point(6, 115);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 13);
             this.label2.TabIndex = 3;
@@ -420,7 +446,7 @@
             // nz_slider
             // 
             this.nz_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.nz_slider.Location = new System.Drawing.Point(23, 168);
+            this.nz_slider.Location = new System.Drawing.Point(23, 152);
             this.nz_slider.Maximum = 2417;
             this.nz_slider.Minimum = 1000;
             this.nz_slider.Name = "nz_slider";
@@ -434,7 +460,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 103);
+            this.label1.Location = new System.Drawing.Point(19, 91);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(203, 13);
             this.label1.TabIndex = 2;
@@ -443,7 +469,7 @@
             // ny_slider
             // 
             this.ny_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ny_slider.Location = new System.Drawing.Point(23, 119);
+            this.ny_slider.Location = new System.Drawing.Point(23, 103);
             this.ny_slider.Maximum = 2417;
             this.ny_slider.Minimum = 1000;
             this.ny_slider.Name = "ny_slider";
@@ -490,7 +516,7 @@
             this.LightTab.Location = new System.Drawing.Point(4, 22);
             this.LightTab.Name = "LightTab";
             this.LightTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LightTab.Size = new System.Drawing.Size(242, 224);
+            this.LightTab.Size = new System.Drawing.Size(242, 206);
             this.LightTab.TabIndex = 1;
             this.LightTab.Text = "Источник света";
             this.LightTab.UseVisualStyleBackColor = true;
@@ -525,7 +551,7 @@
             this.DeltaPhase_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.DeltaPhase_slider.LargeChange = 25;
             this.DeltaPhase_slider.Location = new System.Drawing.Point(189, 32);
-            this.DeltaPhase_slider.Maximum = 100;
+            this.DeltaPhase_slider.Maximum = 200;
             this.DeltaPhase_slider.Name = "DeltaPhase_slider";
             this.DeltaPhase_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.DeltaPhase_slider.Size = new System.Drawing.Size(45, 159);
@@ -660,7 +686,7 @@
             this.DisplayTab.Location = new System.Drawing.Point(4, 22);
             this.DisplayTab.Name = "DisplayTab";
             this.DisplayTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DisplayTab.Size = new System.Drawing.Size(242, 224);
+            this.DisplayTab.Size = new System.Drawing.Size(242, 206);
             this.DisplayTab.TabIndex = 2;
             this.DisplayTab.Text = "Отображение";
             this.DisplayTab.UseVisualStyleBackColor = true;
@@ -892,6 +918,7 @@
             this.Credits_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ExpSetupTabs.ResumeLayout(false);
             this.CrystalTab.ResumeLayout(false);
             this.CrystalTab.PerformLayout();
@@ -980,7 +1007,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Timer AnimTimer;
         private System.Windows.Forms.Label nz_label;
         private System.Windows.Forms.Label Width_label;
         private System.Windows.Forms.Label ny_label;
@@ -989,6 +1015,9 @@
         private System.Windows.Forms.Label Ez_label;
         private System.Windows.Forms.Label Ey_label;
         private System.Windows.Forms.Label Lambda_label;
+        private System.Windows.Forms.Button ButtonPause;
+        private System.Windows.Forms.Timer AnimTimer;
+        private System.Windows.Forms.TextBox Timer_text_box;
     }
 }
 

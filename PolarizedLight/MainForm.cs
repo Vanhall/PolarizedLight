@@ -14,6 +14,7 @@ namespace PolarizedLight
         private float Ey = 0.5f;
         private float Ez = 0.5f;
         private double DeltaPhase = 0.0;
+        private double time=0.0;
         Stopwatch Timer = new Stopwatch();
 
         public MainForm()
@@ -22,6 +23,11 @@ namespace PolarizedLight
             GLViewPort.InitializeContexts();
             GLViewPort.MouseWheel += new MouseEventHandler(GLViewPort_MouseWheel);
             scene = new Scene(GLViewPort);
+            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, 10.0);
+            scene.wave2 = new Wave(scene.wave1, ny, nz, 10.0);
+            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, 10.0);
+            scene.ExpIsRunning = true;
+            scene.render();
 
             #region Инициализация интерфейса
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
@@ -32,6 +38,7 @@ namespace PolarizedLight
             Ez_label.Text = Ez.ToString("F2") + " В/м";
             DeltaPhase_label.Text = DeltaPhase.ToString("F2") + "π";
             CrystalChoice_dropdown.SelectedIndex = 0;
+            Timer_text_box.Text = time.ToString("F2") + " c";
             #endregion
         }
 
@@ -44,7 +51,8 @@ namespace PolarizedLight
         {
             scene.render();
             scene.r += 1.0f;
-            double time = Timer.ElapsedMilliseconds / 1000.0;
+            time = Timer.ElapsedMilliseconds / 1000.0;
+            Timer_text_box.Text = time.ToString("F2") + " c";
             scene.wave1.t = time;
             scene.wave2.t = time;
             scene.wave3.t = time;
@@ -60,68 +68,75 @@ namespace PolarizedLight
         {
             AnimTimer.Start();
             Timer.Start();
-            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, 10.0);
-            scene.wave2 = new Wave(scene.wave1, ny, nz, 10.0);
-            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, 10.0);
+            #region Задание опций отрисовки(убрано)
+            /*
+           if (DrawOutline_radio.Checked)
+           {
+               scene.wave1.Draw.OutLine = true;
+               scene.wave2.Draw.OutLine = true;
+               scene.wave3.Draw.OutLine = true;
 
-            #region Задание опций отрисовки
-            if (DrawOutline_radio.Checked)
-            {
-                scene.wave1.Draw.OutLine = true;
-                scene.wave2.Draw.OutLine = true;
-                scene.wave3.Draw.OutLine = true;
+               scene.wave1.Draw.Vectors = false;
+               scene.wave2.Draw.Vectors = false;
+               scene.wave3.Draw.Vectors = false;
+           }
+           if (DrawVec_radio.Checked)
+           {
+               scene.wave1.Draw.OutLine = false;
+               scene.wave2.Draw.OutLine = false;
+               scene.wave3.Draw.OutLine = false;
 
-                scene.wave1.Draw.Vectors = false;
-                scene.wave2.Draw.Vectors = false;
-                scene.wave3.Draw.Vectors = false;
-            }
-            if (DrawVec_radio.Checked)
-            {
-                scene.wave1.Draw.OutLine = false;
-                scene.wave2.Draw.OutLine = false;
-                scene.wave3.Draw.OutLine = false;
+               scene.wave1.Draw.Vectors = true;
+               scene.wave2.Draw.Vectors = true;
+               scene.wave3.Draw.Vectors = true;
+           }
+           if (DrawOutline_radio.Checked)
+           {
+               scene.wave1.Draw.OutLine = true;
+               scene.wave2.Draw.OutLine = true;
+               scene.wave3.Draw.OutLine = true;
 
-                scene.wave1.Draw.Vectors = true;
-                scene.wave2.Draw.Vectors = true;
-                scene.wave3.Draw.Vectors = true;
-            }
-            if (DrawOutline_radio.Checked)
-            {
-                scene.wave1.Draw.OutLine = true;
-                scene.wave2.Draw.OutLine = true;
-                scene.wave3.Draw.OutLine = true;
-
-                scene.wave1.Draw.Vectors = false;
-                scene.wave2.Draw.Vectors = false;
-                scene.wave3.Draw.Vectors = false;
-            }
-            if (DrawSumm_chbox.Checked)
-            {
-                scene.wave1.Draw.Sum = true;
-                scene.wave2.Draw.Sum = true;
-                scene.wave3.Draw.Sum = true;
-            }
-            if (DrawY_chbox.Checked)
-            {
-                scene.wave1.Draw.Y = true;
-                scene.wave2.Draw.Y = true;
-                scene.wave3.Draw.Y = true;
-            }
-            if (DrawZ_chbox.Checked)
-            {
-                scene.wave1.Draw.Z = true;
-                scene.wave2.Draw.Z = true;
-                scene.wave3.Draw.Z = true;
-            }
+               scene.wave1.Draw.Vectors = false;
+               scene.wave2.Draw.Vectors = false;
+               scene.wave3.Draw.Vectors = false;
+           }
+           if (DrawSumm_chbox.Checked)
+           {
+               scene.wave1.Draw.Sum = true;
+               scene.wave2.Draw.Sum = true;
+               scene.wave3.Draw.Sum = true;
+           }
+           if (DrawY_chbox.Checked)
+           {
+               scene.wave1.Draw.Y = true;
+               scene.wave2.Draw.Y = true;
+               scene.wave3.Draw.Y = true;
+           }
+           if (DrawZ_chbox.Checked)
+           {
+               scene.wave1.Draw.Z = true;
+               scene.wave2.Draw.Z = true;
+               scene.wave3.Draw.Z = true;
+           }
+            */
             #endregion
             scene.ExpIsRunning = true;
         }
-
-        private void ButtonStop_Click(object sender, EventArgs e)
+        private void ButtonPause_Click(object sender, EventArgs e)
         {
-            scene.ExpIsRunning = false;
             AnimTimer.Stop();
             scene.r = 0.0f;
+            scene.render();
+            Timer.Stop();
+        }
+        private void ButtonStop_Click(object sender, EventArgs e)
+        {
+            AnimTimer.Stop();
+            time = 0.0;
+            scene.wave1.t = time;
+            scene.wave2.t = time;
+            scene.wave3.t = time;
+            Timer_text_box.Text = time.ToString("F2") + " c";
             scene.render();
             Timer.Stop();
             Timer.Reset();
@@ -194,6 +209,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1553;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
                 case 2:
@@ -204,6 +227,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1762;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
                 case 3:
@@ -214,6 +245,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1760;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
                 case 4:
@@ -224,6 +263,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1638;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
             }
@@ -298,15 +345,11 @@ namespace PolarizedLight
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
             if (scene.ExpIsRunning)
             {
-                scene.wave1.t = 0.0;
-                scene.wave2.t = 0.0;
-                scene.wave3.t = 0.0;
                 scene.wave1.Lambda_update(Lambda);
                 scene.wave2.Lambda_update(Lambda, scene.wave1);
                 scene.wave3.Lambda_update(Lambda, scene.wave2);
             }
-            Timer.Reset();
-            Timer.Start();
+            scene.render();
         }
 
         private void DeltaPhase_slider_Scroll(object sender, EventArgs e)
@@ -333,6 +376,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Sum = DrawSumm_chbox.Checked;
                 scene.wave2.Draw.Sum = DrawSumm_chbox.Checked;
                 scene.wave3.Draw.Sum = DrawSumm_chbox.Checked;
+
+                scene.render();
             }
         }
 
@@ -343,6 +388,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Z = DrawZ_chbox.Checked;
                 scene.wave2.Draw.Z = DrawZ_chbox.Checked;
                 scene.wave3.Draw.Z = DrawZ_chbox.Checked;
+
+                scene.render();
             }
         }
 
@@ -353,6 +400,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Y = DrawY_chbox.Checked;
                 scene.wave2.Draw.Y = DrawY_chbox.Checked;
                 scene.wave3.Draw.Y = DrawY_chbox.Checked;
+
+                scene.render();
             }
         }
 
@@ -367,6 +416,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Vectors = true;
                 scene.wave2.Draw.Vectors = true;
                 scene.wave3.Draw.Vectors = true;
+
+                scene.render();
             }
         }
 
@@ -381,6 +432,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Vectors = false;
                 scene.wave2.Draw.Vectors = false;
                 scene.wave3.Draw.Vectors = false;
+
+                scene.render();
             }
         }
 
@@ -395,6 +448,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Vectors = true;
                 scene.wave2.Draw.Vectors = true;
                 scene.wave3.Draw.Vectors = true;
+
+                scene.render();
             }
         }
         #endregion
@@ -404,7 +459,70 @@ namespace PolarizedLight
         {
             Application.Exit();
         }
+
         #endregion
-        
+
+        private void Timer_text_box_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Правильными символами считаются цифры,
+            // запятая, <Enter> и <Backspace>.
+            // Будем считатьать правильным символом
+            // также точку, на заменим ее запятой.
+            // Остальные символы запрещены.
+            // Чтобы запрещенный символ не отображался 
+            // в поле редактирования,присвоим 
+            // значение true свойству Handled параметра e
+
+            if ((e.KeyChar >= '0') && (e.KeyChar <= '9'))
+            {
+                // цифра
+                return;
+            }
+
+            if (e.KeyChar == '.')
+            {
+                // точку заменим запятой
+                e.KeyChar = ',';
+            }
+
+            if (e.KeyChar == ',')
+            {
+                if (Timer_text_box.Text.IndexOf(',') != -1)
+                {
+                    // запятая уже есть в поле редактирования
+                    e.Handled = true;
+                }
+                return;
+            }
+            // <Enter>, <Backspace>, <Esc>
+            if (Char.IsControl(e.KeyChar))
+            {
+                // нажата клавиша <Enter>
+                if (e.KeyChar == (char)Keys.Enter)
+                {
+                    if (Timer_text_box.Text == "")
+                        time = 0;
+                    else
+                        time =Convert.ToDouble(Timer_text_box.Text);
+                    Timer_text_box.Text = time.ToString("F2") + " c";
+                    scene.wave1.t = time;
+                    scene.wave2.t = time;
+                    scene.wave3.t = time;
+                    scene.render();
+                    // Фокус на окне визуализации
+                    GLViewPort.Focus();
+                }
+                return;
+            }
+
+            // остальные символы запрещены
+            e.Handled = true;
+        }
+
+        // Функция используется при фокусе на тайм-боксе, дабы удалить букву "с" при редактировании поля для преобразования в double
+        private void EnterText(object sender, EventArgs e)
+        {
+            Timer_text_box.Text = time.ToString("F2");
+        }
     }
 }
