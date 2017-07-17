@@ -82,7 +82,7 @@
             this.DrawAxies_chbox = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DrawY_chbox = new System.Windows.Forms.CheckBox();
-            this.DrawX_chbox = new System.Windows.Forms.CheckBox();
+            this.DrawZ_chbox = new System.Windows.Forms.CheckBox();
             this.DrawSumm_chbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.DrawVec_radio = new System.Windows.Forms.RadioButton();
@@ -523,13 +523,14 @@
             // DeltaPhase_slider
             // 
             this.DeltaPhase_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.DeltaPhase_slider.LargeChange = 25;
             this.DeltaPhase_slider.Location = new System.Drawing.Point(189, 32);
-            this.DeltaPhase_slider.Maximum = 200;
+            this.DeltaPhase_slider.Maximum = 100;
             this.DeltaPhase_slider.Name = "DeltaPhase_slider";
             this.DeltaPhase_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.DeltaPhase_slider.Size = new System.Drawing.Size(45, 159);
             this.DeltaPhase_slider.TabIndex = 4;
-            this.DeltaPhase_slider.TickFrequency = 100;
+            this.DeltaPhase_slider.TickFrequency = 25;
             this.DeltaPhase_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.DeltaPhase_slider.Scroll += new System.EventHandler(this.DeltaPhase_slider_Scroll);
             // 
@@ -687,7 +688,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.DrawY_chbox);
-            this.groupBox3.Controls.Add(this.DrawX_chbox);
+            this.groupBox3.Controls.Add(this.DrawZ_chbox);
             this.groupBox3.Controls.Add(this.DrawSumm_chbox);
             this.groupBox3.Location = new System.Drawing.Point(108, 7);
             this.groupBox3.Name = "groupBox3";
@@ -705,26 +706,31 @@
             this.DrawY_chbox.TabIndex = 0;
             this.DrawY_chbox.Text = "Y";
             this.DrawY_chbox.UseVisualStyleBackColor = true;
+            this.DrawY_chbox.CheckedChanged += new System.EventHandler(this.DrawY_chbox_CheckedChanged);
             // 
-            // DrawX_chbox
+            // DrawZ_chbox
             // 
-            this.DrawX_chbox.AutoSize = true;
-            this.DrawX_chbox.Location = new System.Drawing.Point(6, 43);
-            this.DrawX_chbox.Name = "DrawX_chbox";
-            this.DrawX_chbox.Size = new System.Drawing.Size(33, 17);
-            this.DrawX_chbox.TabIndex = 0;
-            this.DrawX_chbox.Text = "X";
-            this.DrawX_chbox.UseVisualStyleBackColor = true;
+            this.DrawZ_chbox.AutoSize = true;
+            this.DrawZ_chbox.Location = new System.Drawing.Point(6, 43);
+            this.DrawZ_chbox.Name = "DrawZ_chbox";
+            this.DrawZ_chbox.Size = new System.Drawing.Size(33, 17);
+            this.DrawZ_chbox.TabIndex = 0;
+            this.DrawZ_chbox.Text = "Z";
+            this.DrawZ_chbox.UseVisualStyleBackColor = true;
+            this.DrawZ_chbox.CheckedChanged += new System.EventHandler(this.DrawZ_chbox_CheckedChanged);
             // 
             // DrawSumm_chbox
             // 
             this.DrawSumm_chbox.AutoSize = true;
+            this.DrawSumm_chbox.Checked = true;
+            this.DrawSumm_chbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.DrawSumm_chbox.Location = new System.Drawing.Point(6, 20);
             this.DrawSumm_chbox.Name = "DrawSumm_chbox";
             this.DrawSumm_chbox.Size = new System.Drawing.Size(113, 17);
             this.DrawSumm_chbox.TabIndex = 0;
             this.DrawSumm_chbox.Text = "Результирующая";
             this.DrawSumm_chbox.UseVisualStyleBackColor = true;
+            this.DrawSumm_chbox.CheckedChanged += new System.EventHandler(this.DrawSumm_chbox_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -745,9 +751,9 @@
             this.DrawVec_radio.Name = "DrawVec_radio";
             this.DrawVec_radio.Size = new System.Drawing.Size(69, 17);
             this.DrawVec_radio.TabIndex = 0;
-            this.DrawVec_radio.TabStop = true;
             this.DrawVec_radio.Text = "Векторы";
             this.DrawVec_radio.UseVisualStyleBackColor = true;
+            this.DrawVec_radio.CheckedChanged += new System.EventHandler(this.DrawVec_radio_CheckedChanged);
             // 
             // DrawOutline_radio
             // 
@@ -756,13 +762,14 @@
             this.DrawOutline_radio.Name = "DrawOutline_radio";
             this.DrawOutline_radio.Size = new System.Drawing.Size(85, 17);
             this.DrawOutline_radio.TabIndex = 0;
-            this.DrawOutline_radio.TabStop = true;
             this.DrawOutline_radio.Text = "Огибающие";
             this.DrawOutline_radio.UseVisualStyleBackColor = true;
+            this.DrawOutline_radio.CheckedChanged += new System.EventHandler(this.DrawOutline_radio_CheckedChanged);
             // 
             // DrawBoth_radio
             // 
             this.DrawBoth_radio.AutoSize = true;
+            this.DrawBoth_radio.Checked = true;
             this.DrawBoth_radio.Location = new System.Drawing.Point(7, 20);
             this.DrawBoth_radio.Name = "DrawBoth_radio";
             this.DrawBoth_radio.Size = new System.Drawing.Size(85, 30);
@@ -770,6 +777,7 @@
             this.DrawBoth_radio.TabStop = true;
             this.DrawBoth_radio.Text = "Огибающие\r\nи векторы";
             this.DrawBoth_radio.UseVisualStyleBackColor = true;
+            this.DrawBoth_radio.CheckedChanged += new System.EventHandler(this.DrawBoth_radio_CheckedChanged);
             // 
             // label21
             // 
@@ -853,7 +861,6 @@
             this.GLViewPort.Size = new System.Drawing.Size(728, 637);
             this.GLViewPort.StencilBits = ((byte)(0));
             this.GLViewPort.TabIndex = 2;
-            this.GLViewPort.Load += new System.EventHandler(this.GLViewPort_Load);
             this.GLViewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseDown);
             this.GLViewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseMove);
             this.GLViewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseUp);
@@ -943,7 +950,7 @@
         private System.Windows.Forms.TabPage DisplayTab;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox DrawY_chbox;
-        private System.Windows.Forms.CheckBox DrawX_chbox;
+        private System.Windows.Forms.CheckBox DrawZ_chbox;
         private System.Windows.Forms.CheckBox DrawSumm_chbox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton DrawVec_radio;

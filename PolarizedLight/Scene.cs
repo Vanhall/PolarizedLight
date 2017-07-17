@@ -15,6 +15,7 @@ namespace PolarizedLight
         private Axies axies;
         private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
         public float r = 0.0f;
+        public bool ExpIsRunning = false;
 
         public Scene(SimpleOpenGlControl _GLVP)
         {
@@ -38,13 +39,7 @@ namespace PolarizedLight
             axies = new Axies();
             testModel = new Model("Models/testcube");
             testModel2 = new Model("Models/testcyl");
-            wave1 = new Wave(3.8, 0.0, 0.5f, 0.5f, -15.0, 10.0);
-            wave2 = new Wave(3.8, 0.0, 0.5f, 0.5f, 1.0, 1.0, -5.0, 10.0);
-            wave3 = new Wave(3.8, 0.0, 0.5f, 0.5f, 5.0, 10.0);
-            
-            wave2.link(wave1);
-            wave3.link(wave2);
-
+          
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, light0Amb);
@@ -64,10 +59,12 @@ namespace PolarizedLight
             // ставим свет (нужно вызывать каждый раз, иначе будет двигаться вместе с камерой)
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
 
-
-            wave1.render();
-            wave2.render();
-            wave3.render();
+            if (ExpIsRunning)
+            {
+                wave1.render();
+                wave2.render();
+                wave3.render();
+            }
 
             axies.render();
 
