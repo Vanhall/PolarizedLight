@@ -33,7 +33,6 @@ namespace PolarizedLight
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
-            DPhi = D_Phi;
 
             Draw.OutLine = true; Draw.Vectors = true;
             Draw.Sum = true; Draw.Y = false; Draw.Z = false;
@@ -125,14 +124,59 @@ namespace PolarizedLight
         
         private double GetEndPhi0Y()
         {
-            return P * ( - ny * (X0 + Length)) + Phi0Y;
+            return P * (c * t - ny * (X0 + Length)) + Phi0Y;
         }
 
         private double GetEndPhi0Z()
         {
-            return P * ( - nz * (X0 + Length)) + Phi0Z;
+            return P * (c * t - nz * (X0 + Length)) + Phi0Z;
         }
         
+        public void Lambda_update(double new_Lambda)
+        {
+            Lambda = new_Lambda;
+            P = 2.0 * Math.PI / Lambda;
+        }
+
+        public void Lambda_update(double new_Lambda, Wave W)
+        {
+            Lambda = new_Lambda;
+            P = 2.0 * Math.PI / Lambda;
+            Phases_update(W);
+        }
+
+        public void ny_update(double new_ny)
+        {
+            ny = new_ny;
+        }
+
+        public void nz_update(double new_nz)
+        {
+            nz = new_nz;
+        }
+
+        public void Phases_update(Wave W)
+        {
+            Phi0Y = W.GetEndPhi0Y() - P * (c * t - ny * X0);
+            Phi0Z = W.GetEndPhi0Z() - P * (c * t - nz * X0);
+        }
+
+        public void Phases_update(double new_DPhi)
+        {
+            Phi0Y = - P * (c * t - ny * X0);
+            Phi0Z = new_DPhi + Phi0Y;
+        }
+
+        public void Ey_update(float new_Ey)
+        {
+            Ey = new_Ey;
+        }
+
+        public void Ez_update(float new_Ez)
+        {
+            Ez = new_Ez;
+        }
+
         public void render()
         {
             #region Рассчеты

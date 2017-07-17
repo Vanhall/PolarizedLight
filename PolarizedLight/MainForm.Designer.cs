@@ -523,13 +523,14 @@
             // DeltaPhase_slider
             // 
             this.DeltaPhase_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.DeltaPhase_slider.LargeChange = 25;
             this.DeltaPhase_slider.Location = new System.Drawing.Point(189, 32);
-            this.DeltaPhase_slider.Maximum = 200;
+            this.DeltaPhase_slider.Maximum = 100;
             this.DeltaPhase_slider.Name = "DeltaPhase_slider";
             this.DeltaPhase_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.DeltaPhase_slider.Size = new System.Drawing.Size(45, 159);
             this.DeltaPhase_slider.TabIndex = 4;
-            this.DeltaPhase_slider.TickFrequency = 100;
+            this.DeltaPhase_slider.TickFrequency = 25;
             this.DeltaPhase_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.DeltaPhase_slider.Scroll += new System.EventHandler(this.DeltaPhase_slider_Scroll);
             // 
@@ -860,7 +861,6 @@
             this.GLViewPort.Size = new System.Drawing.Size(728, 637);
             this.GLViewPort.StencilBits = ((byte)(0));
             this.GLViewPort.TabIndex = 2;
-            this.GLViewPort.Load += new System.EventHandler(this.GLViewPort_Load);
             this.GLViewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseDown);
             this.GLViewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseMove);
             this.GLViewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GLViewPort_MouseUp);
