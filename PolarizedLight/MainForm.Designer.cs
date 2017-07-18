@@ -46,7 +46,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.Timer_text_box = new System.Windows.Forms.TextBox();
+            this.timer_label = new System.Windows.Forms.Label();
             this.ButtonPause = new System.Windows.Forms.Button();
             this.ButtonStart = new System.Windows.Forms.Button();
             this.ButtonStop = new System.Windows.Forms.Button();
@@ -277,7 +277,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.Timer_text_box);
+            this.groupBox1.Controls.Add(this.timer_label);
             this.groupBox1.Controls.Add(this.ButtonPause);
             this.groupBox1.Controls.Add(this.ButtonStart);
             this.groupBox1.Controls.Add(this.ButtonStop);
@@ -290,20 +290,18 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Управление экспериментом";
             // 
-            // Timer_text_box
+            // timer_label
             // 
-            this.Timer_text_box.Location = new System.Drawing.Point(74, 254);
-            this.Timer_text_box.MaxLength = 18;
-            this.Timer_text_box.Name = "Timer_text_box";
-            this.Timer_text_box.Size = new System.Drawing.Size(106, 20);
-            this.Timer_text_box.TabIndex = 3;
-            this.Timer_text_box.Text = "time";
-            this.Timer_text_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.Timer_text_box.Enter += new System.EventHandler(this.EnterText);
-            this.Timer_text_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Timer_text_box_KeyPress);
+            this.timer_label.AutoSize = true;
+            this.timer_label.Location = new System.Drawing.Point(112, 264);
+            this.timer_label.Name = "timer_label";
+            this.timer_label.Size = new System.Drawing.Size(26, 13);
+            this.timer_label.TabIndex = 3;
+            this.timer_label.Text = "time";
             // 
             // ButtonPause
             // 
+            this.ButtonPause.Enabled = false;
             this.ButtonPause.Location = new System.Drawing.Point(91, 280);
             this.ButtonPause.Name = "ButtonPause";
             this.ButtonPause.Size = new System.Drawing.Size(75, 23);
@@ -324,6 +322,7 @@
             // 
             // ButtonStop
             // 
+            this.ButtonStop.Enabled = false;
             this.ButtonStop.Location = new System.Drawing.Point(174, 280);
             this.ButtonStop.Name = "ButtonStop";
             this.ButtonStop.Size = new System.Drawing.Size(75, 23);
@@ -341,7 +340,7 @@
             this.ExpSetupTabs.Location = new System.Drawing.Point(3, 16);
             this.ExpSetupTabs.Name = "ExpSetupTabs";
             this.ExpSetupTabs.SelectedIndex = 0;
-            this.ExpSetupTabs.Size = new System.Drawing.Size(250, 232);
+            this.ExpSetupTabs.Size = new System.Drawing.Size(250, 245);
             this.ExpSetupTabs.TabIndex = 0;
             // 
             // CrystalTab
@@ -361,7 +360,7 @@
             this.CrystalTab.Location = new System.Drawing.Point(4, 22);
             this.CrystalTab.Name = "CrystalTab";
             this.CrystalTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CrystalTab.Size = new System.Drawing.Size(242, 206);
+            this.CrystalTab.Size = new System.Drawing.Size(242, 219);
             this.CrystalTab.TabIndex = 0;
             this.CrystalTab.Text = "Кристалл";
             this.CrystalTab.UseVisualStyleBackColor = true;
@@ -516,7 +515,7 @@
             this.LightTab.Location = new System.Drawing.Point(4, 22);
             this.LightTab.Name = "LightTab";
             this.LightTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LightTab.Size = new System.Drawing.Size(242, 206);
+            this.LightTab.Size = new System.Drawing.Size(242, 219);
             this.LightTab.TabIndex = 1;
             this.LightTab.Text = "Источник света";
             this.LightTab.UseVisualStyleBackColor = true;
@@ -545,6 +544,8 @@
             this.Lambda_slider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.Lambda_slider.Value = 380;
             this.Lambda_slider.Scroll += new System.EventHandler(this.Lambda_slider_Scroll);
+            this.Lambda_slider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Lambda_slider_MouseDown);
+            this.Lambda_slider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Lambda_slider_MouseUp);
             // 
             // DeltaPhase_slider
             // 
@@ -559,6 +560,8 @@
             this.DeltaPhase_slider.TickFrequency = 25;
             this.DeltaPhase_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.DeltaPhase_slider.Scroll += new System.EventHandler(this.DeltaPhase_slider_Scroll);
+            this.DeltaPhase_slider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeltaPhase_slider_MouseDown);
+            this.DeltaPhase_slider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DeltaPhase_slider_MouseUp);
             // 
             // label9
             // 
@@ -686,7 +689,7 @@
             this.DisplayTab.Location = new System.Drawing.Point(4, 22);
             this.DisplayTab.Name = "DisplayTab";
             this.DisplayTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DisplayTab.Size = new System.Drawing.Size(242, 206);
+            this.DisplayTab.Size = new System.Drawing.Size(242, 219);
             this.DisplayTab.TabIndex = 2;
             this.DisplayTab.Text = "Отображение";
             this.DisplayTab.UseVisualStyleBackColor = true;
@@ -1017,7 +1020,7 @@
         private System.Windows.Forms.Label Lambda_label;
         private System.Windows.Forms.Button ButtonPause;
         private System.Windows.Forms.Timer AnimTimer;
-        private System.Windows.Forms.TextBox Timer_text_box;
+        private System.Windows.Forms.Label timer_label;
     }
 }
 

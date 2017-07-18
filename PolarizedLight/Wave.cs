@@ -5,6 +5,7 @@ namespace PolarizedLight
 {
     class Wave
     {
+        // Параметры отображения и Vertex Buffer Object'ы (VBO) +++
         public struct DrawFlags { public bool OutLine, Vectors, Y, Z, Sum;
         }
         public DrawFlags Draw;                      // Какие элементы рисовать
@@ -13,23 +14,26 @@ namespace PolarizedLight
         private double GridStep = 0.1;              // Шаг разбиения
         private int VecSpacing = 5;                 // Через сколько шагов рисовать векторы
         int Steps, VecSteps;                        // Кол-во шагов сетки
-
-        // Начальная координата и ОБЩАЯ длина волны
-        private double X0, Length;
+        
+        // Параметры волны ++++++++++++++++++++++++++++++++++++++++
+        private double X0, Length;                  // Начальная координата и ОБЩАЯ длина волны
         private float Ey, Ez;                       // Амплитуды
         private double ny, nz;                      // Коэф-ты преломления
         private double Lambda, Phi0Y, Phi0Z;        // Длина волны, нач. фазы
         private const double c = 6.0;               // Скорость света
+        private double DeltaPhi;                    // Разность фаз
 
+        // Вспомогательное ++++++++++++++++++++++++++++++++++++++++
         private double P;                           // P = 2*Pi/Lambda
         public double t = 0.0;                      // Время
+        private double CurrentPhi0Y = 0.0;          // Текущая фаза в начале сегмента
 
         #region конструкторы
         // Конструктор начального сегмента волны
         public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
 
         {
-            Lambda = WaveLen;
+            Lambda = WaveLen; DeltaPhi = DPhi;
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
@@ -70,14 +74,14 @@ namespace PolarizedLight
 
             P = 2.0 * Math.PI / Lambda;
             Phi0Y = -P * (-ny * X0);
-            Phi0Z = DPhi + Phi0Y;
+            Phi0Z = Phi0Y + DeltaPhi;
         }
 
         // Конструктор последующего сегмента волны
-        // Передаем предыдущий сегмент и новые ny, nz
+        // Передаем предыдущий сегмент новые ny, nz и длину
         public Wave(Wave W, double n_y, double n_z, double _Length)
         {
-            Lambda = W.Lambda;
+            Lambda = W.Lambda; DeltaPhi = 0.0;
             Ey = W.Ey; Ez = W.Ez;
             ny = n_y; nz = n_z;
             X0 = W.X0 + W.Length; Length = _Length;
@@ -121,7 +125,9 @@ namespace PolarizedLight
             Phi0Z = W.GetEndPhi0Z() + P * (nz * X0);
         }
         #endregion
-        
+
+        #region Методы обновления параметров
+        // Текущие фазы на конце сегмента -------------------------
         private double GetEndPhi0Y()
         {
             return P * (c * t - ny * (X0 + Length)) + Phi0Y;
@@ -132,19 +138,31 @@ namespace PolarizedLight
             return P * (c * t - nz * (X0 + Length)) + Phi0Z;
         }
         
+        // Текущая фаза в начале сегмента
+        public void FixCurrentPhase()
+        {
+            CurrentPhi0Y = P * (c * t - ny * X0) + Phi0Y;
+        }
+
+        // Длина волны --------------------------------------------
+        // Для первого сегмента
         public void Lambda_update(double new_Lambda)
         {
             Lambda = new_Lambda;
             P = 2.0 * Math.PI / Lambda;
+            Phi0Y = -P * (c * t - ny * X0) + CurrentPhi0Y;
+            Phi0Z = Phi0Y + DeltaPhi;
         }
 
-        public void Lambda_update(double new_Lambda, Wave W)
+        // Для последующих сегментов
+        public void Lambda_update(Wave W)
         {
-            Lambda = new_Lambda;
+            Lambda = W.Lambda;
             P = 2.0 * Math.PI / Lambda;
             Phases_update(W);
         }
 
+        // Коэф-ты преломления ------------------------------------
         public void ny_update(double new_ny)
         {
             ny = new_ny;
@@ -155,18 +173,21 @@ namespace PolarizedLight
             nz = new_nz;
         }
 
+        // Фазы ---------------------------------------------------
+        // Для первого сегмента 
+        public void Phases_update(double new_DPhi)
+        {
+            Phi0Z = new_DPhi + Phi0Y;
+        }
+
+        // Для последующих сегментов
         public void Phases_update(Wave W)
         {
             Phi0Y = W.GetEndPhi0Y() - P * (c * t - ny * X0);
             Phi0Z = W.GetEndPhi0Z() - P * (c * t - nz * X0);
         }
 
-        public void Phases_update(double new_DPhi)
-        {
-            Phi0Y = - P * (c * t - ny * X0);
-            Phi0Z = new_DPhi + Phi0Y;
-        }
-
+        // Амплитуды ----------------------------------------------
         public void Ey_update(float new_Ey)
         {
             Ey = new_Ey;
@@ -176,6 +197,7 @@ namespace PolarizedLight
         {
             Ez = new_Ez;
         }
+        #endregion
 
         public void render()
         {

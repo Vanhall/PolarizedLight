@@ -14,7 +14,6 @@ namespace PolarizedLight
         private float Ey = 0.5f;
         private float Ez = 0.5f;
         private double DeltaPhase = 0.0;
-        private double time=0.0;
         Stopwatch Timer = new Stopwatch();
 
         public MainForm()
@@ -23,10 +22,6 @@ namespace PolarizedLight
             GLViewPort.InitializeContexts();
             GLViewPort.MouseWheel += new MouseEventHandler(GLViewPort_MouseWheel);
             scene = new Scene(GLViewPort);
-            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, 10.0);
-            scene.wave2 = new Wave(scene.wave1, ny, nz, 10.0);
-            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, 10.0);
-            scene.ExpIsRunning = true;
             scene.render();
 
             #region Инициализация интерфейса
@@ -38,7 +33,7 @@ namespace PolarizedLight
             Ez_label.Text = Ez.ToString("F2") + " В/м";
             DeltaPhase_label.Text = DeltaPhase.ToString("F2") + "π";
             CrystalChoice_dropdown.SelectedIndex = 0;
-            Timer_text_box.Text = time.ToString("F2") + " c";
+            timer_label.Text = "0.00 с";
             #endregion
         }
 
@@ -50,12 +45,14 @@ namespace PolarizedLight
         private void AnimTimer_Tick(object sender, EventArgs e)
         {
             scene.render();
-            scene.r += 1.0f;
-            time = Timer.ElapsedMilliseconds / 1000.0;
-            Timer_text_box.Text = time.ToString("F2") + " c";
-            scene.wave1.t = time;
-            scene.wave2.t = time;
-            scene.wave3.t = time;
+            if (!scene.ExpIsPaused)
+            {
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                timer_label.Text = time.ToString("F2") + " с";
+                scene.wave1.t = time;
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -68,9 +65,12 @@ namespace PolarizedLight
         {
             AnimTimer.Start();
             Timer.Start();
-            #region Задание опций отрисовки(убрано)
-            /*
-           if (DrawOutline_radio.Checked)
+            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, 10.0);
+            scene.wave2 = new Wave(scene.wave1, ny, nz, 10.0);
+            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, 10.0);
+
+            #region Задание опций отрисовки
+            if (DrawOutline_radio.Checked)
            {
                scene.wave1.Draw.OutLine = true;
                scene.wave2.Draw.OutLine = true;
@@ -118,28 +118,43 @@ namespace PolarizedLight
                scene.wave2.Draw.Z = true;
                scene.wave3.Draw.Z = true;
            }
-            */
             #endregion
+
             scene.ExpIsRunning = true;
+            LockInterface();
         }
         private void ButtonPause_Click(object sender, EventArgs e)
         {
-            AnimTimer.Stop();
-            scene.r = 0.0f;
-            scene.render();
-            Timer.Stop();
+            if (scene.ExpIsPaused)
+            {
+                AnimTimer.Start();
+                Timer.Start();
+                scene.ExpIsPaused = false;
+                ButtonPause.Text = "ПАУЗА";
+            }
+            else
+            {
+                AnimTimer.Stop();
+                Timer.Stop();
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                scene.wave1.t = time;
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+                scene.render();
+                scene.ExpIsPaused = true;
+                ButtonPause.Text = "ПРОД.";
+            }
         }
         private void ButtonStop_Click(object sender, EventArgs e)
         {
             AnimTimer.Stop();
-            time = 0.0;
-            scene.wave1.t = time;
-            scene.wave2.t = time;
-            scene.wave3.t = time;
-            Timer_text_box.Text = time.ToString("F2") + " c";
+            scene.ExpIsRunning = false;
+            scene.ExpIsPaused = false;
             scene.render();
-            Timer.Stop();
             Timer.Reset();
+            timer_label.Text = "0.00 с";
+            ButtonPause.Text = "ПАУЗА";
+            UnlockInterface();
         }
         #endregion
 
@@ -339,6 +354,23 @@ namespace PolarizedLight
             scene.render();
         }
 
+        private void Lambda_slider_MouseDown(object sender, MouseEventArgs e)
+        {
+            Timer.Stop();
+            double time = Timer.ElapsedMilliseconds / 1000.0;
+            scene.wave1.t = time;
+            scene.wave1.FixCurrentPhase();
+            scene.wave2.t = time;
+            scene.wave3.t = time;
+
+        }
+
+        private void Lambda_slider_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!scene.ExpIsPaused)
+                Timer.Start();
+        }
+
         private void Lambda_slider_Scroll(object sender, EventArgs e)
         {
             Lambda = Lambda_slider.Value / 100.0;
@@ -346,12 +378,26 @@ namespace PolarizedLight
             if (scene.ExpIsRunning)
             {
                 scene.wave1.Lambda_update(Lambda);
-                scene.wave2.Lambda_update(Lambda, scene.wave1);
-                scene.wave3.Lambda_update(Lambda, scene.wave2);
+                scene.wave2.Lambda_update(scene.wave1);
+                scene.wave3.Lambda_update(scene.wave2);
             }
             scene.render();
         }
 
+        private void DeltaPhase_slider_MouseDown(object sender, MouseEventArgs e)
+        {
+            Timer.Stop();
+            double time = Timer.ElapsedMilliseconds / 1000.0;
+            scene.wave1.t = time;
+            scene.wave2.t = time;
+            scene.wave3.t = time;
+        }
+
+        private void DeltaPhase_slider_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!scene.ExpIsPaused)
+                Timer.Start();
+        }
         private void DeltaPhase_slider_Scroll(object sender, EventArgs e)
         {
             DeltaPhase = DeltaPhase_slider.Value / 100.0;
@@ -461,68 +507,23 @@ namespace PolarizedLight
         }
 
         #endregion
-
-        private void Timer_text_box_KeyPress(object sender, KeyPressEventArgs e)
+        
+        private void LockInterface()
         {
-            // Правильными символами считаются цифры,
-            // запятая, <Enter> и <Backspace>.
-            // Будем считатьать правильным символом
-            // также точку, на заменим ее запятой.
-            // Остальные символы запрещены.
-            // Чтобы запрещенный символ не отображался 
-            // в поле редактирования,присвоим 
-            // значение true свойству Handled параметра e
+            ButtonStart.Enabled = false;
+            ButtonPause.Enabled = true;
+            ButtonStop.Enabled = true;
 
-            if ((e.KeyChar >= '0') && (e.KeyChar <= '9'))
-            {
-                // цифра
-                return;
-            }
-
-            if (e.KeyChar == '.')
-            {
-                // точку заменим запятой
-                e.KeyChar = ',';
-            }
-
-            if (e.KeyChar == ',')
-            {
-                if (Timer_text_box.Text.IndexOf(',') != -1)
-                {
-                    // запятая уже есть в поле редактирования
-                    e.Handled = true;
-                }
-                return;
-            }
-            // <Enter>, <Backspace>, <Esc>
-            if (Char.IsControl(e.KeyChar))
-            {
-                // нажата клавиша <Enter>
-                if (e.KeyChar == (char)Keys.Enter)
-                {
-                    if (Timer_text_box.Text == "")
-                        time = 0;
-                    else
-                        time =Convert.ToDouble(Timer_text_box.Text);
-                    Timer_text_box.Text = time.ToString("F2") + " c";
-                    scene.wave1.t = time;
-                    scene.wave2.t = time;
-                    scene.wave3.t = time;
-                    scene.render();
-                    // Фокус на окне визуализации
-                    GLViewPort.Focus();
-                }
-                return;
-            }
-
-            // остальные символы запрещены
-            e.Handled = true;
+            Width_slider.Enabled = false;
         }
 
-        // Функция используется при фокусе на тайм-боксе, дабы удалить букву "с" при редактировании поля для преобразования в double
-        private void EnterText(object sender, EventArgs e)
+        private void UnlockInterface()
         {
-            Timer_text_box.Text = time.ToString("F2");
+            ButtonStart.Enabled = true;
+            ButtonPause.Enabled = false;
+            ButtonStop.Enabled = false;
+
+            Width_slider.Enabled = true;
         }
     }
 }

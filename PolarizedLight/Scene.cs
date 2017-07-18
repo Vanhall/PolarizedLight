@@ -15,7 +15,7 @@ namespace PolarizedLight
         private Axies axies;
         private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
         public float r = 0.0f;
-        public bool ExpIsRunning = false;
+        public bool ExpIsRunning = false, ExpIsPaused = false;
 
         public Scene(SimpleOpenGlControl _GLVP)
         {
