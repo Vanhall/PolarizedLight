@@ -6,15 +6,17 @@ namespace PolarizedLight
 {
     public partial class MainForm : Form
     {
-        Scene scene;
         private double Lambda = 3.8;
         private double ny = 1.0;
         private double nz = 1.0;
-        private double d = 1.0;
-        private float Ey = 0.5f;
-        private float Ez = 0.5f;
+        private double d = 0.1;
+        private float Ey = 1.5f;
+        private float Ez = 1.5f;
         private double DeltaPhase = 0.0;
+
+        Scene scene;
         Stopwatch Timer = new Stopwatch();
+        private const double TotalLength = 30.0;
 
         public MainForm()
         {
@@ -28,9 +30,9 @@ namespace PolarizedLight
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
             nz_label.Text = nz.ToString("F3");
             ny_label.Text = ny.ToString("F3");
-            Width_label.Text = d.ToString("F0") + " мм";
-            Ey_label.Text = Ey.ToString("F2") + " В/м";
-            Ez_label.Text = Ez.ToString("F2") + " В/м";
+            Width_label.Text = (d * 100.0).ToString("F0") + " нм";
+            Ey_label.Text = Ey.ToString("F1") + " В/м";
+            Ez_label.Text = Ez.ToString("F1") + " В/м";
             DeltaPhase_label.Text = DeltaPhase.ToString("F2") + "π";
             CrystalChoice_dropdown.SelectedIndex = 0;
             timer_label.Text = "0.00 с";
@@ -65,9 +67,9 @@ namespace PolarizedLight
         {
             AnimTimer.Start();
             Timer.Start();
-            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, 10.0);
-            scene.wave2 = new Wave(scene.wave1, ny, nz, 10.0);
-            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, 10.0);
+            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, (TotalLength - d) / 2.0);
+            scene.wave2 = new Wave(scene.wave1, ny, nz, d);
+            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, (TotalLength - d) / 2.0);
 
             #region Задание опций отрисовки
             if (DrawOutline_radio.Checked)
@@ -191,7 +193,7 @@ namespace PolarizedLight
                 // Если правая - перемещаем вдоль Z
                 else if (e.Button.Equals(MouseButtons.Right))
                 {
-                    scene.cam.translate(scene.cam.height + (e.Y - scene.cam.mouseDY) / 6.0);
+                    scene.cam.translate(scene.cam.height + (e.X - scene.cam.mouseDX) / 6.0);
                     scene.render();
                 }
             }
@@ -321,16 +323,18 @@ namespace PolarizedLight
 
         private void Width_slider_Scroll(object sender, EventArgs e)
         {
-            d = Width_slider.Value;
-            Width_label.Text = d.ToString("F0") + " мм";
+            d = 0.1 + Width_slider.Value * 3.0 / 10.0;
+            Width_label.Text = (d * 100.0).ToString("F0") + " нм";
+            scene.axies.SetScale((float)(d));
+            scene.render();
         }
         #endregion
 
         #region Вкладка "Источник света"
         private void Ey_slider_Scroll(object sender, EventArgs e)
         {
-            Ey = Ey_slider.Value/100.0f;
-            Ey_label.Text = Ey.ToString("F2") + " В/м";
+            Ey = Ey_slider.Value/10.0f;
+            Ey_label.Text = Ey.ToString("F1") + " В/м";
 
             if (scene.ExpIsRunning)
             {
@@ -343,8 +347,8 @@ namespace PolarizedLight
 
         private void Ez_slider_Scroll(object sender, EventArgs e)
         {
-            Ez = Ez_slider.Value/100.0f;
-            Ez_label.Text = Ez.ToString("F2") + " В/м";
+            Ez = Ez_slider.Value/10.0f;
+            Ez_label.Text = Ez.ToString("F1") + " В/м";
             if (scene.ExpIsRunning)
             {
                 scene.wave1.Ez_update(Ez);
@@ -356,13 +360,15 @@ namespace PolarizedLight
 
         private void Lambda_slider_MouseDown(object sender, MouseEventArgs e)
         {
-            Timer.Stop();
-            double time = Timer.ElapsedMilliseconds / 1000.0;
-            scene.wave1.t = time;
-            scene.wave1.FixCurrentPhase();
-            scene.wave2.t = time;
-            scene.wave3.t = time;
-
+            if (scene.ExpIsRunning)
+            {
+                Timer.Stop();
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                scene.wave1.t = time;
+                scene.wave1.FixCurrentPhase();
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+            }
         }
 
         private void Lambda_slider_MouseUp(object sender, MouseEventArgs e)
@@ -373,7 +379,7 @@ namespace PolarizedLight
 
         private void Lambda_slider_Scroll(object sender, EventArgs e)
         {
-            Lambda = Lambda_slider.Value / 100.0;
+            Lambda = Lambda_slider.Value / 10.0;
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
             if (scene.ExpIsRunning)
             {
@@ -386,11 +392,14 @@ namespace PolarizedLight
 
         private void DeltaPhase_slider_MouseDown(object sender, MouseEventArgs e)
         {
-            Timer.Stop();
-            double time = Timer.ElapsedMilliseconds / 1000.0;
-            scene.wave1.t = time;
-            scene.wave2.t = time;
-            scene.wave3.t = time;
+            if (scene.ExpIsRunning)
+            {
+                Timer.Stop();
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                scene.wave1.t = time;
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+            }
         }
 
         private void DeltaPhase_slider_MouseUp(object sender, MouseEventArgs e)

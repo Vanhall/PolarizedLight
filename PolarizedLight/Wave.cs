@@ -177,7 +177,8 @@ namespace PolarizedLight
         // Для первого сегмента 
         public void Phases_update(double new_DPhi)
         {
-            Phi0Z = new_DPhi + Phi0Y;
+            DeltaPhi = new_DPhi;
+            Phi0Z = Phi0Y + DeltaPhi;
         }
 
         // Для последующих сегментов

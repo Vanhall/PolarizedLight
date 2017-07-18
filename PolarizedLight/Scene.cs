@@ -12,7 +12,7 @@ namespace PolarizedLight
 
         private Model testModel, testModel2;
         public Wave wave1, wave2, wave3;
-        private Axies axies;
+        public Axies axies;
         private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
         public float r = 0.0f;
         public bool ExpIsRunning = false, ExpIsPaused = false;
@@ -23,7 +23,7 @@ namespace PolarizedLight
             Gl.glViewport(0, 0, GLVP.Width, GLVP.Height);
             Gl.glClearColor(0.7f, 0.7f, 0.8f, 1.0f);
 
-            cam = new Camera(GLVP);
+            cam = new Camera();
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             Gl.glLoadIdentity();
             Glu.gluPerspective(FOV, (double)GLVP.Width / (double)GLVP.Height, zNear, zFar);

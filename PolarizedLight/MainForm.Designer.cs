@@ -369,14 +369,12 @@
             // 
             this.Width_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Width_slider.Location = new System.Drawing.Point(22, 43);
-            this.Width_slider.Maximum = 100;
-            this.Width_slider.Minimum = 1;
+            this.Width_slider.Maximum = 33;
             this.Width_slider.Name = "Width_slider";
             this.Width_slider.Size = new System.Drawing.Size(172, 45);
             this.Width_slider.TabIndex = 1;
-            this.Width_slider.TickFrequency = 0;
+            this.Width_slider.TickFrequency = 11;
             this.Width_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.Width_slider.Value = 1;
             this.Width_slider.Scroll += new System.EventHandler(this.Width_slider_Scroll);
             // 
             // nz_label
@@ -535,14 +533,15 @@
             // 
             this.Lambda_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Lambda_slider.Location = new System.Drawing.Point(10, 32);
-            this.Lambda_slider.Maximum = 780;
-            this.Lambda_slider.Minimum = 380;
+            this.Lambda_slider.Maximum = 78;
+            this.Lambda_slider.Minimum = 38;
             this.Lambda_slider.Name = "Lambda_slider";
             this.Lambda_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Lambda_slider.Size = new System.Drawing.Size(45, 159);
             this.Lambda_slider.TabIndex = 11;
+            this.Lambda_slider.TickFrequency = 0;
             this.Lambda_slider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.Lambda_slider.Value = 380;
+            this.Lambda_slider.Value = 38;
             this.Lambda_slider.Scroll += new System.EventHandler(this.Lambda_slider_Scroll);
             this.Lambda_slider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Lambda_slider_MouseDown);
             this.Lambda_slider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Lambda_slider_MouseUp);
@@ -577,30 +576,30 @@
             // 
             this.Ez_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Ez_slider.Location = new System.Drawing.Point(128, 32);
-            this.Ez_slider.Maximum = 500;
-            this.Ez_slider.Minimum = 50;
+            this.Ez_slider.Maximum = 50;
+            this.Ez_slider.Minimum = 5;
             this.Ez_slider.Name = "Ez_slider";
             this.Ez_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Ez_slider.Size = new System.Drawing.Size(45, 159);
             this.Ez_slider.TabIndex = 5;
-            this.Ez_slider.TickFrequency = 0;
+            this.Ez_slider.TickFrequency = 5;
             this.Ez_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.Ez_slider.Value = 50;
+            this.Ez_slider.Value = 15;
             this.Ez_slider.Scroll += new System.EventHandler(this.Ez_slider_Scroll);
             // 
             // Ey_slider
             // 
             this.Ey_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Ey_slider.Location = new System.Drawing.Point(67, 32);
-            this.Ey_slider.Maximum = 500;
-            this.Ey_slider.Minimum = 50;
+            this.Ey_slider.Maximum = 50;
+            this.Ey_slider.Minimum = 5;
             this.Ey_slider.Name = "Ey_slider";
             this.Ey_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Ey_slider.Size = new System.Drawing.Size(45, 159);
             this.Ey_slider.TabIndex = 6;
-            this.Ey_slider.TickFrequency = 0;
+            this.Ey_slider.TickFrequency = 5;
             this.Ey_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.Ey_slider.Value = 50;
+            this.Ey_slider.Value = 15;
             this.Ey_slider.Scroll += new System.EventHandler(this.Ey_slider_Scroll);
             // 
             // label5
