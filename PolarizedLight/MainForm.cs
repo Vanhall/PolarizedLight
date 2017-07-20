@@ -166,7 +166,7 @@ namespace PolarizedLight
             if (e.Button.Equals(MouseButtons.Middle))
             {
                 scene.cam.reset();
-                scene.render();
+                if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
             }
             else scene.cam.moving = true;
         }
@@ -188,13 +188,13 @@ namespace PolarizedLight
                     scene.cam.rotate(
                             scene.cam.phi - (e.X - scene.cam.mouseDX) / 3.0,
                             scene.cam.psi - (e.Y - scene.cam.mouseDY) / 3.0);
-                    scene.render();
+                    if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
                 }
                 // Если правая - перемещаем вдоль Z
                 else if (e.Button.Equals(MouseButtons.Right))
                 {
                     scene.cam.translate(scene.cam.height + (e.X - scene.cam.mouseDX) / 6.0);
-                    scene.render();
+                    if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
                 }
             }
             scene.cam.mouseDX = e.X;
@@ -204,7 +204,7 @@ namespace PolarizedLight
         private void GLViewPort_MouseWheel(object sender, MouseEventArgs e)
         {
             scene.cam.zoom(scene.cam.R - e.Delta / 120);
-            scene.render();
+            if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
         }
         #endregion
         
@@ -379,7 +379,7 @@ namespace PolarizedLight
 
         private void Lambda_slider_Scroll(object sender, EventArgs e)
         {
-            Lambda = Lambda_slider.Value / 10.0;
+            Lambda = 3.8 + Lambda_slider.Value * 0.05;
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
             if (scene.ExpIsRunning)
             {

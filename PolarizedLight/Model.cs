@@ -15,7 +15,18 @@ namespace PolarizedLight
         //private Bitmap bmp;
         //private byte[] b;
         private int VertexCount = 0;    // счетчик вершин
-        
+
+
+        private float[] Ambient = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
+        // Рассеянный свет
+        private float[] Diffuse = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
+        // Отраженный свет (блик)
+        private float[] Specular = new float[] { 0.7f, 0.7f, 0.7f, 1.0f };
+        // "Блескучесть" (матовая/глянцевая поверхность)
+        private float[] Shininess = new float[] { 60.0f, 60.0f, 60.0f, 1.0f };
+        // Излучаемый свет
+        private float[] Emission = new float[] { 0.0f, 0.0f, 0.0f, 1.0f };
+
         // Конструктор
         public Model(string name)
         {
@@ -114,6 +125,12 @@ namespace PolarizedLight
         // Функция отрисовки модели
         public void render()
         {
+            Gl.glMaterialfv(Gl.GL_FRONT, Gl.GL_AMBIENT_AND_DIFFUSE, Diffuse);
+            //Gl.glMaterialfv(Gl.GL_FRONT, Gl.GL_DIFFUSE, Diffuse);
+            Gl.glMaterialfv(Gl.GL_FRONT, Gl.GL_SPECULAR, Specular);
+            Gl.glMaterialf(Gl.GL_FRONT, Gl.GL_SHININESS, 80.0f);
+            //Gl.glMaterialf(Gl.GL_FRONT, Gl.GL_EMISSION, 0.0f);
+
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
 

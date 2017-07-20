@@ -533,15 +533,13 @@
             // 
             this.Lambda_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Lambda_slider.Location = new System.Drawing.Point(10, 32);
-            this.Lambda_slider.Maximum = 78;
-            this.Lambda_slider.Minimum = 38;
+            this.Lambda_slider.Maximum = 80;
             this.Lambda_slider.Name = "Lambda_slider";
             this.Lambda_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.Lambda_slider.Size = new System.Drawing.Size(45, 159);
             this.Lambda_slider.TabIndex = 11;
             this.Lambda_slider.TickFrequency = 0;
             this.Lambda_slider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.Lambda_slider.Value = 38;
             this.Lambda_slider.Scroll += new System.EventHandler(this.Lambda_slider_Scroll);
             this.Lambda_slider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Lambda_slider_MouseDown);
             this.Lambda_slider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Lambda_slider_MouseUp);

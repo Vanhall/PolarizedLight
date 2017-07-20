@@ -13,8 +13,7 @@ namespace PolarizedLight
         private Model Table, Laser, ControlUnit, Support, Screen;
         public Wave wave1, wave2, wave3;
         public Axies axies;
-        private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
-        public float r = 0.0f;
+        private readonly float[] light0Pos = { 0.0f, 5.0f, 10.0f, 0.0f };
         public bool ExpIsRunning = false, ExpIsPaused = false;
 
         public Scene(SimpleOpenGlControl _GLVP)
@@ -35,6 +34,7 @@ namespace PolarizedLight
             Gl.glEnable(Gl.GL_LIGHT0);
             Gl.glEnable(Gl.GL_CULL_FACE);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
+            Gl.glLightModeli(Gl.GL_LIGHT_MODEL_COLOR_CONTROL, Gl.GL_SEPARATE_SPECULAR_COLOR);
 
             axies = new Axies();
             Table = new Model("Models/Table");
@@ -46,12 +46,10 @@ namespace PolarizedLight
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, light0Amb);
-            float[] light0Dif = new float[] { 1.0f, 1.0f, 1.0f, 0.5f };
+            float[] light0Dif = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_DIFFUSE, light0Dif);
-            float[] light0Spec = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
+            float[] light0Spec = new float[] { 0.5f, 0.5f, 0.5f, 1.0f };
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_SPECULAR, light0Spec);
-
-
         }
 
         public void render()
