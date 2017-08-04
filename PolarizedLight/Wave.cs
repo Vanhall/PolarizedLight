@@ -6,8 +6,7 @@ namespace PolarizedLight
     class Wave
     {
         // Параметры отображения и Vertex Buffer Object'ы (VBO) +++
-        public struct DrawFlags { public bool OutLine, Vectors, Y, Z, Sum;
-        }
+        public struct DrawFlags { public bool OutLine, Vectors, Y, Z, Sum; }
         public DrawFlags Draw;                      // Какие элементы рисовать
         private int[] VBOPtr = new int[6];
         private float[] SumVBO, YVBO, ZVBO, SumVecVBO, YVecVBO, ZVecVBO;
@@ -32,7 +31,6 @@ namespace PolarizedLight
         #region конструкторы
         // Конструктор начального сегмента волны
         public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
-
         {
             Lambda = WaveLen; DeltaPhi = DPhi;
             Ey = E_y; Ez = E_z;

@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 //using System.Reflection;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.IO;
 using Tao.OpenGl;
 
 namespace PolarizedLight
 {
-    class Model
+    class Crystal
     {
         // Указатели на буферы вершин и нормалей
         private int[] VBOPtr = new int[1];
@@ -18,7 +19,7 @@ namespace PolarizedLight
 
         private float[] Ambient = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
         // Рассеянный свет
-        private float[] Diffuse = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
+        private float[] Diffuse = new float[] { 0.0f, 1.0f, 1.0f, 1.0f };
         // Отраженный свет (блик)
         private float[] Specular = new float[] { 0.7f, 0.7f, 0.7f, 1.0f };
         // "Блескучесть" (матовая/глянцевая поверхность)
@@ -27,7 +28,7 @@ namespace PolarizedLight
         private float[] Emission = new float[] { 0.0f, 0.0f, 0.0f, 1.0f };
 
         // Конструктор
-        public Model(string name)
+        public Crystal(string name)
         {
             #region парсер файлов .obj
             // Списки для записи информации из файла
@@ -107,18 +108,18 @@ namespace PolarizedLight
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(VBO.Length * sizeof(float)), VBO, Gl.GL_STATIC_DRAW);
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
-            
+
             // Грузим текстуру--------------------------------------------------------
-            Bitmap Texture = new Bitmap(name + ".bmp");
+            Bitmap Texture = new Bitmap(name + ".png");
             Texture.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            var TexData = Texture.LockBits( new Rectangle(0, 0, Texture.Width, Texture.Height),
-                    ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            var TexData = Texture.LockBits(new Rectangle(0, 0, Texture.Width, Texture.Height),
+                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 
             Gl.glGenTextures(1, TexPtr);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGB, Texture.Width, Texture.Height, 0, Gl.GL_BGR, Gl.GL_UNSIGNED_BYTE, TexData.Scan0);
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, Texture.Width, Texture.Height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, TexData.Scan0);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
 
             Texture.UnlockBits(TexData);
@@ -131,8 +132,10 @@ namespace PolarizedLight
             Gl.glMaterialfv(Gl.GL_FRONT, Gl.GL_AMBIENT_AND_DIFFUSE, Diffuse);
             //Gl.glMaterialfv(Gl.GL_FRONT, Gl.GL_DIFFUSE, Diffuse);
             Gl.glMaterialfv(Gl.GL_FRONT, Gl.GL_SPECULAR, Specular);
-            Gl.glMaterialf(Gl.GL_FRONT, Gl.GL_SHININESS, 95.0f);
+            Gl.glMaterialf(Gl.GL_FRONT, Gl.GL_SHININESS, 120.0f);
             //Gl.glMaterialf(Gl.GL_FRONT, Gl.GL_EMISSION, 0.0f);
+            Gl.glEnable(Gl.GL_BLEND);
+            Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
 
             Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
@@ -144,13 +147,14 @@ namespace PolarizedLight
             Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
             Gl.glEnableClientState(Gl.GL_NORMAL_ARRAY);
             Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
-            
+
             // Рисуем модель
             Gl.glDrawArrays(Gl.GL_TRIANGLES, 0, VertexCount);
 
             // Отключаем режим отрисовки VBO
             Gl.glDisableClientState(Gl.GL_VERTEX_ARRAY);
             Gl.glDisableClientState(Gl.GL_NORMAL_ARRAY);
+            Gl.glDisable(Gl.GL_BLEND);
             Gl.glDisableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
         }
     }

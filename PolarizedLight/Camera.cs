@@ -20,9 +20,9 @@ namespace PolarizedLight
 
         #region Константы и оганичители движения камеры
         private const double phiMax = 360.0, phiMin = 0.0;
-        private const double psiMax = 75.0, psiMin = -75.0;
-        private const double RMax = 25.0, RMin = 5.0;
-        private const double HeightMax = 15.0, HeightMin = -15.0;
+        private const double psiMax = 89.0, psiMin = -20.0;
+        private const double RMax = 35.0, RMin = 5.0;
+        private const double HeightMax = 18.0, HeightMin = -18.0;
         #endregion
 
         private double[] eye = new double[3];
