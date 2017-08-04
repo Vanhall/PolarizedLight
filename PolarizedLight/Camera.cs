@@ -20,9 +20,9 @@ namespace PolarizedLight
 
         #region Константы и оганичители движения камеры
         private const double phiMax = 360.0, phiMin = 0.0;
-        private const double psiMax = 75.0, psiMin = 1.0;
-        private const double RMax = 18.0, RMin = 5.0;
-        private const double HeightMax = 11.0, HeightMin = 0.0;
+        private const double psiMax = 89.0, psiMin = -20.0;
+        private const double RMax = 35.0, RMin = 5.0;
+        private const double HeightMax = 18.0, HeightMin = -18.0;
         #endregion
 
         private double[] eye = new double[3];
@@ -84,7 +84,7 @@ namespace PolarizedLight
         #endregion
 
         // конструктор камеры
-        public Camera(SimpleOpenGlControl GLVP)
+        public Camera()
         {
             eye[0] = R * Math.Cos(_phi) * Math.Cos(_psi);
             eye[1] = R * Math.Sin(_phi) * Math.Cos(_psi);
@@ -92,8 +92,10 @@ namespace PolarizedLight
             
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                eye[0], eye[1], eye[2] + _height,
-                pivot[0], pivot[1], pivot[2] + _height,
+                //eye[0], eye[1], eye[2] + _height,
+                //pivot[0], pivot[1], pivot[2] + _height,
+                eye[0] + _height, eye[1], eye[2],
+                pivot[0] + _height, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
@@ -108,8 +110,10 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                eye[0], eye[1], eye[2] + _height,
-                pivot[0], pivot[1], pivot[2] + _height,
+                //eye[0], eye[1], eye[2] + _height,
+                //pivot[0], pivot[1], pivot[2] + _height,
+                eye[0] + _height, eye[1], eye[2],
+                pivot[0] + _height, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
@@ -123,8 +127,10 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                eye[0], eye[1], eye[2] + _height,
-                pivot[0], pivot[1], pivot[2] + _height,
+                //eye[0], eye[1], eye[2] + _height,
+                //pivot[0], pivot[1], pivot[2] + _height,
+                eye[0] + _height, eye[1], eye[2],
+                pivot[0] + _height, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
@@ -134,8 +140,10 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                eye[0], eye[1], eye[2] + _height,
-                pivot[0], pivot[1], pivot[2] + _height,
+                //eye[0], eye[1], eye[2] + _height,
+                //pivot[0], pivot[1], pivot[2] + _height,
+                eye[0] + _height, eye[1], eye[2],
+                pivot[0] + _height, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
@@ -149,8 +157,10 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                eye[0], eye[1], eye[2] + _height,
-                pivot[0], pivot[1], pivot[2] + _height,
+                //eye[0], eye[1], eye[2] + _height,
+                //pivot[0], pivot[1], pivot[2] + _height,
+                eye[0] + _height, eye[1], eye[2],
+                pivot[0] + _height, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
         #endregion

@@ -6,15 +6,17 @@ namespace PolarizedLight
 {
     public partial class MainForm : Form
     {
-        Scene scene;
         private double Lambda = 3.8;
         private double ny = 1.0;
         private double nz = 1.0;
-        private double d = 1.0;
-        private float Ey = 0.5f;
-        private float Ez = 0.5f;
+        private double d = 0.1;
+        private float Ey = 1.5f;
+        private float Ez = 1.5f;
         private double DeltaPhase = 0.0;
+
+        Scene scene;
         Stopwatch Timer = new Stopwatch();
+        private const double TotalLength = 30.0;
 
         public MainForm()
         {
@@ -22,16 +24,18 @@ namespace PolarizedLight
             GLViewPort.InitializeContexts();
             GLViewPort.MouseWheel += new MouseEventHandler(GLViewPort_MouseWheel);
             scene = new Scene(GLViewPort);
+            scene.render();
 
             #region Инициализация интерфейса
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
             nz_label.Text = nz.ToString("F3");
             ny_label.Text = ny.ToString("F3");
-            Width_label.Text = d.ToString("F0") + " мм";
-            Ey_label.Text = Ey.ToString("F2") + " В/м";
-            Ez_label.Text = Ez.ToString("F2") + " В/м";
+            Width_label.Text = (d * 100.0).ToString("F0") + " нм";
+            Ey_label.Text = Ey.ToString("F1") + " В/м";
+            Ez_label.Text = Ez.ToString("F1") + " В/м";
             DeltaPhase_label.Text = DeltaPhase.ToString("F2") + "π";
             CrystalChoice_dropdown.SelectedIndex = 0;
+            timer_label.Text = "0.00 с";
             #endregion
         }
 
@@ -43,11 +47,14 @@ namespace PolarizedLight
         private void AnimTimer_Tick(object sender, EventArgs e)
         {
             scene.render();
-            scene.r += 1.0f;
-            double time = Timer.ElapsedMilliseconds / 1000.0;
-            scene.wave1.t = time;
-            scene.wave2.t = time;
-            scene.wave3.t = time;
+            if (!scene.ExpIsPaused)
+            {
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                timer_label.Text = time.ToString("F2") + " с";
+                scene.wave1.t = time;
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -60,71 +67,96 @@ namespace PolarizedLight
         {
             AnimTimer.Start();
             Timer.Start();
-            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, 10.0);
-            scene.wave2 = new Wave(scene.wave1, ny, nz, 10.0);
-            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, 10.0);
+            scene.wave1 = new Wave(Lambda, DeltaPhase, Ey, Ez, 1.0, 1.0, -15.0, (TotalLength - d) / 2.0);
+            scene.wave2 = new Wave(scene.wave1, ny, nz, d);
+            scene.wave3 = new Wave(scene.wave2, 1.0, 1.0, (TotalLength - d) / 2.0);
 
             #region Задание опций отрисовки
             if (DrawOutline_radio.Checked)
-            {
-                scene.wave1.Draw.OutLine = true;
-                scene.wave2.Draw.OutLine = true;
-                scene.wave3.Draw.OutLine = true;
+           {
+               scene.wave1.Draw.OutLine = true;
+               scene.wave2.Draw.OutLine = true;
+               scene.wave3.Draw.OutLine = true;
 
-                scene.wave1.Draw.Vectors = false;
-                scene.wave2.Draw.Vectors = false;
-                scene.wave3.Draw.Vectors = false;
-            }
-            if (DrawVec_radio.Checked)
-            {
-                scene.wave1.Draw.OutLine = false;
-                scene.wave2.Draw.OutLine = false;
-                scene.wave3.Draw.OutLine = false;
+               scene.wave1.Draw.Vectors = false;
+               scene.wave2.Draw.Vectors = false;
+               scene.wave3.Draw.Vectors = false;
+           }
+           if (DrawVec_radio.Checked)
+           {
+               scene.wave1.Draw.OutLine = false;
+               scene.wave2.Draw.OutLine = false;
+               scene.wave3.Draw.OutLine = false;
 
-                scene.wave1.Draw.Vectors = true;
-                scene.wave2.Draw.Vectors = true;
-                scene.wave3.Draw.Vectors = true;
-            }
-            if (DrawOutline_radio.Checked)
-            {
-                scene.wave1.Draw.OutLine = true;
-                scene.wave2.Draw.OutLine = true;
-                scene.wave3.Draw.OutLine = true;
+               scene.wave1.Draw.Vectors = true;
+               scene.wave2.Draw.Vectors = true;
+               scene.wave3.Draw.Vectors = true;
+           }
+           if (DrawOutline_radio.Checked)
+           {
+               scene.wave1.Draw.OutLine = true;
+               scene.wave2.Draw.OutLine = true;
+               scene.wave3.Draw.OutLine = true;
 
-                scene.wave1.Draw.Vectors = false;
-                scene.wave2.Draw.Vectors = false;
-                scene.wave3.Draw.Vectors = false;
-            }
-            if (DrawSumm_chbox.Checked)
-            {
-                scene.wave1.Draw.Sum = true;
-                scene.wave2.Draw.Sum = true;
-                scene.wave3.Draw.Sum = true;
-            }
-            if (DrawY_chbox.Checked)
-            {
-                scene.wave1.Draw.Y = true;
-                scene.wave2.Draw.Y = true;
-                scene.wave3.Draw.Y = true;
-            }
-            if (DrawZ_chbox.Checked)
-            {
-                scene.wave1.Draw.Z = true;
-                scene.wave2.Draw.Z = true;
-                scene.wave3.Draw.Z = true;
-            }
+               scene.wave1.Draw.Vectors = false;
+               scene.wave2.Draw.Vectors = false;
+               scene.wave3.Draw.Vectors = false;
+           }
+           if (DrawSumm_chbox.Checked)
+           {
+               scene.wave1.Draw.Sum = true;
+               scene.wave2.Draw.Sum = true;
+               scene.wave3.Draw.Sum = true;
+           }
+           if (DrawY_chbox.Checked)
+           {
+               scene.wave1.Draw.Y = true;
+               scene.wave2.Draw.Y = true;
+               scene.wave3.Draw.Y = true;
+           }
+           if (DrawZ_chbox.Checked)
+           {
+               scene.wave1.Draw.Z = true;
+               scene.wave2.Draw.Z = true;
+               scene.wave3.Draw.Z = true;
+           }
             #endregion
-            scene.ExpIsRunning = true;
-        }
 
+            scene.ExpIsRunning = true;
+            LockInterface();
+        }
+        private void ButtonPause_Click(object sender, EventArgs e)
+        {
+            if (scene.ExpIsPaused)
+            {
+                AnimTimer.Start();
+                Timer.Start();
+                scene.ExpIsPaused = false;
+                ButtonPause.Text = "ПАУЗА";
+            }
+            else
+            {
+                AnimTimer.Stop();
+                Timer.Stop();
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                scene.wave1.t = time;
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+                scene.render();
+                scene.ExpIsPaused = true;
+                ButtonPause.Text = "ПРОД.";
+            }
+        }
         private void ButtonStop_Click(object sender, EventArgs e)
         {
-            scene.ExpIsRunning = false;
             AnimTimer.Stop();
-            scene.r = 0.0f;
+            scene.ExpIsRunning = false;
+            scene.ExpIsPaused = false;
             scene.render();
-            Timer.Stop();
             Timer.Reset();
+            timer_label.Text = "0.00 с";
+            ButtonPause.Text = "ПАУЗА";
+            UnlockInterface();
         }
         #endregion
 
@@ -134,7 +166,7 @@ namespace PolarizedLight
             if (e.Button.Equals(MouseButtons.Middle))
             {
                 scene.cam.reset();
-                scene.render();
+                if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
             }
             else scene.cam.moving = true;
         }
@@ -156,13 +188,13 @@ namespace PolarizedLight
                     scene.cam.rotate(
                             scene.cam.phi - (e.X - scene.cam.mouseDX) / 3.0,
                             scene.cam.psi - (e.Y - scene.cam.mouseDY) / 3.0);
-                    scene.render();
+                    if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
                 }
                 // Если правая - перемещаем вдоль Z
                 else if (e.Button.Equals(MouseButtons.Right))
                 {
-                    scene.cam.translate(scene.cam.height + (e.Y - scene.cam.mouseDY) / 6.0);
-                    scene.render();
+                    scene.cam.translate(scene.cam.height + (e.X - scene.cam.mouseDX) / 6.0);
+                    if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
                 }
             }
             scene.cam.mouseDX = e.X;
@@ -172,7 +204,7 @@ namespace PolarizedLight
         private void GLViewPort_MouseWheel(object sender, MouseEventArgs e)
         {
             scene.cam.zoom(scene.cam.R - e.Delta / 120);
-            scene.render();
+            if (!scene.ExpIsRunning || scene.ExpIsPaused) scene.render();
         }
         #endregion
         
@@ -194,6 +226,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1553;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
                 case 2:
@@ -204,6 +244,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1762;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
                 case 3:
@@ -214,6 +262,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1760;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
                 case 4:
@@ -224,6 +280,14 @@ namespace PolarizedLight
                         ny_label.Text = ny.ToString("F3");
                         nz_slider.Value = 1638;
                         nz_label.Text = nz.ToString("F3");
+                        if (scene.ExpIsRunning)
+                        {
+                            scene.wave2.ny_update(ny);
+                            scene.wave2.nz_update(nz);
+                            scene.wave2.Phases_update(scene.wave1);
+                            scene.wave3.Phases_update(scene.wave2);
+                        }
+                        scene.render();
                     }
                     break;
             }
@@ -259,16 +323,18 @@ namespace PolarizedLight
 
         private void Width_slider_Scroll(object sender, EventArgs e)
         {
-            d = Width_slider.Value;
-            Width_label.Text = d.ToString("F0") + " мм";
+            d = 0.1 + Width_slider.Value * 3.0 / 10.0;
+            Width_label.Text = (d * 100.0).ToString("F0") + " нм";
+            scene.axies.SetScale((float)(d));
+            scene.render();
         }
         #endregion
 
         #region Вкладка "Источник света"
         private void Ey_slider_Scroll(object sender, EventArgs e)
         {
-            Ey = Ey_slider.Value/100.0f;
-            Ey_label.Text = Ey.ToString("F2") + " В/м";
+            Ey = Ey_slider.Value/10.0f;
+            Ey_label.Text = Ey.ToString("F1") + " В/м";
 
             if (scene.ExpIsRunning)
             {
@@ -281,8 +347,8 @@ namespace PolarizedLight
 
         private void Ez_slider_Scroll(object sender, EventArgs e)
         {
-            Ez = Ez_slider.Value/100.0f;
-            Ez_label.Text = Ez.ToString("F2") + " В/м";
+            Ez = Ez_slider.Value/10.0f;
+            Ez_label.Text = Ez.ToString("F1") + " В/м";
             if (scene.ExpIsRunning)
             {
                 scene.wave1.Ez_update(Ez);
@@ -292,23 +358,55 @@ namespace PolarizedLight
             scene.render();
         }
 
+        private void Lambda_slider_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (scene.ExpIsRunning)
+            {
+                Timer.Stop();
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                scene.wave1.t = time;
+                scene.wave1.FixCurrentPhase();
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+            }
+        }
+
+        private void Lambda_slider_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!scene.ExpIsPaused)
+                Timer.Start();
+        }
+
         private void Lambda_slider_Scroll(object sender, EventArgs e)
         {
-            Lambda = Lambda_slider.Value / 100.0;
+            Lambda = 3.8 + Lambda_slider.Value * 0.05;
             Lambda_label.Text = (Lambda * 100.0).ToString("F0") + " нм";
             if (scene.ExpIsRunning)
             {
-                scene.wave1.t = 0.0;
-                scene.wave2.t = 0.0;
-                scene.wave3.t = 0.0;
                 scene.wave1.Lambda_update(Lambda);
-                scene.wave2.Lambda_update(Lambda, scene.wave1);
-                scene.wave3.Lambda_update(Lambda, scene.wave2);
+                scene.wave2.Lambda_update(scene.wave1);
+                scene.wave3.Lambda_update(scene.wave2);
             }
-            Timer.Reset();
-            Timer.Start();
+            scene.render();
         }
 
+        private void DeltaPhase_slider_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (scene.ExpIsRunning)
+            {
+                Timer.Stop();
+                double time = Timer.ElapsedMilliseconds / 1000.0;
+                scene.wave1.t = time;
+                scene.wave2.t = time;
+                scene.wave3.t = time;
+            }
+        }
+
+        private void DeltaPhase_slider_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!scene.ExpIsPaused)
+                Timer.Start();
+        }
         private void DeltaPhase_slider_Scroll(object sender, EventArgs e)
         {
             DeltaPhase = DeltaPhase_slider.Value / 100.0;
@@ -333,6 +431,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Sum = DrawSumm_chbox.Checked;
                 scene.wave2.Draw.Sum = DrawSumm_chbox.Checked;
                 scene.wave3.Draw.Sum = DrawSumm_chbox.Checked;
+
+                scene.render();
             }
         }
 
@@ -343,6 +443,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Z = DrawZ_chbox.Checked;
                 scene.wave2.Draw.Z = DrawZ_chbox.Checked;
                 scene.wave3.Draw.Z = DrawZ_chbox.Checked;
+
+                scene.render();
             }
         }
 
@@ -353,6 +455,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Y = DrawY_chbox.Checked;
                 scene.wave2.Draw.Y = DrawY_chbox.Checked;
                 scene.wave3.Draw.Y = DrawY_chbox.Checked;
+
+                scene.render();
             }
         }
 
@@ -367,6 +471,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Vectors = true;
                 scene.wave2.Draw.Vectors = true;
                 scene.wave3.Draw.Vectors = true;
+
+                scene.render();
             }
         }
 
@@ -381,6 +487,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Vectors = false;
                 scene.wave2.Draw.Vectors = false;
                 scene.wave3.Draw.Vectors = false;
+
+                scene.render();
             }
         }
 
@@ -395,6 +503,8 @@ namespace PolarizedLight
                 scene.wave1.Draw.Vectors = true;
                 scene.wave2.Draw.Vectors = true;
                 scene.wave3.Draw.Vectors = true;
+
+                scene.render();
             }
         }
         #endregion
@@ -404,7 +514,25 @@ namespace PolarizedLight
         {
             Application.Exit();
         }
+
         #endregion
         
+        private void LockInterface()
+        {
+            ButtonStart.Enabled = false;
+            ButtonPause.Enabled = true;
+            ButtonStop.Enabled = true;
+
+            Width_slider.Enabled = false;
+        }
+
+        private void UnlockInterface()
+        {
+            ButtonStart.Enabled = true;
+            ButtonPause.Enabled = false;
+            ButtonStop.Enabled = false;
+
+            Width_slider.Enabled = true;
+        }
     }
 }

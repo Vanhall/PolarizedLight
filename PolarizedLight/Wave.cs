@@ -5,31 +5,34 @@ namespace PolarizedLight
 {
     class Wave
     {
-        public struct DrawFlags { public bool OutLine, Vectors, Y, Z, Sum;
-        }
+        // Параметры отображения и Vertex Buffer Object'ы (VBO) +++
+        public struct DrawFlags { public bool OutLine, Vectors, Y, Z, Sum; }
         public DrawFlags Draw;                      // Какие элементы рисовать
         private int[] VBOPtr = new int[6];
         private float[] SumVBO, YVBO, ZVBO, SumVecVBO, YVecVBO, ZVecVBO;
         private double GridStep = 0.1;              // Шаг разбиения
         private int VecSpacing = 5;                 // Через сколько шагов рисовать векторы
-        int Steps, VecSteps;                        // Кол-во шагов сетки
-
-        // Начальная координата и ОБЩАЯ длина волны
-        private double X0, Length;
+        private int Steps, VecSteps;                        // Кол-во шагов сетки
+        private float[] SumColor = new float[3], YColor = new float[3], ZColor = new float[3];
+        
+        // Параметры волны ++++++++++++++++++++++++++++++++++++++++
+        private double X0, Length;                  // Начальная координата и ОБЩАЯ длина волны
         private float Ey, Ez;                       // Амплитуды
         private double ny, nz;                      // Коэф-ты преломления
         private double Lambda, Phi0Y, Phi0Z;        // Длина волны, нач. фазы
         private const double c = 6.0;               // Скорость света
+        private double DeltaPhi;                    // Разность фаз
 
+        // Вспомогательное ++++++++++++++++++++++++++++++++++++++++
         private double P;                           // P = 2*Pi/Lambda
         public double t = 0.0;                      // Время
+        private double CurrentPhi0Y = 0.0;          // Текущая фаза в начале сегмента
 
         #region конструкторы
         // Конструктор начального сегмента волны
         public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
-
         {
-            Lambda = WaveLen;
+            Lambda = WaveLen; DeltaPhi = DPhi;
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
@@ -41,6 +44,13 @@ namespace PolarizedLight
             SumVBO = new float[Steps * 3 + 3];
             YVBO = new float[Steps * 3 + 3];
             ZVBO = new float[Steps * 3 + 3];
+
+            SumColor = LambdaToRGB(Lambda);
+            for (int i = 0; i < 3; i++)
+            {
+                YColor[i] = SumColor[i] * 0.7f;
+                ZColor[i] = SumColor[i] * 0.4f;
+            }
 
             VecSteps = Steps * 2 / VecSpacing;
             SumVecVBO = new float[(Steps * 6 / VecSpacing) + 6];
@@ -70,14 +80,14 @@ namespace PolarizedLight
 
             P = 2.0 * Math.PI / Lambda;
             Phi0Y = -P * (-ny * X0);
-            Phi0Z = DPhi + Phi0Y;
+            Phi0Z = Phi0Y + DeltaPhi;
         }
 
         // Конструктор последующего сегмента волны
-        // Передаем предыдущий сегмент и новые ny, nz
+        // Передаем предыдущий сегмент новые ny, nz и длину
         public Wave(Wave W, double n_y, double n_z, double _Length)
         {
-            Lambda = W.Lambda;
+            Lambda = W.Lambda; DeltaPhi = 0.0;
             Ey = W.Ey; Ez = W.Ez;
             ny = n_y; nz = n_z;
             X0 = W.X0 + W.Length; Length = _Length;
@@ -89,6 +99,13 @@ namespace PolarizedLight
             SumVBO = new float[Steps * 3 + 3];
             YVBO = new float[Steps * 3 + 3];
             ZVBO = new float[Steps * 3 + 3];
+
+            SumColor = LambdaToRGB(Lambda);
+            for (int i = 0; i < 3; i++)
+            {
+                YColor[i] = SumColor[i] * 0.7f;
+                ZColor[i] = SumColor[i] * 0.4f;
+            }
 
             VecSteps = Steps * 2 / VecSpacing;
             SumVecVBO = new float[(Steps * 6 / VecSpacing) + 6];
@@ -121,7 +138,9 @@ namespace PolarizedLight
             Phi0Z = W.GetEndPhi0Z() + P * (nz * X0);
         }
         #endregion
-        
+
+        #region Методы обновления параметров
+        // Текущие фазы на конце сегмента -------------------------
         private double GetEndPhi0Y()
         {
             return P * (c * t - ny * (X0 + Length)) + Phi0Y;
@@ -132,19 +151,42 @@ namespace PolarizedLight
             return P * (c * t - nz * (X0 + Length)) + Phi0Z;
         }
         
+        // Текущая фаза в начале сегмента
+        public void FixCurrentPhase()
+        {
+            CurrentPhi0Y = P * (c * t - ny * X0) + Phi0Y;
+        }
+
+        // Длина волны --------------------------------------------
+        // Для первого сегмента
         public void Lambda_update(double new_Lambda)
         {
             Lambda = new_Lambda;
             P = 2.0 * Math.PI / Lambda;
+            Phi0Y = -P * (c * t - ny * X0) + CurrentPhi0Y;
+            Phi0Z = Phi0Y + DeltaPhi;
+
+            SumColor = LambdaToRGB(Lambda);
+            for (int i = 0; i < 3; i++)
+            {
+                YColor[i] = SumColor[i] * 0.7f;
+                ZColor[i] = SumColor[i] * 0.4f;
+            }
         }
 
-        public void Lambda_update(double new_Lambda, Wave W)
+        // Для последующих сегментов
+        public void Lambda_update(Wave W)
         {
-            Lambda = new_Lambda;
+            Lambda = W.Lambda;
             P = 2.0 * Math.PI / Lambda;
             Phases_update(W);
+
+            SumColor = W.SumColor;
+            YColor = W.YColor;
+            ZColor = W.ZColor;
         }
 
+        // Коэф-ты преломления ------------------------------------
         public void ny_update(double new_ny)
         {
             ny = new_ny;
@@ -155,18 +197,22 @@ namespace PolarizedLight
             nz = new_nz;
         }
 
+        // Фазы ---------------------------------------------------
+        // Для первого сегмента 
+        public void Phases_update(double new_DPhi)
+        {
+            DeltaPhi = new_DPhi;
+            Phi0Z = Phi0Y + DeltaPhi;
+        }
+
+        // Для последующих сегментов
         public void Phases_update(Wave W)
         {
             Phi0Y = W.GetEndPhi0Y() - P * (c * t - ny * X0);
             Phi0Z = W.GetEndPhi0Z() - P * (c * t - nz * X0);
         }
 
-        public void Phases_update(double new_DPhi)
-        {
-            Phi0Y = - P * (c * t - ny * X0);
-            Phi0Z = new_DPhi + Phi0Y;
-        }
-
+        // Амплитуды ----------------------------------------------
         public void Ey_update(float new_Ey)
         {
             Ey = new_Ey;
@@ -175,6 +221,33 @@ namespace PolarizedLight
         public void Ez_update(float new_Ez)
         {
             Ez = new_Ez;
+        }
+        #endregion
+
+        private float[] LambdaToRGB(double Lambda)
+        {
+            float[] color = new float[3];
+            float l = (float)(Lambda);
+            
+            // Red
+            if (l >= 5.8f) color[0] = 1.0f;
+            if (l >= 5.4f && l < 5.8f) color[0] = 1.0f * (l - 5.4f) /0.2f;
+            if (l >= 4.65f && l < 5.4f) color[0] = 0.0f;
+            if (l < 4.65f) color[0] = 1.0f - 1.0f *((l - 3.8f)/0.85f);
+
+            // Green
+            if (l >= 6.1f) color[1] = 0.5f - 0.5f * (l - 6.1f) / 1.7f;
+            if (l >= 5.8 && l < 6.1f) color[1] = 1.0f - 0.5f * (l - 5.8f) / 0.3f;
+            if (l >= 4.95f && l < 5.8f) color[1] = 1.0f;
+            if (l >= 4.65f && l < 4.95f) color[1] = 1.0f * (l - 4.65f) / 0.3f;
+            if (l < 4.65f) color[1] = 0.0f;
+
+            // Blue
+            if (l >= 5.4f) color[2] = 0.0f;
+            if (l >= 4.95f && l < 5.4f) color[2] = 1.0f - 1.0f * (l - 4.95f) / 0.45f;
+            if (l < 4.95f) color[2] = 1.0f;
+            
+            return color;
         }
 
         public void render()
@@ -245,7 +318,7 @@ namespace PolarizedLight
                 Gl.glLineWidth(2.0f);
                 if (Draw.Sum)
                 {
-                    Gl.glColor3f(1.0f, 1.0f, 0.0f);
+                    Gl.glColor3fv(SumColor);
                     Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
                     Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(SumVBO.Length * sizeof(float)), SumVBO, Gl.GL_DYNAMIC_DRAW);
                     Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
@@ -254,7 +327,7 @@ namespace PolarizedLight
 
                 if (Draw.Y)
                 {
-                    Gl.glColor3f(1.0f, 0.0f, 1.0f);
+                    Gl.glColor3fv(YColor);
                     Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[1]);
                     Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(YVBO.Length * sizeof(float)), YVBO, Gl.GL_DYNAMIC_DRAW);
                     Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
@@ -263,7 +336,7 @@ namespace PolarizedLight
 
                 if (Draw.Z)
                 {
-                    Gl.glColor3f(0.0f, 1.0f, 1.0f);
+                    Gl.glColor3fv(ZColor);
                     Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[2]);
                     Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(ZVBO.Length * sizeof(float)), ZVBO, Gl.GL_DYNAMIC_DRAW);
                     Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
@@ -279,7 +352,7 @@ namespace PolarizedLight
                 Gl.glLineWidth(1.5f);
                 if (Draw.Sum)
                 {
-                    Gl.glColor3f(1.0f, 1.0f, 0.0f);
+                    Gl.glColor3fv(SumColor);
                     Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[3]);
                     Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(SumVecVBO.Length * sizeof(float)), SumVecVBO, Gl.GL_DYNAMIC_DRAW);
                     Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
@@ -288,7 +361,7 @@ namespace PolarizedLight
 
                 if (Draw.Y)
                 {
-                    Gl.glColor3f(1.0f, 0.0f, 1.0f);
+                    Gl.glColor3fv(YColor);
                     Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[4]);
                     Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(YVecVBO.Length * sizeof(float)), YVecVBO, Gl.GL_DYNAMIC_DRAW);
                     Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
@@ -297,7 +370,7 @@ namespace PolarizedLight
 
                 if (Draw.Z)
                 {
-                    Gl.glColor3f(0.0f, 1.0f, 1.0f);
+                    Gl.glColor3fv(ZColor);
                     Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[5]);
                     Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(ZVecVBO.Length * sizeof(float)), ZVecVBO, Gl.GL_DYNAMIC_DRAW);
                     Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);

@@ -8,14 +8,14 @@ namespace PolarizedLight
     {
         private SimpleOpenGlControl GLVP;
         public Camera cam;
-        private const double FOV = 45, zNear = 0.1, zFar = 200;
+        private const double FOV = 50, zNear = 1.0, zFar = 200.0;
 
-        private Model testModel, testModel2;
+        private Model Table, Laser, ControlUnit, Supports, Connector, Platforms;
+        private Crystal Crystal_model;
         public Wave wave1, wave2, wave3;
-        private Axies axies;
-        private readonly float[] light0Pos = { 5.0f, 10.0f, 20.0f, 0.0f };
-        public float r = 0.0f;
-        public bool ExpIsRunning = false;
+        public Axies axies;
+        private float[] light0Pos = { 0.0f, 3.0f, 15.0f, 1.0f };
+        public bool ExpIsRunning = false, ExpIsPaused = false;
 
         public Scene(SimpleOpenGlControl _GLVP)
         {
@@ -23,7 +23,7 @@ namespace PolarizedLight
             Gl.glViewport(0, 0, GLVP.Width, GLVP.Height);
             Gl.glClearColor(0.7f, 0.7f, 0.8f, 1.0f);
 
-            cam = new Camera(GLVP);
+            cam = new Camera();
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             Gl.glLoadIdentity();
             Glu.gluPerspective(FOV, (double)GLVP.Width / (double)GLVP.Height, zNear, zFar);
@@ -35,20 +35,21 @@ namespace PolarizedLight
             Gl.glEnable(Gl.GL_LIGHT0);
             Gl.glEnable(Gl.GL_CULL_FACE);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
+            Gl.glLightModeli(Gl.GL_LIGHT_MODEL_COLOR_CONTROL, Gl.GL_SEPARATE_SPECULAR_COLOR);
 
             axies = new Axies();
-            testModel = new Model("Models/testcube");
-            testModel2 = new Model("Models/testcyl");
-          
+            Table = new Model("Models/Table");
+            Laser = new Model("Models/Laser");
+            ControlUnit = new Model("Models/ControlUnit");
+            Supports = new Model("Models/Supports");
+            Connector = new Model("Models/Connector");
+            Platforms = new Model("Models/Platforms");
+            Crystal_model = new Crystal("Models/Crystal");
+
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
-            float[] light0Amb = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, light0Amb);
-            float[] light0Dif = new float[] { 1.0f, 1.0f, 1.0f, 0.5f };
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_DIFFUSE, light0Dif);
-            float[] light0Spec = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_SPECULAR, light0Spec);
-
-
+            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, new float[] { 0.25f, 0.25f, 0.25f, 1.0f });
+            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_DIFFUSE, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
+            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_SPECULAR, new float[] { 0.5f, 0.5f, 0.5f, 1.0f });
         }
 
         public void render()
@@ -67,13 +68,16 @@ namespace PolarizedLight
             }
 
             axies.render();
-
-            //Gl.glPushMatrix();
-            //Gl.glRotatef(r, 0.0f, 0.0f, 1.0f);
-            //testModel.render();
-            //testModel2.render();
-            //Gl.glPopMatrix();
             
+            Table.render();
+            Laser.render();
+            ControlUnit.render();
+            Supports.render();
+            Connector.render();
+            Platforms.render();
+
+            Crystal_model.render();
+
             // сообщаем OpenGL что закончили все дела и можно рисовать кадр
             Gl.glFlush();
             GLVP.Invalidate();
