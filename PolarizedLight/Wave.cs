@@ -8,12 +8,25 @@ namespace PolarizedLight
         // Параметры отображения и Vertex Buffer Object'ы (VBO) +++
         public struct DrawFlags { public bool OutLine, Vectors, Y, Z, Sum; }
         public DrawFlags Draw;                      // Какие элементы рисовать
-        private int[] VBOPtr = new int[6];
-        private float[] SumVBO, YVBO, ZVBO, SumVecVBO, YVecVBO, ZVecVBO;
-        private double GridStep = 0.1;              // Шаг разбиения
-        private int VecSpacing = 5;                 // Через сколько шагов рисовать векторы
-        private int Steps, VecSteps;                        // Кол-во шагов сетки
-        private float[] SumColor = new float[3], YColor = new float[3], ZColor = new float[3];
+        private int[] VBOPtr = new int[7];
+        private float[] SumVBO, YVBO, ZVBO, SumVecVBO, YVecVBO, ZVecVBO, BeamVBO;
+        private double GridStep = 0.15;             // Шаг разбиения
+        private int VecSpacing = 3;                 // Через сколько шагов рисовать векторы
+        private int Steps, VecSteps;                // Кол-во шагов сетки
+        private float[] SumColor = new float[4], YColor = new float[4], ZColor = new float[4];
+        public float[] Color
+        {
+            get { return SumColor; }
+            set
+            {
+                value.CopyTo(SumColor, 0);
+                for (int i = 0; i < 4; i++)
+                {
+                    YColor[i] = value[i] * 0.7f;
+                    ZColor[i] = value[i] * 0.4f;
+                }
+            }
+        }
         
         // Параметры волны ++++++++++++++++++++++++++++++++++++++++
         private double X0, Length;                  // Начальная координата и ОБЩАЯ длина волны
@@ -40,17 +53,17 @@ namespace PolarizedLight
             Draw.OutLine = true; Draw.Vectors = true;
             Draw.Sum = true; Draw.Y = false; Draw.Z = false;
 
+            BeamVBO = new float[] {
+                (float)X0, 0.0f, 0.0f,
+                (float)(X0 + Length), 0.0f, 0.0f
+            };
+
             Steps = (int)(Length / GridStep);
             SumVBO = new float[Steps * 3 + 3];
             YVBO = new float[Steps * 3 + 3];
             ZVBO = new float[Steps * 3 + 3];
-
-            SumColor = LambdaToRGB(Lambda);
-            for (int i = 0; i < 3; i++)
-            {
-                YColor[i] = SumColor[i] * 0.7f;
-                ZColor[i] = SumColor[i] * 0.4f;
-            }
+            
+            Color = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
 
             VecSteps = Steps * 2 / VecSpacing;
             SumVecVBO = new float[(Steps * 6 / VecSpacing) + 6];
@@ -76,7 +89,15 @@ namespace PolarizedLight
                 ZVecVBO[i_offset + 3] = X;
             }
 
-            Gl.glGenBuffers(6, VBOPtr);
+            Gl.glGenBuffers(7, VBOPtr);
+
+            BeamVBO = new float[] {
+                (float)X0, 0.0f, 0.0f,
+                (float)(X0 + Length), 0.0f, 0.0f
+            };
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[6]);
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(BeamVBO.Length * sizeof(float)), BeamVBO, Gl.GL_STATIC_DRAW);
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
 
             P = 2.0 * Math.PI / Lambda;
             Phi0Y = -P * (-ny * X0);
@@ -99,13 +120,8 @@ namespace PolarizedLight
             SumVBO = new float[Steps * 3 + 3];
             YVBO = new float[Steps * 3 + 3];
             ZVBO = new float[Steps * 3 + 3];
-
-            SumColor = LambdaToRGB(Lambda);
-            for (int i = 0; i < 3; i++)
-            {
-                YColor[i] = SumColor[i] * 0.7f;
-                ZColor[i] = SumColor[i] * 0.4f;
-            }
+            
+            Color = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
 
             VecSteps = Steps * 2 / VecSpacing;
             SumVecVBO = new float[(Steps * 6 / VecSpacing) + 6];
@@ -131,7 +147,15 @@ namespace PolarizedLight
                 ZVecVBO[i_offset + 3] = X;
             }
 
-            Gl.glGenBuffers(6, VBOPtr);
+            Gl.glGenBuffers(7, VBOPtr);
+
+            BeamVBO = new float[] {
+                (float)X0, 0.0f, 0.0f,
+                (float)(X0 + Length), 0.0f, 0.0f
+            };
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[6]);
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(BeamVBO.Length * sizeof(float)), BeamVBO, Gl.GL_STATIC_DRAW);
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
 
             P = 2.0 * Math.PI / Lambda;
             Phi0Y = W.GetEndPhi0Y() + P * (ny * X0);
@@ -166,7 +190,7 @@ namespace PolarizedLight
             Phi0Y = -P * (c * t - ny * X0) + CurrentPhi0Y;
             Phi0Z = Phi0Y + DeltaPhi;
 
-            SumColor = LambdaToRGB(Lambda);
+            //SumColor = LambdaToRGB(Lambda);
             for (int i = 0; i < 3; i++)
             {
                 YColor[i] = SumColor[i] * 0.7f;
@@ -224,31 +248,31 @@ namespace PolarizedLight
         }
         #endregion
 
-        private float[] LambdaToRGB(double Lambda)
-        {
-            float[] color = new float[3];
-            float l = (float)(Lambda);
+        //private float[] LambdaToRGB(double Lambda)
+        //{
+        //    float[] color = new float[3];
+        //    float l = (float)(Lambda);
             
-            // Red
-            if (l >= 5.8f) color[0] = 1.0f;
-            if (l >= 5.4f && l < 5.8f) color[0] = 1.0f * (l - 5.4f) /0.2f;
-            if (l >= 4.65f && l < 5.4f) color[0] = 0.0f;
-            if (l < 4.65f) color[0] = 1.0f - 1.0f *((l - 3.8f)/0.85f);
+        //    // Red
+        //    if (l >= 5.8f) color[0] = 1.0f;
+        //    else if (l >= 5.4f) color[0] = 1.0f * (l - 5.4f) / 0.2f;
+        //    else if (l >= 4.65f) color[0] = 0.0f;
+        //    else color[0] = 1.0f - 1.0f * ((l - 3.8f) / 0.85f);
 
-            // Green
-            if (l >= 6.1f) color[1] = 0.5f - 0.5f * (l - 6.1f) / 1.7f;
-            if (l >= 5.8 && l < 6.1f) color[1] = 1.0f - 0.5f * (l - 5.8f) / 0.3f;
-            if (l >= 4.95f && l < 5.8f) color[1] = 1.0f;
-            if (l >= 4.65f && l < 4.95f) color[1] = 1.0f * (l - 4.65f) / 0.3f;
-            if (l < 4.65f) color[1] = 0.0f;
+        //    // Green
+        //    if (l >= 6.1f) color[1] = 0.5f - 0.5f * (l - 6.1f) / 1.7f;
+        //    else if (l >= 5.8) color[1] = 1.0f - 0.5f * (l - 5.8f) / 0.3f;
+        //    else if (l >= 4.95f) color[1] = 1.0f;
+        //    else if (l >= 4.65f) color[1] = 1.0f * (l - 4.65f) / 0.3f;
+        //    else color[1] = 0.0f;
 
-            // Blue
-            if (l >= 5.4f) color[2] = 0.0f;
-            if (l >= 4.95f && l < 5.4f) color[2] = 1.0f - 1.0f * (l - 4.95f) / 0.45f;
-            if (l < 4.95f) color[2] = 1.0f;
+        //    // Blue
+        //    if (l >= 5.4f) color[2] = 0.0f;
+        //    else if (l >= 4.95f) color[2] = 1.0f - 1.0f * (l - 4.95f) / 0.45f;
+        //    else color[2] = 1.0f;
             
-            return color;
-        }
+        //    return color;
+        //}
 
         public void render()
         {
@@ -306,12 +330,19 @@ namespace PolarizedLight
             ZVBO[i_offset + 2] = Z;
             #endregion
 
-            // Отрисовка ################################################
+            // Отрисовка --------------------------------------------
             Gl.glDisable(Gl.GL_LIGHTING);
             Gl.glDisable(Gl.GL_TEXTURE_2D);
             Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
 
-            // Огибающие --------------------------------------------
+            #region Луч
+            Gl.glLineWidth(1.5f);
+            Gl.glColor3fv(SumColor);
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[6]);
+            Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, IntPtr.Zero);
+            Gl.glDrawArrays(Gl.GL_LINES, 0, 2);
+            #endregion
+
             #region Отрисовка огибающих
             if (Draw.OutLine)
             {
@@ -344,8 +375,7 @@ namespace PolarizedLight
                 }
             }
             #endregion
-
-            // Векторы -----------------------------------------------
+            
             #region Отрисовка векторов
             if (Draw.Vectors)
             {
@@ -382,6 +412,7 @@ namespace PolarizedLight
             Gl.glDisableClientState(Gl.GL_VERTEX_ARRAY);
             Gl.glEnable(Gl.GL_LIGHTING);
             Gl.glEnable(Gl.GL_TEXTURE_2D);
+            // ------------------------------------------------------
         }
     }
 }

@@ -9,7 +9,7 @@ namespace PolarizedLight
         private double Lambda = 3.8;
         private double ny = 1.0;
         private double nz = 1.0;
-        private double d = 0.1;
+        private double d = 0.95;
         private float Ey = 1.5f;
         private float Ez = 1.5f;
         private double DeltaPhase = 0.0;
@@ -24,6 +24,7 @@ namespace PolarizedLight
             GLViewPort.InitializeContexts();
             GLViewPort.MouseWheel += new MouseEventHandler(GLViewPort_MouseWheel);
             scene = new Scene(GLViewPort);
+            scene.Scale = 0.95f/ 4.0f;
             scene.render();
 
             #region Инициализация интерфейса
@@ -122,6 +123,7 @@ namespace PolarizedLight
            }
             #endregion
 
+            scene.UpdateColor(Lambda);
             scene.ExpIsRunning = true;
             LockInterface();
         }
@@ -323,9 +325,9 @@ namespace PolarizedLight
 
         private void Width_slider_Scroll(object sender, EventArgs e)
         {
-            d = 0.1 + Width_slider.Value * 3.0 / 10.0;
+            d = 0.95 + Width_slider.Value * 0.05;
             Width_label.Text = (d * 100.0).ToString("F0") + " нм";
-            scene.axies.SetScale((float)(d));
+            scene.Scale = (float)d / 4.0f;
             scene.render();
         }
         #endregion
@@ -386,6 +388,7 @@ namespace PolarizedLight
                 scene.wave1.Lambda_update(Lambda);
                 scene.wave2.Lambda_update(scene.wave1);
                 scene.wave3.Lambda_update(scene.wave2);
+                scene.UpdateColor(Lambda);
             }
             scene.render();
         }

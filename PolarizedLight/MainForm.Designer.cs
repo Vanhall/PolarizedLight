@@ -369,11 +369,11 @@
             // 
             this.Width_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Width_slider.Location = new System.Drawing.Point(22, 43);
-            this.Width_slider.Maximum = 33;
+            this.Width_slider.Maximum = 61;
             this.Width_slider.Name = "Width_slider";
             this.Width_slider.Size = new System.Drawing.Size(172, 45);
             this.Width_slider.TabIndex = 1;
-            this.Width_slider.TickFrequency = 11;
+            this.Width_slider.TickFrequency = 31;
             this.Width_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.Width_slider.Scroll += new System.EventHandler(this.Width_slider_Scroll);
             // 
@@ -574,7 +574,7 @@
             // 
             this.Ez_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Ez_slider.Location = new System.Drawing.Point(128, 32);
-            this.Ez_slider.Maximum = 50;
+            this.Ez_slider.Maximum = 25;
             this.Ez_slider.Minimum = 5;
             this.Ez_slider.Name = "Ez_slider";
             this.Ez_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -589,7 +589,7 @@
             // 
             this.Ey_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Ey_slider.Location = new System.Drawing.Point(67, 32);
-            this.Ey_slider.Maximum = 50;
+            this.Ey_slider.Maximum = 25;
             this.Ey_slider.Minimum = 5;
             this.Ey_slider.Name = "Ey_slider";
             this.Ey_slider.Orientation = System.Windows.Forms.Orientation.Vertical;

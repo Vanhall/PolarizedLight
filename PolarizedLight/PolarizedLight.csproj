@@ -60,9 +60,7 @@
     <Reference Include="Tao.Platform.Windows, Version=1.0.0.5, Culture=neutral, PublicKeyToken=701104b2da67a104" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axies.cs" />
     <Compile Include="Camera.cs" />
-    <Compile Include="Crystal.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,25 +124,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Palette.jpg" />
-    <Content Include="Models\ControlUnit.bmp">
+    <Content Include="Models\Connector.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\ControlUnit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Crystal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Laser.bmp">
+    <Content Include="Models\Laser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Connector.bmp">
+    <Content Include="Models\Platforms.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Platforms.bmp">
+    <Content Include="Models\Supports.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Supports.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\Table.bmp">
+    <Content Include="Models\Table.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icon.ico" />
