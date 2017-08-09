@@ -63,6 +63,16 @@ namespace PolarizedLight.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Gradient {
+            get {
+                object obj = ResourceManager.GetObject("Gradient", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap NSTU_Logo_blue {
             get {
                 object obj = ResourceManager.GetObject("NSTU_Logo_blue", resourceCulture);
@@ -73,9 +83,9 @@ namespace PolarizedLight.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Palette {
+        internal static System.Drawing.Bitmap splash_screen {
             get {
-                object obj = ResourceManager.GetObject("Palette", resourceCulture);
+                object obj = ResourceManager.GetObject("splash_screen", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

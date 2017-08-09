@@ -33,7 +33,7 @@ namespace PolarizedLight
         private float Ey, Ez;                       // Амплитуды
         private double ny, nz;                      // Коэф-ты преломления
         private double Lambda, Phi0Y, Phi0Z;        // Длина волны, нач. фазы
-        private const double c = 6.0;               // Скорость света
+        private double c = 6.0;               // Скорость света
         private double DeltaPhi;                    // Разность фаз
 
         // Вспомогательное ++++++++++++++++++++++++++++++++++++++++
@@ -43,15 +43,16 @@ namespace PolarizedLight
 
         #region конструкторы
         // Конструктор начального сегмента волны
-        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length)
+        public Wave(double WaveLen, double DPhi, float E_y, float E_z, double n_y, double n_z, double _X0, double _Length, double _c)
         {
             Lambda = WaveLen; DeltaPhi = DPhi;
             Ey = E_y; Ez = E_z;
             ny = n_y; nz = n_z;
             X0 = _X0; Length = _Length;
+            c = _c;
 
-            Draw.OutLine = true; Draw.Vectors = true;
-            Draw.Sum = true; Draw.Y = false; Draw.Z = false;
+            Draw.OutLine = false; Draw.Vectors = false;
+            Draw.Sum = false; Draw.Y = false; Draw.Z = false;
 
             BeamVBO = new float[] {
                 (float)X0, 0.0f, 0.0f,
@@ -112,9 +113,10 @@ namespace PolarizedLight
             Ey = W.Ey; Ez = W.Ez;
             ny = n_y; nz = n_z;
             X0 = W.X0 + W.Length; Length = _Length;
+            c = W.c;
 
-            Draw.OutLine = true; Draw.Vectors = true;
-            Draw.Sum = true; Draw.Y = false; Draw.Z = false;
+            Draw.OutLine = false; Draw.Vectors = false;
+            Draw.Sum = false; Draw.Y = false; Draw.Z = false;
 
             Steps = (int)(Length / GridStep);
             SumVBO = new float[Steps * 3 + 3];
@@ -246,41 +248,31 @@ namespace PolarizedLight
         {
             Ez = new_Ez;
         }
+
+        // Скорость -----------------------------------------------
+        // Для первого сегмента 
+        public void c_update(double new_c)
+        {
+            FixCurrentPhase();
+            c = new_c;
+            Phi0Y = -P * (c * t - ny * X0) + CurrentPhi0Y;
+            Phi0Z = Phi0Y + DeltaPhi;
+        }
+        // Для последующих сегментов
+        public void c_update(Wave W)
+        {
+            c = W.c;
+            Phases_update(W);
+        }
         #endregion
-
-        //private float[] LambdaToRGB(double Lambda)
-        //{
-        //    float[] color = new float[3];
-        //    float l = (float)(Lambda);
-            
-        //    // Red
-        //    if (l >= 5.8f) color[0] = 1.0f;
-        //    else if (l >= 5.4f) color[0] = 1.0f * (l - 5.4f) / 0.2f;
-        //    else if (l >= 4.65f) color[0] = 0.0f;
-        //    else color[0] = 1.0f - 1.0f * ((l - 3.8f) / 0.85f);
-
-        //    // Green
-        //    if (l >= 6.1f) color[1] = 0.5f - 0.5f * (l - 6.1f) / 1.7f;
-        //    else if (l >= 5.8) color[1] = 1.0f - 0.5f * (l - 5.8f) / 0.3f;
-        //    else if (l >= 4.95f) color[1] = 1.0f;
-        //    else if (l >= 4.65f) color[1] = 1.0f * (l - 4.65f) / 0.3f;
-        //    else color[1] = 0.0f;
-
-        //    // Blue
-        //    if (l >= 5.4f) color[2] = 0.0f;
-        //    else if (l >= 4.95f) color[2] = 1.0f - 1.0f * (l - 4.95f) / 0.45f;
-        //    else color[2] = 1.0f;
-            
-        //    return color;
-        //}
 
         public void render()
         {
-            #region Рассчеты
+            #region Расчеты
             double X; float Y; float Z; int i_offset, i_vec_offset;
             for (int i = 0; i < Steps; i++)
             {
-                // Рассчитываем огибающие
+                // Расчитываем огибающие
                 i_offset = i * 3;
                 X = X0 + i * GridStep;
                 SumVBO[i_offset] = (float)(X);
@@ -297,7 +289,7 @@ namespace PolarizedLight
                 YVBO[i_offset + 2] = 0.0f;
                 ZVBO[i_offset + 2] = Z;
 
-                // Рассчитываем векторы
+                // Расчитываем векторы
                 if (i % VecSpacing == 0)
                 {
                     i_vec_offset = (i * 6 / VecSpacing) + 4;

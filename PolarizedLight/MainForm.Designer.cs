@@ -44,9 +44,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.timer_label = new System.Windows.Forms.Label();
             this.ButtonPause = new System.Windows.Forms.Button();
             this.ButtonStart = new System.Windows.Forms.Button();
             this.ButtonStop = new System.Windows.Forms.Button();
@@ -65,7 +63,6 @@
             this.ny_slider = new System.Windows.Forms.TrackBar();
             this.CrystalChoice_dropdown = new System.Windows.Forms.ComboBox();
             this.LightTab = new System.Windows.Forms.TabPage();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.Lambda_slider = new System.Windows.Forms.TrackBar();
             this.DeltaPhase_slider = new System.Windows.Forms.TrackBar();
             this.label9 = new System.Windows.Forms.Label();
@@ -81,6 +78,10 @@
             this.label8 = new System.Windows.Forms.Label();
             this.DisplayTab = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.Speed_label = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.DrawCrystal_chbox = new System.Windows.Forms.CheckBox();
+            this.Speed_slider = new System.Windows.Forms.TrackBar();
             this.DrawAxies_chbox = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DrawY_chbox = new System.Windows.Forms.CheckBox();
@@ -100,9 +101,10 @@
             this.ManualMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GLViewPort = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.AnimTimer = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.MainPanel.SuspendLayout();
             this.Credits_panel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.ExpSetupTabs.SuspendLayout();
             this.CrystalTab.SuspendLayout();
@@ -110,16 +112,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.nz_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).BeginInit();
             this.LightTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lambda_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ez_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ey_slider)).BeginInit();
             this.DisplayTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Speed_slider)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.MenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -149,9 +153,9 @@
             this.Credits_panel.Controls.Add(this.label10);
             this.Credits_panel.Controls.Add(this.pictureBox1);
             this.Credits_panel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Credits_panel.Location = new System.Drawing.Point(0, 309);
+            this.Credits_panel.Location = new System.Drawing.Point(0, 303);
             this.Credits_panel.Name = "Credits_panel";
-            this.Credits_panel.Size = new System.Drawing.Size(256, 275);
+            this.Credits_panel.Size = new System.Drawing.Size(256, 288);
             this.Credits_panel.TabIndex = 1;
             // 
             // linkLabel1
@@ -265,19 +269,8 @@
             this.label10.TabIndex = 1;
             this.label10.Text = "Разработчики:";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 124);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 149);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.timer_label);
             this.groupBox1.Controls.Add(this.ButtonPause);
             this.groupBox1.Controls.Add(this.ButtonStart);
             this.groupBox1.Controls.Add(this.ButtonStop);
@@ -285,24 +278,15 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 309);
+            this.groupBox1.Size = new System.Drawing.Size(256, 303);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Управление экспериментом";
             // 
-            // timer_label
-            // 
-            this.timer_label.AutoSize = true;
-            this.timer_label.Location = new System.Drawing.Point(112, 264);
-            this.timer_label.Name = "timer_label";
-            this.timer_label.Size = new System.Drawing.Size(26, 13);
-            this.timer_label.TabIndex = 3;
-            this.timer_label.Text = "time";
-            // 
             // ButtonPause
             // 
             this.ButtonPause.Enabled = false;
-            this.ButtonPause.Location = new System.Drawing.Point(91, 280);
+            this.ButtonPause.Location = new System.Drawing.Point(91, 270);
             this.ButtonPause.Name = "ButtonPause";
             this.ButtonPause.Size = new System.Drawing.Size(75, 23);
             this.ButtonPause.TabIndex = 2;
@@ -312,7 +296,7 @@
             // 
             // ButtonStart
             // 
-            this.ButtonStart.Location = new System.Drawing.Point(7, 280);
+            this.ButtonStart.Location = new System.Drawing.Point(7, 270);
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(75, 23);
             this.ButtonStart.TabIndex = 1;
@@ -323,7 +307,7 @@
             // ButtonStop
             // 
             this.ButtonStop.Enabled = false;
-            this.ButtonStop.Location = new System.Drawing.Point(174, 280);
+            this.ButtonStop.Location = new System.Drawing.Point(174, 270);
             this.ButtonStop.Name = "ButtonStop";
             this.ButtonStop.Size = new System.Drawing.Size(75, 23);
             this.ButtonStop.TabIndex = 1;
@@ -340,7 +324,7 @@
             this.ExpSetupTabs.Location = new System.Drawing.Point(3, 16);
             this.ExpSetupTabs.Name = "ExpSetupTabs";
             this.ExpSetupTabs.SelectedIndex = 0;
-            this.ExpSetupTabs.Size = new System.Drawing.Size(250, 245);
+            this.ExpSetupTabs.Size = new System.Drawing.Size(250, 248);
             this.ExpSetupTabs.TabIndex = 0;
             // 
             // CrystalTab
@@ -360,7 +344,7 @@
             this.CrystalTab.Location = new System.Drawing.Point(4, 22);
             this.CrystalTab.Name = "CrystalTab";
             this.CrystalTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CrystalTab.Size = new System.Drawing.Size(242, 219);
+            this.CrystalTab.Size = new System.Drawing.Size(242, 222);
             this.CrystalTab.TabIndex = 0;
             this.CrystalTab.Text = "Кристалл";
             this.CrystalTab.UseVisualStyleBackColor = true;
@@ -402,7 +386,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(14, 13);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Z";
+            this.label3.Text = "Y";
             // 
             // ny_label
             // 
@@ -429,7 +413,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Y";
+            this.label2.Text = "X";
             // 
             // label4
             // 
@@ -444,12 +428,12 @@
             // 
             this.nz_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.nz_slider.Location = new System.Drawing.Point(23, 152);
-            this.nz_slider.Maximum = 2417;
+            this.nz_slider.Maximum = 2000;
             this.nz_slider.Minimum = 1000;
             this.nz_slider.Name = "nz_slider";
             this.nz_slider.Size = new System.Drawing.Size(171, 45);
             this.nz_slider.TabIndex = 1;
-            this.nz_slider.TickFrequency = 0;
+            this.nz_slider.TickFrequency = 100;
             this.nz_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.nz_slider.Value = 1000;
             this.nz_slider.Scroll += new System.EventHandler(this.nz_slider_Scroll);
@@ -467,12 +451,12 @@
             // 
             this.ny_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ny_slider.Location = new System.Drawing.Point(23, 103);
-            this.ny_slider.Maximum = 2417;
+            this.ny_slider.Maximum = 2000;
             this.ny_slider.Minimum = 1000;
             this.ny_slider.Name = "ny_slider";
             this.ny_slider.Size = new System.Drawing.Size(171, 45);
             this.ny_slider.TabIndex = 1;
-            this.ny_slider.TickFrequency = 0;
+            this.ny_slider.TickFrequency = 100;
             this.ny_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.ny_slider.Value = 1000;
             this.ny_slider.Scroll += new System.EventHandler(this.ny_slider_Scroll);
@@ -483,10 +467,10 @@
             this.CrystalChoice_dropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CrystalChoice_dropdown.FormattingEnabled = true;
             this.CrystalChoice_dropdown.Items.AddRange(new object[] {
-            "Свой кристалл",
-            "Борат бора",
+            "Произвольный кристалл",
+            "Борат бария",
+            "Кальцит",
             "Рубин",
-            "Сапфир",
             "Турмалин"});
             this.CrystalChoice_dropdown.Location = new System.Drawing.Point(3, 3);
             this.CrystalChoice_dropdown.Name = "CrystalChoice_dropdown";
@@ -513,21 +497,10 @@
             this.LightTab.Location = new System.Drawing.Point(4, 22);
             this.LightTab.Name = "LightTab";
             this.LightTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LightTab.Size = new System.Drawing.Size(242, 219);
+            this.LightTab.Size = new System.Drawing.Size(242, 222);
             this.LightTab.TabIndex = 1;
             this.LightTab.Text = "Источник света";
             this.LightTab.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(31, 44);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(11, 134);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 13;
-            this.pictureBox2.TabStop = false;
             // 
             // Lambda_slider
             // 
@@ -547,14 +520,14 @@
             // DeltaPhase_slider
             // 
             this.DeltaPhase_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.DeltaPhase_slider.LargeChange = 25;
+            this.DeltaPhase_slider.LargeChange = 9;
             this.DeltaPhase_slider.Location = new System.Drawing.Point(189, 32);
-            this.DeltaPhase_slider.Maximum = 200;
+            this.DeltaPhase_slider.Maximum = 72;
             this.DeltaPhase_slider.Name = "DeltaPhase_slider";
             this.DeltaPhase_slider.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.DeltaPhase_slider.Size = new System.Drawing.Size(45, 159);
             this.DeltaPhase_slider.TabIndex = 4;
-            this.DeltaPhase_slider.TickFrequency = 25;
+            this.DeltaPhase_slider.TickFrequency = 18;
             this.DeltaPhase_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.DeltaPhase_slider.Scroll += new System.EventHandler(this.DeltaPhase_slider_Scroll);
             this.DeltaPhase_slider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeltaPhase_slider_MouseDown);
@@ -607,7 +580,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Z";
+            this.label5.Text = "Y";
             // 
             // label6
             // 
@@ -616,7 +589,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(14, 13);
             this.label6.TabIndex = 10;
-            this.label6.Text = "Y";
+            this.label6.Text = "X";
             // 
             // DeltaPhase_label
             // 
@@ -686,30 +659,78 @@
             this.DisplayTab.Location = new System.Drawing.Point(4, 22);
             this.DisplayTab.Name = "DisplayTab";
             this.DisplayTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DisplayTab.Size = new System.Drawing.Size(242, 219);
+            this.DisplayTab.Size = new System.Drawing.Size(242, 222);
             this.DisplayTab.TabIndex = 2;
             this.DisplayTab.Text = "Отображение";
             this.DisplayTab.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.Speed_label);
+            this.groupBox4.Controls.Add(this.label23);
+            this.groupBox4.Controls.Add(this.DrawCrystal_chbox);
+            this.groupBox4.Controls.Add(this.Speed_slider);
             this.groupBox4.Controls.Add(this.DrawAxies_chbox);
             this.groupBox4.Location = new System.Drawing.Point(7, 120);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(229, 98);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Общие";
+            this.groupBox4.Text = "Дополнительно";
+            // 
+            // Speed_label
+            // 
+            this.Speed_label.AutoSize = true;
+            this.Speed_label.Location = new System.Drawing.Point(176, 65);
+            this.Speed_label.Name = "Speed_label";
+            this.Speed_label.Size = new System.Drawing.Size(36, 13);
+            this.Speed_label.TabIndex = 4;
+            this.Speed_label.Text = "speed";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(4, 59);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(55, 26);
+            this.label23.TabIndex = 3;
+            this.label23.Text = "Скорость\r\nволны";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // DrawCrystal_chbox
+            // 
+            this.DrawCrystal_chbox.AutoSize = true;
+            this.DrawCrystal_chbox.Location = new System.Drawing.Point(133, 19);
+            this.DrawCrystal_chbox.Name = "DrawCrystal_chbox";
+            this.DrawCrystal_chbox.Size = new System.Drawing.Size(73, 30);
+            this.DrawCrystal_chbox.TabIndex = 2;
+            this.DrawCrystal_chbox.Text = "Скрыть\r\nкристалл";
+            this.DrawCrystal_chbox.UseVisualStyleBackColor = true;
+            this.DrawCrystal_chbox.CheckedChanged += new System.EventHandler(this.DrawCrystal_chbox_CheckedChanged);
+            // 
+            // Speed_slider
+            // 
+            this.Speed_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Speed_slider.LargeChange = 1;
+            this.Speed_slider.Location = new System.Drawing.Point(56, 49);
+            this.Speed_slider.Maximum = 2;
+            this.Speed_slider.Name = "Speed_slider";
+            this.Speed_slider.Size = new System.Drawing.Size(114, 45);
+            this.Speed_slider.TabIndex = 1;
+            this.Speed_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.Speed_slider.Value = 1;
+            this.Speed_slider.Scroll += new System.EventHandler(this.Speed_slider_Scroll);
             // 
             // DrawAxies_chbox
             // 
             this.DrawAxies_chbox.AutoSize = true;
-            this.DrawAxies_chbox.Location = new System.Drawing.Point(7, 20);
+            this.DrawAxies_chbox.Location = new System.Drawing.Point(7, 19);
             this.DrawAxies_chbox.Name = "DrawAxies_chbox";
-            this.DrawAxies_chbox.Size = new System.Drawing.Size(109, 17);
+            this.DrawAxies_chbox.Size = new System.Drawing.Size(85, 30);
             this.DrawAxies_chbox.TabIndex = 0;
-            this.DrawAxies_chbox.Text = "Отображать оси";
+            this.DrawAxies_chbox.Text = "Скрыть оси\r\nи надписи";
             this.DrawAxies_chbox.UseVisualStyleBackColor = true;
+            this.DrawAxies_chbox.CheckedChanged += new System.EventHandler(this.DrawAxies_chbox_CheckedChanged);
             // 
             // groupBox3
             // 
@@ -721,27 +742,27 @@
             this.groupBox3.Size = new System.Drawing.Size(128, 107);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Компоненты волны";
+            this.groupBox3.Text = "Проекции";
             // 
             // DrawY_chbox
             // 
             this.DrawY_chbox.AutoSize = true;
-            this.DrawY_chbox.Location = new System.Drawing.Point(6, 66);
+            this.DrawY_chbox.Location = new System.Drawing.Point(6, 43);
             this.DrawY_chbox.Name = "DrawY_chbox";
             this.DrawY_chbox.Size = new System.Drawing.Size(33, 17);
             this.DrawY_chbox.TabIndex = 0;
-            this.DrawY_chbox.Text = "Y";
+            this.DrawY_chbox.Text = "X";
             this.DrawY_chbox.UseVisualStyleBackColor = true;
             this.DrawY_chbox.CheckedChanged += new System.EventHandler(this.DrawY_chbox_CheckedChanged);
             // 
             // DrawZ_chbox
             // 
             this.DrawZ_chbox.AutoSize = true;
-            this.DrawZ_chbox.Location = new System.Drawing.Point(6, 43);
+            this.DrawZ_chbox.Location = new System.Drawing.Point(6, 66);
             this.DrawZ_chbox.Name = "DrawZ_chbox";
             this.DrawZ_chbox.Size = new System.Drawing.Size(33, 17);
             this.DrawZ_chbox.TabIndex = 0;
-            this.DrawZ_chbox.Text = "Z";
+            this.DrawZ_chbox.Text = "Y";
             this.DrawZ_chbox.UseVisualStyleBackColor = true;
             this.DrawZ_chbox.CheckedChanged += new System.EventHandler(this.DrawZ_chbox_CheckedChanged);
             // 
@@ -768,7 +789,7 @@
             this.groupBox2.Size = new System.Drawing.Size(95, 107);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Отрисовка";
+            this.groupBox2.Text = "Волны";
             // 
             // DrawVec_radio
             // 
@@ -896,6 +917,28 @@
             this.AnimTimer.Interval = 16;
             this.AnimTimer.Tick += new System.EventHandler(this.AnimTimer_Tick);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 124);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 164);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Gradient;
+            this.pictureBox2.Location = new System.Drawing.Point(31, 44);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(11, 134);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 13;
+            this.pictureBox2.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -910,15 +953,14 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Поляризованный свет в анизотромном кристалле";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
             this.Credits_panel.ResumeLayout(false);
             this.Credits_panel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ExpSetupTabs.ResumeLayout(false);
             this.CrystalTab.ResumeLayout(false);
             this.CrystalTab.PerformLayout();
@@ -927,7 +969,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).EndInit();
             this.LightTab.ResumeLayout(false);
             this.LightTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lambda_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ez_slider)).EndInit();
@@ -935,12 +976,15 @@
             this.DisplayTab.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Speed_slider)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1017,7 +1061,10 @@
         private System.Windows.Forms.Label Lambda_label;
         private System.Windows.Forms.Button ButtonPause;
         private System.Windows.Forms.Timer AnimTimer;
-        private System.Windows.Forms.Label timer_label;
+        private System.Windows.Forms.Label Speed_label;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.CheckBox DrawCrystal_chbox;
+        private System.Windows.Forms.TrackBar Speed_slider;
     }
 }
 

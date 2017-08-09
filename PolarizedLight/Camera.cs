@@ -1,6 +1,5 @@
 ﻿using System;
 using Tao.OpenGl;
-using Tao.Platform.Windows;
 
 namespace PolarizedLight
 {
@@ -20,9 +19,9 @@ namespace PolarizedLight
 
         #region Константы и оганичители движения камеры
         private const double phiMax = 360.0, phiMin = 0.0;
-        private const double psiMax = 89.0, psiMin = -20.0;
-        private const double RMax = 35.0, RMin = 5.0;
-        private const double HeightMax = 18.0, HeightMin = -18.0;
+        private const double psiMax = 89.9, psiMin = -15.0;
+        private const double RMax = 30.0, RMin = 5.0;
+        private const double ShiftMax = 18.0, ShiftMin = -18.0;
         #endregion
 
         private double[] eye = new double[3];
@@ -34,19 +33,19 @@ namespace PolarizedLight
         public int mouseDX = 0;
         public int mouseDY = 0;
 
-        private double _height = 4.2;
-        public double height
+        private double _shift = 4.0;
+        public double shift
         {
-            get { return _height; }
+            get { return _shift; }
             set
             {
-                if (value >= HeightMax) _height = HeightMax;
-                else if (value <= HeightMin) _height = HeightMin;
-                else _height = value;
+                if (value >= ShiftMax) _shift = ShiftMax;
+                else if (value <= ShiftMin) _shift = ShiftMin;
+                else _shift = value;
             }
         }
         // -------------------- сферические координаты ---------------------
-        private double _phi = Math.PI / 4;
+        private double _phi = Math.PI / 4.0;
         public double phi
         {
             get { return ToDeg(_phi); }
@@ -58,7 +57,7 @@ namespace PolarizedLight
             }
         }
 
-        private double _psi = Math.PI / 6;
+        private double _psi = Math.PI / 6.0;
         public double psi
         {
             get { return ToDeg(_psi); }
@@ -70,7 +69,7 @@ namespace PolarizedLight
             }
         }
 
-        private double _R = 11.0;
+        private double _R = 25.0;
         public double R
         {
             get { return _R; }
@@ -92,10 +91,8 @@ namespace PolarizedLight
             
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                //eye[0], eye[1], eye[2] + _height,
-                //pivot[0], pivot[1], pivot[2] + _height,
-                eye[0] + _height, eye[1], eye[2],
-                pivot[0] + _height, pivot[1], pivot[2],
+                eye[0] + _shift, eye[1], eye[2],
+                pivot[0] + _shift, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
@@ -110,10 +107,8 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                //eye[0], eye[1], eye[2] + _height,
-                //pivot[0], pivot[1], pivot[2] + _height,
-                eye[0] + _height, eye[1], eye[2],
-                pivot[0] + _height, pivot[1], pivot[2],
+                eye[0] + _shift, eye[1], eye[2],
+                pivot[0] + _shift, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
@@ -127,29 +122,25 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                //eye[0], eye[1], eye[2] + _height,
-                //pivot[0], pivot[1], pivot[2] + _height,
-                eye[0] + _height, eye[1], eye[2],
-                pivot[0] + _height, pivot[1], pivot[2],
+                eye[0] + _shift, eye[1], eye[2],
+                pivot[0] + _shift, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
         public void translate(double new_h)
         {
-            height = new_h;
+            shift = new_h;
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                //eye[0], eye[1], eye[2] + _height,
-                //pivot[0], pivot[1], pivot[2] + _height,
-                eye[0] + _height, eye[1], eye[2],
-                pivot[0] + _height, pivot[1], pivot[2],
+                eye[0] + _shift, eye[1], eye[2],
+                pivot[0] + _shift, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
 
         public void reset()
         {
-            phi = 45.0; psi = 30.0; R = 11.0; height = 4.2;
+            phi = 45.0; psi = 30.0; R = 25.0; shift = 4.0;
 
             eye[0] = R * Math.Cos(_phi) * Math.Cos(_psi);
             eye[1] = R * Math.Sin(_phi) * Math.Cos(_psi);
@@ -157,10 +148,8 @@ namespace PolarizedLight
 
             Gl.glLoadIdentity();
             Glu.gluLookAt(
-                //eye[0], eye[1], eye[2] + _height,
-                //pivot[0], pivot[1], pivot[2] + _height,
-                eye[0] + _height, eye[1], eye[2],
-                pivot[0] + _height, pivot[1], pivot[2],
+                eye[0] + _shift, eye[1], eye[2],
+                pivot[0] + _shift, pivot[1], pivot[2],
                 up[0], up[1], up[2]);
         }
         #endregion

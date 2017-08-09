@@ -10,11 +10,12 @@ namespace PolarizedLight
         public Camera cam;
         private const double FOV = 50, zNear = 1.0, zFar = 200.0;
 
-        private Model Table, Laser, ControlUnit, Supports, Connector, Platforms, Crystal;
+        private Model Table, Laser, ControlUnit, Supports, Connector, Platforms, Crystal, OSD;
+        private Outline CrystalOutline;
         public Wave wave1, wave2, wave3;
         private float[] light0Pos = { 0.0f, 3.0f, 15.0f, 1.0f };
         private float[] light1Pos = { -15.8f, 0.0f, 0.0f, 1.0f };
-        private float[] light1spotdir = new float[] { 1.0f, 0.0f, -0.15f };
+        private float[] light1spotdir = { 1.0f, 0.0f, -0.15f };
         public bool ExpIsPaused = false;
         private bool _ExpIsRunning = false;
         public bool ExpIsRunning
@@ -27,6 +28,7 @@ namespace PolarizedLight
                 _ExpIsRunning = value;
             }
         }
+        public bool DrawOSD = true, DrawCrystal = true;
         public float Scale = 1.0f;
 
         public Scene(SimpleOpenGlControl _GLVP)
@@ -72,6 +74,15 @@ namespace PolarizedLight
 
             Crystal = new Model("Models/Crystal");
             Crystal.UseAlpha = true;
+            Crystal.SetShininess(60.0f);
+            Crystal.SetDiffuse(new float[] { 1.0f, 1.0f, 1.0f, 0.6f });
+            Crystal.SetEmission(new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
+
+            OSD = new Model("Models/OSD");
+            OSD.UseAlpha = true;
+            OSD.SetEmission(new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
+
+            CrystalOutline = new Outline();
 
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, light0Pos);
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, new float[] { 0.3f, 0.3f, 0.3f, 1.0f });
@@ -99,7 +110,7 @@ namespace PolarizedLight
             if (l >= 5.8f) color[0] = 1.0f;
             else if (l >= 5.4f) color[0] = 1.0f * (l - 5.4f) / 0.2f;
             else if (l >= 4.65f) color[0] = 0.0f;
-            else color[0] = 1.0f - 1.0f * ((l - 3.8f) / 0.85f);
+            else color[0] = 0.65f - 0.65f * ((l - 3.8f) / 0.85f);
 
             // Green
             if (l >= 6.1f) color[1] = 0.5f - 0.5f * (l - 6.1f) / 1.7f;
@@ -121,6 +132,42 @@ namespace PolarizedLight
             wave3.Color = color;
             Gl.glLightfv(Gl.GL_LIGHT1, Gl.GL_SPECULAR, color);
             Gl.glLightfv(Gl.GL_LIGHT1, Gl.GL_DIFFUSE, color);
+        }
+
+        public void SetCrystalColor(int ID)
+        {
+            switch(ID)
+            {
+                case 0:
+                    {
+                        Crystal.SetDiffuse(new float[] { 1.0f, 1.0f, 1.0f, 0.6f });
+                        Crystal.SetEmission(new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
+                    } break;
+                case 1:
+                    {
+                        Crystal.SetDiffuse(new float[] { 0.7f, 0.8f, 1.0f, 0.6f });
+                        Crystal.SetEmission(new float[] { 0.0f, 0.1f, 0.2f, 1.0f });
+                    }
+                    break;
+                case 2:
+                    {
+                        Crystal.SetDiffuse(new float[] { 0.8f, 0.8f, 0.8f, 0.6f });
+                        Crystal.SetEmission(new float[] { 0.3f, 0.3f, 0.3f, 1.0f });
+                    }
+                    break;
+                case 3:
+                    {
+                        Crystal.SetDiffuse(new float[] { 0.8f, 0.0f, 0.0f, 0.6f });
+                        Crystal.SetEmission(new float[] { 0.2f, 0.0f, 0.0f, 1.0f });
+                    }
+                    break;
+                case 4:
+                    {
+                        Crystal.SetDiffuse(new float[] { 0.4f, 1.0f, 1.0f, 0.6f });
+                        Crystal.SetEmission(new float[] { 0.5f, 0.1f, 0.2f, 1.0f });
+                    }
+                    break;
+            }
         }
 
         public void render()
@@ -146,10 +193,12 @@ namespace PolarizedLight
             Supports.render();
             Connector.render();
             Platforms.render();
+            if (DrawOSD) OSD.render();
 
             Gl.glPushMatrix();
             Gl.glScalef(Scale, 1.0f, 1.0f);
-            Crystal.render();
+            if (DrawCrystal) Crystal.render();
+            else CrystalOutline.render();
             Gl.glPopMatrix();
 
             // сообщаем OpenGL что закончили все дела и можно рисовать кадр
