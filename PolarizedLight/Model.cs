@@ -1,5 +1,5 @@
 ﻿using System;
-//using System.Reflection;
+using System.Reflection;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace PolarizedLight
         // Указатели на буферы вершин и нормалей
         private int[] VBOPtr = new int[1];
         private int[] TexPtr = new int[1];
-        private float[] VBO;
         private int VertexCount = 0;    // кол-во вершин
 
         // Свойства материала
@@ -32,39 +31,12 @@ namespace PolarizedLight
             Specular = new float[] { 0.7f, 0.7f, 0.7f, 1.0f };
             Shininess = 80.0f;
             Emission = new float[] { 0.0f, 0.0f, 0.0f, 1.0f };
-
-            VBO = ParseOBJ(name + ".obj");
-
-            // Создаем VBO (Vertex Buffer Object)
-            Gl.glGenBuffers(1, VBOPtr);
-            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
-            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(VBO.Length * sizeof(float)), VBO, Gl.GL_STATIC_DRAW);
-            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
             
-            // Грузим текстуру
-            Bitmap Texture = new Bitmap(name + ".png");
-            Texture.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            var TexData = Texture.LockBits( new Rectangle(0, 0, Texture.Width, Texture.Height),
-                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            #region Парсер OBJ файлов
 
-            Gl.glGenTextures(1, TexPtr);
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
-            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
-            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
-            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, Texture.Width, Texture.Height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, TexData.Scan0);
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
-
-            Texture.UnlockBits(TexData);
-            Texture.Dispose();
-        }
-        #endregion
-
-        #region Парсер OBJ файлов
-        private float[] ParseOBJ(string name)
-        {
             // Массив атрибутов вершин:
             // |          Vertex 1         |    Vertex 2    | ...
-            // |X|Y|Z|normX|normY|normZ|U|V|    ...         | ...
+            // |X|Y|Z|normX|normY|normZ|U|V|      ...       | ...
             float[] VBO;
 
             // Списки для чтения атрибутов вершин из файла
@@ -76,9 +48,9 @@ namespace PolarizedLight
             List<int> UVIndices = new List<int>();          // индексы текс. координат
 
             // Читаем файл
-            //var assembly = Assembly.GetExecutingAssembly();
-            //Stream stream = assembly.GetManifestResourceStream(name);
-            StreamReader reader = new StreamReader(name);
+            var assembly = Assembly.GetExecutingAssembly();
+            Stream stream = assembly.GetManifestResourceStream(name + ".obj");
+            StreamReader reader = new StreamReader(stream);
 
             string content;
             var fltFormat = System.Globalization.CultureInfo.InvariantCulture;
@@ -93,17 +65,17 @@ namespace PolarizedLight
                     case "v":
                         // координаты вершины
                         for (int j = 1; j < 4; j++)
-                                VertexCoords.Add(float.Parse(line[j], fltFormat));
+                            VertexCoords.Add(float.Parse(line[j], fltFormat));
                         break;
                     case "vn":
                         // координаты нормали
                         for (int j = 1; j < 4; j++)
-                                NormalCoords.Add(float.Parse(line[j], fltFormat));
+                            NormalCoords.Add(float.Parse(line[j], fltFormat));
                         break;
                     case "vt":
                         // текстурные координаты
                         for (int j = 1; j < 3; j++)
-                                UVCoords.Add(float.Parse(line[j], fltFormat));
+                            UVCoords.Add(float.Parse(line[j], fltFormat));
                         break;
                     case "f":
                         // поверхность (полигон)
@@ -122,8 +94,8 @@ namespace PolarizedLight
             }
 
             VertexCount = VIndices.Count;
-            VBO = new float[VIndices.Count * 8];
-            
+            VBO = new float[VertexCount * 8];
+
             // Пакуем все атрибуты вершин в один массив
             for (int i = 0; i < VertexCount; i++)
             {
@@ -139,11 +111,33 @@ namespace PolarizedLight
             // Очищаем списки
             VertexCoords.Clear(); NormalCoords.Clear(); UVCoords.Clear();
             VIndices.Clear(); NIndices.Clear(); UVIndices.Clear();
+            #endregion
 
-            return VBO;
+            // Создаем VBO (Vertex Buffer Object)
+            Gl.glGenBuffers(1, VBOPtr);
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, VBOPtr[0]);
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER, (IntPtr)(VBO.Length * sizeof(float)), VBO, Gl.GL_STATIC_DRAW);
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, 0);
+
+            // Грузим текстуру
+            stream = assembly.GetManifestResourceStream(name + ".png");
+            Bitmap Texture = new Bitmap(stream);
+            Texture.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            var TexData = Texture.LockBits(new Rectangle(0, 0, Texture.Width, Texture.Height),
+                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+
+            Gl.glGenTextures(1, TexPtr);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, TexPtr[0]);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, Texture.Width, Texture.Height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, TexData.Scan0);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
+
+            Texture.UnlockBits(TexData);
+            Texture.Dispose();
         }
         #endregion
-
+        
         #region Задание свойств материала
         public void SetDiffuse(float[] rgba)
         {

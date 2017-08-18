@@ -1,5 +1,4 @@
 ﻿using Tao.OpenGl;
-using System;
 using Tao.Platform.Windows;
 
 namespace PolarizedLight
@@ -23,7 +22,7 @@ namespace PolarizedLight
             get { return _ExpIsRunning; }
             set
             {
-                if (value == true) Gl.glEnable(Gl.GL_LIGHT1);
+                if (value) Gl.glEnable(Gl.GL_LIGHT1);
                 else Gl.glDisable(Gl.GL_LIGHT1);
                 _ExpIsRunning = value;
             }
@@ -52,33 +51,33 @@ namespace PolarizedLight
             Gl.glLightModeli(Gl.GL_LIGHT_MODEL_COLOR_CONTROL, Gl.GL_SEPARATE_SPECULAR_COLOR);
             Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
             
-            Table = new Model("Models/Table");
+            Table = new Model("PolarizedLight.Models.Table");
             Table.SetShininess(100.0f);
 
-            Laser = new Model("Models/Laser");
+            Laser = new Model("PolarizedLight.Models.Laser");
             Laser.SetShininess(30.0f);
             Laser.SetSpecular(new float[] { 0.45f, 0.45f, 0.45f, 1.0f });
 
-            ControlUnit = new Model("Models/ControlUnit");
+            ControlUnit = new Model("PolarizedLight.Models.ControlUnit");
             ControlUnit.SetShininess(30.0f);
             ControlUnit.SetSpecular(new float[] { 0.45f, 0.45f, 0.45f, 1.0f });
 
-            Supports = new Model("Models/Supports");
+            Supports = new Model("PolarizedLight.Models.Supports");
             Supports.SetShininess(50.0f);
 
-            Connector = new Model("Models/Connector");
+            Connector = new Model("PolarizedLight.Models.Connector");
             Connector.SetShininess(30.0f);
 
-            Platforms = new Model("Models/Platforms");
+            Platforms = new Model("PolarizedLight.Models.Platforms");
             Platforms.SetShininess(30.0f);
 
-            Crystal = new Model("Models/Crystal");
+            Crystal = new Model("PolarizedLight.Models.Crystal");
             Crystal.UseAlpha = true;
             Crystal.SetShininess(60.0f);
             Crystal.SetDiffuse(new float[] { 1.0f, 1.0f, 1.0f, 0.6f });
             Crystal.SetEmission(new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
 
-            OSD = new Model("Models/OSD");
+            OSD = new Model("PolarizedLight.Models.OSD");
             OSD.UseAlpha = true;
             OSD.SetEmission(new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
 
@@ -96,8 +95,6 @@ namespace PolarizedLight
             Gl.glLightf(Gl.GL_LIGHT1, Gl.GL_SPOT_CUTOFF, 80.0f);
             Gl.glLightf(Gl.GL_LIGHT1, Gl.GL_SPOT_EXPONENT, 13.0f);
             Gl.glLightfv(Gl.GL_LIGHT1, Gl.GL_SPOT_DIRECTION, light1spotdir);
-            //Gl.glLightf(Gl.GL_LIGHT1, Gl.GL_CONSTANT_ATTENUATION, 1.5f);
-            //Gl.glLightf(Gl.GL_LIGHT1, Gl.GL_LINEAR_ATTENUATION, 0.0005f);
             Gl.glLightf(Gl.GL_LIGHT1, Gl.GL_QUADRATIC_ATTENUATION, 0.0015f);
         }
         

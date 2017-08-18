@@ -32,8 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainPanel = new System.Windows.Forms.Panel();
             this.Credits_panel = new System.Windows.Forms.Panel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.email_link = new System.Windows.Forms.LinkLabel();
             this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -44,6 +45,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ButtonPause = new System.Windows.Forms.Button();
             this.ButtonStart = new System.Windows.Forms.Button();
@@ -63,6 +65,7 @@
             this.ny_slider = new System.Windows.Forms.TrackBar();
             this.CrystalChoice_dropdown = new System.Windows.Forms.ComboBox();
             this.LightTab = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.Lambda_slider = new System.Windows.Forms.TrackBar();
             this.DeltaPhase_slider = new System.Windows.Forms.TrackBar();
             this.label9 = new System.Windows.Forms.Label();
@@ -91,20 +94,17 @@
             this.DrawVec_radio = new System.Windows.Forms.RadioButton();
             this.DrawOutline_radio = new System.Windows.Forms.RadioButton();
             this.DrawBoth_radio = new System.Windows.Forms.RadioButton();
-            this.label21 = new System.Windows.Forms.Label();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SettingsMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpHelpMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ManualMenuStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GLViewPort = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.AnimTimer = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.MainPanel.SuspendLayout();
             this.Credits_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.ExpSetupTabs.SuspendLayout();
             this.CrystalTab.SuspendLayout();
@@ -112,6 +112,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nz_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).BeginInit();
             this.LightTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lambda_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ez_slider)).BeginInit();
@@ -122,15 +123,12 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.MenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // MainPanel
             // 
             this.MainPanel.Controls.Add(this.Credits_panel);
             this.MainPanel.Controls.Add(this.groupBox1);
-            this.MainPanel.Controls.Add(this.label21);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.MainPanel.Location = new System.Drawing.Point(728, 24);
             this.MainPanel.Name = "MainPanel";
@@ -139,8 +137,9 @@
             // 
             // Credits_panel
             // 
-            this.Credits_panel.Controls.Add(this.linkLabel1);
+            this.Credits_panel.Controls.Add(this.email_link);
             this.Credits_panel.Controls.Add(this.label20);
+            this.Credits_panel.Controls.Add(this.label21);
             this.Credits_panel.Controls.Add(this.label14);
             this.Credits_panel.Controls.Add(this.label13);
             this.Credits_panel.Controls.Add(this.label12);
@@ -152,21 +151,22 @@
             this.Credits_panel.Controls.Add(this.label19);
             this.Credits_panel.Controls.Add(this.label10);
             this.Credits_panel.Controls.Add(this.pictureBox1);
-            this.Credits_panel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Credits_panel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.Credits_panel.Location = new System.Drawing.Point(0, 303);
             this.Credits_panel.Name = "Credits_panel";
-            this.Credits_panel.Size = new System.Drawing.Size(256, 288);
+            this.Credits_panel.Size = new System.Drawing.Size(256, 334);
             this.Credits_panel.TabIndex = 1;
             // 
-            // linkLabel1
+            // email_link
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(144, 107);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(98, 13);
-            this.linkLabel1.TabIndex = 2;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "baranovav@ngs.ru";
+            this.email_link.AutoSize = true;
+            this.email_link.Location = new System.Drawing.Point(144, 107);
+            this.email_link.Name = "email_link";
+            this.email_link.Size = new System.Drawing.Size(98, 13);
+            this.email_link.TabIndex = 2;
+            this.email_link.TabStop = true;
+            this.email_link.Text = "baranovav@ngs.ru";
+            this.email_link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.email_link_LinkClicked);
             // 
             // label20
             // 
@@ -176,6 +176,18 @@
             this.label20.Size = new System.Drawing.Size(76, 13);
             this.label20.TabIndex = 1;
             this.label20.Text = "Баранов А. В.";
+            // 
+            // label21
+            // 
+            this.label21.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Calibri Light", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label21.Location = new System.Drawing.Point(74, 285);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(116, 46);
+            this.label21.TabIndex = 1;
+            this.label21.Text = "Новосибирск\r\n2017";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label14
             // 
@@ -269,6 +281,16 @@
             this.label10.TabIndex = 1;
             this.label10.Text = "Разработчики:";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 121);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 164);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.ButtonPause);
@@ -353,11 +375,11 @@
             // 
             this.Width_slider.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Width_slider.Location = new System.Drawing.Point(22, 43);
-            this.Width_slider.Maximum = 61;
+            this.Width_slider.Maximum = 70;
             this.Width_slider.Name = "Width_slider";
             this.Width_slider.Size = new System.Drawing.Size(172, 45);
             this.Width_slider.TabIndex = 1;
-            this.Width_slider.TickFrequency = 31;
+            this.Width_slider.TickFrequency = 10;
             this.Width_slider.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.Width_slider.Scroll += new System.EventHandler(this.Width_slider_Scroll);
             // 
@@ -501,6 +523,17 @@
             this.LightTab.TabIndex = 1;
             this.LightTab.Text = "Источник света";
             this.LightTab.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Gradient;
+            this.pictureBox2.Location = new System.Drawing.Point(31, 44);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(11, 134);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 13;
+            this.pictureBox2.TabStop = false;
             // 
             // Lambda_slider
             // 
@@ -692,9 +725,9 @@
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(4, 59);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(55, 26);
+            this.label23.Size = new System.Drawing.Size(57, 26);
             this.label23.TabIndex = 3;
-            this.label23.Text = "Скорость\r\nволны";
+            this.label23.Text = "Скорость\r\nанимации";
             this.label23.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // DrawCrystal_chbox
@@ -826,18 +859,6 @@
             this.DrawBoth_radio.UseVisualStyleBackColor = true;
             this.DrawBoth_radio.CheckedChanged += new System.EventHandler(this.DrawBoth_radio_CheckedChanged);
             // 
-            // label21
-            // 
-            this.label21.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Calibri Light", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label21.Location = new System.Drawing.Point(70, 587);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(116, 46);
-            this.label21.TabIndex = 1;
-            this.label21.Text = "Новосибирск\r\n2017";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // MenuStrip
             // 
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -852,22 +873,15 @@
             // FileMenuStripItem
             // 
             this.FileMenuStripItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SettingsMenuStripItem,
             this.ExitMenuStripItem});
             this.FileMenuStripItem.Name = "FileMenuStripItem";
             this.FileMenuStripItem.Size = new System.Drawing.Size(48, 20);
             this.FileMenuStripItem.Text = "Файл";
             // 
-            // SettingsMenuStripItem
-            // 
-            this.SettingsMenuStripItem.Name = "SettingsMenuStripItem";
-            this.SettingsMenuStripItem.Size = new System.Drawing.Size(134, 22);
-            this.SettingsMenuStripItem.Text = "Настройки";
-            // 
             // ExitMenuStripItem
             // 
             this.ExitMenuStripItem.Name = "ExitMenuStripItem";
-            this.ExitMenuStripItem.Size = new System.Drawing.Size(134, 22);
+            this.ExitMenuStripItem.Size = new System.Drawing.Size(152, 22);
             this.ExitMenuStripItem.Text = "Выход";
             this.ExitMenuStripItem.Click += new System.EventHandler(this.ExitMenuStripItem_Click);
             // 
@@ -885,12 +899,14 @@
             this.ExpHelpMenuStripItem.Name = "ExpHelpMenuStripItem";
             this.ExpHelpMenuStripItem.Size = new System.Drawing.Size(221, 22);
             this.ExpHelpMenuStripItem.Text = "Справка по эксперименту";
+            this.ExpHelpMenuStripItem.Click += new System.EventHandler(this.ExpHelpMenuStripItem_Click);
             // 
             // ManualMenuStripItem
             // 
             this.ManualMenuStripItem.Name = "ManualMenuStripItem";
             this.ManualMenuStripItem.Size = new System.Drawing.Size(221, 22);
             this.ManualMenuStripItem.Text = "Руководство пользователя";
+            this.ManualMenuStripItem.Click += new System.EventHandler(this.ManualMenuStripItem_Click);
             // 
             // GLViewPort
             // 
@@ -917,28 +933,6 @@
             this.AnimTimer.Interval = 16;
             this.AnimTimer.Tick += new System.EventHandler(this.AnimTimer_Tick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 124);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 164);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Image = global::PolarizedLight.Properties.Resources.Gradient;
-            this.pictureBox2.Location = new System.Drawing.Point(31, 44);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(11, 134);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 13;
-            this.pictureBox2.TabStop = false;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -957,9 +951,9 @@
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.MainPanel.ResumeLayout(false);
-            this.MainPanel.PerformLayout();
             this.Credits_panel.ResumeLayout(false);
             this.Credits_panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.ExpSetupTabs.ResumeLayout(false);
             this.CrystalTab.ResumeLayout(false);
@@ -969,6 +963,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ny_slider)).EndInit();
             this.LightTab.ResumeLayout(false);
             this.LightTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lambda_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeltaPhase_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ez_slider)).EndInit();
@@ -983,8 +978,6 @@
             this.groupBox2.PerformLayout();
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1030,13 +1023,12 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox DrawAxies_chbox;
         private System.Windows.Forms.ToolStripMenuItem FileMenuStripItem;
-        private System.Windows.Forms.ToolStripMenuItem SettingsMenuStripItem;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuStripItem;
         private System.Windows.Forms.ToolStripMenuItem HelpMenuStripItem;
         private System.Windows.Forms.ToolStripMenuItem ExpHelpMenuStripItem;
         private System.Windows.Forms.ToolStripMenuItem ManualMenuStripItem;
         private System.Windows.Forms.Panel Credits_panel;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel email_link;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;

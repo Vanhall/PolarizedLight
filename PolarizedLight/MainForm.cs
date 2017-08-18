@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace PolarizedLight
@@ -9,7 +10,7 @@ namespace PolarizedLight
         private double Lambda = 3.8;
         private double ny = 1.0;
         private double nz = 1.0;
-        private double d = 0.95;
+        private double d = 0.5;
         private float Ey = 1.5f;
         private float Ez = 1.5f;
         private double DeltaPhase = 0.0;
@@ -25,7 +26,7 @@ namespace PolarizedLight
             GLViewPort.InitializeContexts();
             GLViewPort.MouseWheel += new MouseEventHandler(GLViewPort_MouseWheel);
             scene = new Scene(GLViewPort);
-            scene.Scale = 0.95f/ 4.0f;
+            scene.Scale = 0.5f/ 4.0f;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -35,8 +36,8 @@ namespace PolarizedLight
             nz_label.Text = nz.ToString("F3");
             ny_label.Text = ny.ToString("F3");
             Width_label.Text = (d * 100.0).ToString("F0") + " нм";
-            Ey_label.Text = Ey.ToString("F1") + " В/м";
-            Ez_label.Text = Ez.ToString("F1") + " В/м";
+            Ey_label.Text = Ey.ToString("F1");
+            Ez_label.Text = Ez.ToString("F1");
             DeltaPhase_label.Text = "0°";
             CrystalChoice_dropdown.SelectedIndex = 0;
             Speed_label.Text = "Средняя";
@@ -308,6 +309,8 @@ namespace PolarizedLight
             if (scene.ExpIsRunning)
             {
                 scene.wave2.ny_update(ny);
+                scene.wave2.Ey_update(scene.wave1);
+                scene.wave3.Ey_update(scene.wave2);
                 scene.wave2.Phases_update(scene.wave1);
                 scene.wave3.Phases_update(scene.wave2);
             }
@@ -322,6 +325,8 @@ namespace PolarizedLight
             if (scene.ExpIsRunning)
             {
                 scene.wave2.nz_update(nz);
+                scene.wave2.Ez_update(scene.wave1);
+                scene.wave3.Ez_update(scene.wave2);
                 scene.wave2.Phases_update(scene.wave1);
                 scene.wave3.Phases_update(scene.wave2);
             }
@@ -330,7 +335,7 @@ namespace PolarizedLight
 
         private void Width_slider_Scroll(object sender, EventArgs e)
         {
-            d = 0.95 + Width_slider.Value * 0.05;
+            d = 0.5 + Width_slider.Value * 0.05;
             Width_label.Text = (d * 100.0).ToString("F0") + " нм";
             scene.Scale = (float)d / 4.0f;
             scene.render();
@@ -341,13 +346,13 @@ namespace PolarizedLight
         private void Ey_slider_Scroll(object sender, EventArgs e)
         {
             Ey = Ey_slider.Value/10.0f;
-            Ey_label.Text = Ey.ToString("F1") + " В/м";
+            Ey_label.Text = Ey.ToString("F1");
 
             if (scene.ExpIsRunning)
             {
                 scene.wave1.Ey_update(Ey);
-                scene.wave2.Ey_update(Ey);
-                scene.wave3.Ey_update(Ey);
+                scene.wave2.Ey_update(scene.wave1);
+                scene.wave3.Ey_update(scene.wave2);
             }
             scene.render();
         }
@@ -355,12 +360,12 @@ namespace PolarizedLight
         private void Ez_slider_Scroll(object sender, EventArgs e)
         {
             Ez = Ez_slider.Value/10.0f;
-            Ez_label.Text = Ez.ToString("F1") + " В/м";
+            Ez_label.Text = Ez.ToString("F1");
             if (scene.ExpIsRunning)
             {
                 scene.wave1.Ez_update(Ez);
-                scene.wave2.Ez_update(Ez);
-                scene.wave3.Ez_update(Ez);
+                scene.wave2.Ez_update(scene.wave1);
+                scene.wave3.Ez_update(scene.wave2);
             }
             scene.render();
         }
@@ -594,8 +599,49 @@ namespace PolarizedLight
             Application.Exit();
         }
 
+        private void ExpHelpMenuStripItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "/Docs/ExpHelp.pdf");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void ManualMenuStripItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "/Docs/ReadMe.pdf");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void email_link_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("mailto:baranovav@ngs.ru");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
         #endregion
-        
+
         private void LockInterface()
         {
             ButtonStart.Enabled = false;
@@ -618,7 +664,5 @@ namespace PolarizedLight
         {
             Application.Exit();
         }
-
-        
     }
 }

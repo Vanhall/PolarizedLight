@@ -110,8 +110,9 @@ namespace PolarizedLight
         public Wave(Wave W, double n_y, double n_z, double _Length)
         {
             Lambda = W.Lambda; DeltaPhi = 0.0;
-            Ey = W.Ey; Ez = W.Ez;
             ny = n_y; nz = n_z;
+            Ey = W.Ey * (float)(2.0 * W.ny / (W.ny + ny));
+            Ez = W.Ez * (float)(2.0 * W.nz / (W.nz + nz));
             X0 = W.X0 + W.Length; Length = _Length;
             c = W.c;
 
@@ -239,6 +240,7 @@ namespace PolarizedLight
         }
 
         // Амплитуды ----------------------------------------------
+        // Для первого сегмента 
         public void Ey_update(float new_Ey)
         {
             Ey = new_Ey;
@@ -247,6 +249,16 @@ namespace PolarizedLight
         public void Ez_update(float new_Ez)
         {
             Ez = new_Ez;
+        }
+        // Для последующих сегментов
+        public void Ey_update(Wave W)
+        {
+            Ey = W.Ey * (float)(2.0 * W.ny/(W.ny + ny));
+        }
+
+        public void Ez_update(Wave W)
+        {
+            Ez = W.Ez * (float)(2.0 * W.nz / (W.nz + nz));
         }
 
         // Скорость -----------------------------------------------
